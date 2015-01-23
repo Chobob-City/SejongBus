@@ -1,6 +1,9 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
@@ -19,6 +22,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
+    private static Context context;
+
     private static int busRouteId = 293000001;
     private static int busStopId = 293001084;
 
@@ -30,6 +35,8 @@ public class MainActivity extends ActionBarActivity {
             getFragmentManager().beginTransaction().add(R.id.container, new BusRouteFragment())
                     .commit();
         }
+
+        context = getBaseContext();
     }
 
     @Override
@@ -51,6 +58,13 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public static boolean isNetworkConnected() {
+        ConnectivityManager connMgr =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
+
     public static class BusRouteFragment extends Fragment {
         public BusRouteFragment() {
         }
@@ -59,6 +73,8 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_bus_route, container, false);
+
+            if (!isNetworkConnected()) return rootView;
 
             ArrayList<String> list = new ArrayList<>();
             try {
@@ -97,6 +113,8 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
+
+            if (!isNetworkConnected()) return rootView;
 
             ArrayList<String> list = new ArrayList<>();
             try {
