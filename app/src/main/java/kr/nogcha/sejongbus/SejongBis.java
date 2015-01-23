@@ -1,0 +1,174 @@
+package kr.nogcha.sejongbus;
+
+import android.os.AsyncTask;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+public class SejongBis {
+    private static final String ABSOLUTE_URI = "http://mbis.sejong.go.kr/";
+
+    /*
+     * stop_id
+     *
+     * returns busRealLocList
+     */
+    public static JSONObject searchBusRealLocationDetail(int busRouteId) {
+        String content = "busRouteId=" + busRouteId;
+        return call("web/traffic/searchBusRealLocationDetail", content);
+    }
+
+    /*
+     * (route_type)route_name번
+     * st_stop_name ↔ ed_stop_name
+     *
+     * ... route_id
+     *
+     * returns busRouteList
+     */
+    public static JSONObject searchBusRoute(String busRoute) {
+        String content = "busRoute=" + busRoute;
+        return call("mobile/traffic/searchBusRoute", content);
+    }
+
+    /*
+     * route_name번 노선정보
+     * · 기점 : st_stop_name
+     * · 종점 : ed_stop_name
+     * · 운행횟수 : alloc_time
+     *
+     * stop_name
+     * [service_id]
+     *
+     * ... stop_id
+     *
+     * returns busRouteDetailList
+     */
+    public static JSONObject searchBusRouteDetail(int busRouteId) {
+        String content = "busRouteId=" + busRouteId;
+        return call("mobile/traffic/searchBusRouteDetail", content);
+    }
+
+    /*
+     * returns busRouteExpMapList
+     */
+    public static JSONObject searchBusRouteExpMap1(int stRouteId, int sstOrd, int eedOrd,
+                                                   int stStopId, int edStopId) {
+        String content = "stRouteId=" + stRouteId + "&sstOrd=" + sstOrd +
+                "&eedOrd=" + eedOrd + "&stStopId=" + stStopId + "&edStopId=" + edStopId;
+        return call("web/traffic/searchBusRouteExpMap1", content);
+    }
+
+    public static JSONObject searchBusRouteMap(int busRouteId) {
+        String content = "busRouteId=" + busRouteId;
+        return call("mobile/traffic/searchBusRouteMap", content);
+    }
+
+    /*
+     * stop_name
+     * [service_id]
+     *
+     * ... stop_id
+     *
+     * returns busStopList
+     */
+    public static JSONObject searchBusStop(String busStop) {
+        String content = "busStop=" + busStop;
+        return call("mobile/traffic/searchBusStop", content);
+    }
+
+    /*
+     * stop_name
+     * [service_id]
+     *
+     * (route_type)route_name번
+     * provide_code
+     * 도착예정: provide_type | 현재위치: rstop
+     *
+     * ... route_id
+     *
+     * returns busStopRouteList
+     */
+    public static JSONObject searchBusStopRoute(int busStopId) {
+        String content = "busStopId=" + busStopId;
+        return call("mobile/traffic/searchBusStopRoute", content);
+    }
+
+    /*
+     * 출발 : sstationname(sService_id)
+     * 도착 : estationname(eService_id)
+     *
+     * xtype
+     * 승차 : srouteno 노선(sstationname 정류장)
+     * 하차 : tstationname 정류장
+     * 환승 : erouteno 노선(tstationname 정류장)
+     * 도착 : estationname 정류장
+     * (seq개 정류소, (distance / 1000)(km))
+     *
+     * returns routeExplore
+     */
+    public static JSONObject searchRouteExplore(int stBusStop, int edBusStop) {
+        String content = "stBusStop=" + stBusStop + "&edBusStop=" + edBusStop;
+        return call("mobile/traffic/searchRouteExplore", content);
+    }
+
+    /*
+     * returns busStopList
+     */
+    public static JSONObject searchSurroundStopList(double lat, double lng) {
+        String content = "lat=" + lat + "&lng=" + lng;
+        return call("mobile/traffic/searchSurroundStopList", content);
+    }
+
+    public static JSONObject selectBusStop(int busStopId) {
+        String content = "busStopId=" + busStopId;
+        return call("mobile/traffic/selectBusStop", content);
+    }
+
+    private static JSONObject call(String relativeUri, String content) {
+        JSONObject object = null;
+        try {
+            object = new JSONObject(new InternetTask().execute(relativeUri, content).get());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return object;
+    }
+
+    private static class InternetTask extends AsyncTask<String, Void, String> {
+        protected String doInBackground(String... params) {
+            HttpURLConnection urlConnection = null;
+            String response = null;
+            try {
+                URL url = new URL(ABSOLUTE_URI + params[0]);
+                urlConnection = (HttpURLConnection) url.openConnection();
+                urlConnection.setDoOutput(true);
+                urlConnection.setChunkedStreamingMode(0);
+
+                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
+                        urlConnection.getOutputStream(), "UTF-8"));
+                out.write(params[1]);
+                out.close();
+
+                BufferedReader in = new BufferedReader(new InputStreamReader(
+                        urlConnection.getInputStream(), "UTF-8"));
+                response = in.readLine();
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (urlConnection != null) {
+                    urlConnection.disconnect();
+                }
+            }
+            return response;
+        }
+    }
+}

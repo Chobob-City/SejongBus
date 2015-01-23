@@ -19,16 +19,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
-    static int busRouteId = 293000001;
-    static int busStopId = 293001084;
+    private static int busRouteId = 293000001;
+    private static int busStopId = 293001084;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction()
-                    .add(R.id.container, new BusRouteFragment())
+            getFragmentManager().beginTransaction().add(R.id.container, new BusRouteFragment())
                     .commit();
         }
     }
@@ -63,15 +62,15 @@ public class MainActivity extends ActionBarActivity {
 
             ArrayList<String> list = new ArrayList<>();
             try {
-                JSONArray busRouteDetailList = SejongMbis.searchBusRouteDetail(MainActivity.busRouteId);
+                JSONArray busRouteDetailList = SejongBis.searchBusRouteDetail(busRouteId)
+                        .getJSONArray("busRouteDetailList");
 
                 TextView textView = (TextView) rootView.findViewById(R.id.textView);
-                JSONObject object = busRouteDetailList.getJSONObject(busRouteDetailList.length() - 1);
-                StringBuilder text = new StringBuilder(object.getString("route_name"));
-                text.append("(").append(object.getString("st_stop_name")).append("~");
-                text.append(object.getString("ed_stop_name")).append(")\n");
-                text.append(object.getString("alloc_time"));
-                textView.setText(text);
+                JSONObject object = busRouteDetailList.getJSONObject(
+                        busRouteDetailList.length() - 1);
+                textView.setText(object.getString("route_name") + "\n" +
+                        object.getString("st_stop_name") + "~" + object.getString("ed_stop_name") +
+                        "\n" + object.getString("alloc_time"));
 
                 for (int i = 0; i < busRouteDetailList.length() - 1; i++) {
                     object = busRouteDetailList.getJSONObject(i);
@@ -101,11 +100,12 @@ public class MainActivity extends ActionBarActivity {
 
             ArrayList<String> list = new ArrayList<>();
             try {
-                JSONArray busStopRouteList = SejongMbis.searchBusStopRoute(MainActivity.busStopId);
+                JSONArray busStopRouteList = SejongBis.searchBusStopRoute(busStopId)
+                        .getJSONArray("busStopRouteList");
 
                 TextView textView = (TextView) rootView.findViewById(R.id.textView);
                 JSONObject object = busStopRouteList.getJSONObject(0);
-                textView.setText(object.getString("stop_name") + "\n[" +
+                textView.setText(object.getString("stop_name") + " [" +
                         object.getString("service_id") + "]");
 
                 for (int i = 0; i < busStopRouteList.length(); i++) {
@@ -115,33 +115,32 @@ public class MainActivity extends ActionBarActivity {
                     int route_type = object.getInt("route_type");
                     switch (route_type) {
                         case 43:
-                            route = "(세종광역)";
+                            route = "[세종광역]";
                             break;
                         case 50:
-                            route = "(대전광역)";
+                            route = "[대전광역]";
                             break;
                         case 51:
-                            route = "(청주광역)";
+                            route = "[청주광역]";
                             break;
                         case 30:
-                            route = "(마을)";
+                            route = "[마을]";
                             break;
                         default:
-                            route = "(일반)";
+                            route = "[일반]";
                     }
 
-                    route += object.getString("route_name") + "번\n도착예정";
-
+                    route += " " + object.getString("route_name") + "\n";
                     int provide_code = object.getInt("provide_code");
                     switch (provide_code) {
                         case 1:
-                            route += ": " + object.getString("provide_type") + " | 현재위치: 기점";
+                            route += object.getString("provide_type") + "\n현재 위치: 기점";
                             break;
                         case 2:
-                            route += " : 회차지 대기중";
+                            route += "회차지 대기 중";
                             break;
                         default:
-                            route += ": " + object.getString("provide_type") + " | 현재위치: " +
+                            route += object.getString("provide_type") + "\n현재 위치: " +
                                     object.getString("rstop");
                     }
                     list.add(route);

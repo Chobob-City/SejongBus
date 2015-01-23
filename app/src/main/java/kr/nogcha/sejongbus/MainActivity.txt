@@ -1,0 +1,286 @@
+package kr.nogcha.sejongbus;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
+public class MainActivity extends ActionBarActivity {
+    private EditText queryEdit;
+    private ListView listView;
+
+    private ArrayList<String> list = new ArrayList<String>();
+    private ArrayAdapter<String> adapter;
+    private JSONArray busRouteList;
+    private JSONArray busStopList;
+
+    static int busRouteId;
+    static int busStopId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        queryEdit = (EditText) findViewById(R.id.queryEdit);
+        queryEdit.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    queryEdit.setText("");
+                    return true;
+                }
+                return false;
+            }
+        });
+        queryEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    onClick1();
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        listView = (ListView) findViewById(R.id.listView);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, list);
+        listView.setAdapter(adapter);
+        TextView emptyText = (TextView) findViewById(R.id.emptyText);
+        listView.setEmptyView(emptyText);
+
+        Button searchButton = (Button) findViewById(R.id.searchButton);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClick1();
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void onClick1() {
+        String query = queryEdit.getText().toString();
+        if (query.equals("")) {
+            return;
+        }
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(0, 0);
+
+        try {
+            if (Pattern.matches("^\\d{5}$", query)) {
+                searchBusStop(query);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        onItemClick2(position);
+                    }
+                });
+            } else if (Pattern.matches("^\\d+(-1)?$", query)) {
+                searchBusRoute(query);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        onItemClick1(position);
+                    }
+                });
+            } else {
+                searchBusStop(query);
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view,
+                                            int position, long id) {
+                        onItemClick2(position);
+                    }
+                });
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void onItemClick1(int position) {
+        try {
+            searchBusRouteDetail(busRouteList.getJSONObject(position).getInt("route_id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        listView.setSelection(0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onItemClick2(position);
+            }
+        });
+    }
+
+    private void onItemClick2(int position) {
+        try {
+            searchBusStopRoute(busStopList.getJSONObject(position).getInt("stop_id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        listView.setSelection(0);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                onItemClick1(position);
+            }
+        });
+    }
+
+    private void searchBusRoute(String busRoute) throws JSONException {
+        busRouteList = SejongMbis.searchBusRoute(busRoute);
+
+        list.clear();
+        for (int i = 0; i < busRouteList.length(); i++) {
+            JSONObject object = busRouteList.getJSONObject(i);
+            int route_type = object.getInt("route_type");
+            String route;
+            switch (route_type) {
+                case 43:
+                    route = "(세종광역)";
+                    break;
+                case 50:
+                    route = "(대전광역)";
+                    break;
+                case 51:
+                    route = "(청주광역)";
+                    break;
+                case 30:
+                    route = "(마을)";
+                    break;
+                default:
+                    route = "(일반)";
+            }
+            route += object.getString("route_name") + '\n' +
+                    object.getString("st_stop_name") + "<->" +
+                    object.getString("ed_stop_name");
+            list.add(route);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void searchBusRouteDetail(int busRouteId) throws JSONException {
+        busStopList = SejongMbis.searchBusRouteDetail(busRouteId);
+
+        JSONObject object = busStopList.getJSONObject(busStopList.length() - 1);
+        String text = object.getString("route_name") + "번 노선정보\n· 기점 : " +
+                object.getString("st_stop_name") + "\n· 종점 : " +
+                object.getString("ed_stop_name") + "\n· 운행횟수 :" +
+                object.getString("alloc_time");
+        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.show();
+
+        list.clear();
+        for (int i = 0; i < busStopList.length() - 1; i++) {
+            object = busStopList.getJSONObject(i);
+            list.add(object.getString("stop_name") + "\n[" +
+                    object.getString("service_id") + "]");
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void searchBusStop(String busStop) throws JSONException {
+        busStopList = SejongMbis.searchBusStop(busStop);
+
+        list.clear();
+        for (int i = 0; i < busStopList.length(); i++) {
+            JSONObject object = busStopList.getJSONObject(i);
+            list.add(object.getString("stop_name") + "\n[" +
+                    object.getString("service_id") + "]");
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void searchBusStopRoute(int busStopId) throws JSONException {
+        busRouteList = SejongMbis.searchBusStopRoute(busStopId);
+
+        JSONObject object = busRouteList.getJSONObject(0);
+        String text = object.getString("stop_name") + "\n[" + object.getString("service_id") +
+                "]";
+        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.TOP, 0, 0);
+        toast.show();
+
+        list.clear();
+        for (int i = 0; i < busRouteList.length(); i++) {
+            object = busRouteList.getJSONObject(i);
+            int route_type = object.getInt("route_type");
+            String route;
+            switch (route_type) {
+                case 43:
+                    route = "(세종광역)";
+                    break;
+                case 50:
+                    route = "(대전광역)";
+                    break;
+                case 51:
+                    route = "(청주광역)";
+                    break;
+                case 30:
+                    route = "(마을)";
+                    break;
+                default:
+                    route = "(일반)";
+            }
+            route += object.getString("route_name") + "번\n도착예정";
+
+            int provide_code = object.getInt("provide_code");
+            switch (provide_code) {
+                case 1:
+                    route += ": " + object.getString("provide_type") + " | 현재위치: 기점";
+                    break;
+                case 2:
+                    route += " : 회차지 대기중";
+                    break;
+                default:
+                    route += ": " + object.getString("provide_type") + " | 현재위치: " +
+                            object.getString("rstop");
+            }
+            list.add(route);
+        }
+        adapter.notifyDataSetChanged();
+    }
+}
