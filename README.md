@@ -1,26 +1,18 @@
 # README #
 
-### What is this repository for? ###
+### 이게 뭐임? ###
 
 * 세종버스 앱
-* 1.0
+* 버전은 1.0(예정)
 
-### How do I get set up? ###
+### 어디서 구함? ###
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+* 개발자한테 부탁하셈
+* app-debug.apk
+* app-release.apk
+* 아님 언젠가 스토어에 올라갈지도
 
-### Contribution guidelines ###
+### 누구한테 물어봄? ###
 
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Kang Hyeonwoo (kanglib AT naver.com)
-* 육진혁 (jdd04026 AT gmail.com)
+* 강현우 <kanglib AT naver.com>
+* 육진혁 <jdd04026 AT gmail.com>
