@@ -16,6 +16,7 @@
         android:layout_marginRight="4dp"
         android:layout_toLeftOf="@+id/imageButton"
         android:layout_toStartOf="@+id/imageButton"
+        android:imeOptions="actionSearch"
         android:inputType="text" />
 
     <ImageButton

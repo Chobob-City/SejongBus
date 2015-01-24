@@ -66,14 +66,15 @@ public class BusStopFragment extends Fragment {
                     int provide_code = jsonObject.getInt("provide_code");
                     switch (provide_code) {
                         case 1:
-                            route += jsonObject.getString("provide_type") + "\n현재 위치: 기점";
+                            route += "도착 예정: " + jsonObject.getString("provide_type") +
+                                    "\n현재 위치: 기점";
                             break;
                         case 2:
                             route += "회차지 대기 중";
                             break;
                         default:
-                            route += jsonObject.getString("provide_type") + "\n현재 위치: " +
-                                    jsonObject.getString("rstop");
+                            route += "도착 예정: " + jsonObject.getString("provide_type") +
+                                    "\n현재 위치: " + jsonObject.getString("rstop");
                     }
                     list.add(route);
                 }
