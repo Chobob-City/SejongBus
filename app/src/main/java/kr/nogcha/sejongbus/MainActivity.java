@@ -1,5 +1,6 @@
 package kr.nogcha.sejongbus;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -30,8 +31,19 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
+            Fragment routeExploreFragment = new RouteExploreFragment();
+            Bundle bundle = new Bundle();
+            bundle.putInt("stBusStop", 186004622);
+            bundle.putInt("edBusStop", 186004640);
+            routeExploreFragment.setArguments(bundle);
+
+            getFragmentManager().beginTransaction().add(R.id.container, routeExploreFragment)
+                    .commit();
+
+        /*
             getFragmentManager().beginTransaction().add(R.id.container, new MainFragment())
                     .commit();
+        */
         }
 
         context = getBaseContext();
