@@ -134,6 +134,21 @@ public class SejongBis {
         return execute("mobile/traffic/selectBusStop", content);
     }
 
+    public static String getRouteTypeString(int route_type) {
+        switch (route_type) {
+            case 43:
+                return "[세종광역] ";
+            case 50:
+                return "[대전광역] ";
+            case 51:
+                return "[청주광역] ";
+            case 30:
+                return "[마을] ";
+            default:
+                return "[일반] ";
+        }
+    }
+
     private static JSONObject execute(String relativeUri, String content) {
         JSONObject jsonObject = null;
         try {

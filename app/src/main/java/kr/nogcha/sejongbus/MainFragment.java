@@ -3,7 +3,6 @@ package kr.nogcha.sejongbus;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -41,7 +40,6 @@ public class MainFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         editText = (EditText) rootView.findViewById(R.id.editText);
-        editText.setText(Html.fromHtml("<span style=\"color: #808080\">TODO</span>"));
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -56,7 +54,8 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    onSearch();
+                    String query = editText.getText().toString();
+                    if (!query.equals("")) onSearch(query);
                     return true;
                 }
                 return false;
@@ -75,42 +74,35 @@ public class MainFragment extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch();
+                String query = editText.getText().toString();
+                if (!query.equals("")) onSearch(query);
             }
         });
 
         return rootView;
     }
 
-    private void onSearch() {
-        String query = editText.getText().toString();
-        if (query.equals("")) {
-            return;
-        }
-
+    private void onSearch(String query) {
         MainActivity.toggleSoftInput();
 
         if (Pattern.matches("^\\d{5}$", query)) {
-            searchBusStop(query);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment busStopFragment = new BusStopFragment();
-                    Bundle bundle = new Bundle();
-                    try {
-                        bundle.putInt("busStopId", busStopList.getJSONObject(position)
-                                .getInt("stop_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    busStopFragment.setArguments(bundle);
+            Fragment busStopFragment = null;
+            try {
+                busStopList = SejongBis.searchBusStop(query).getJSONArray("busStopList");
+                if (busStopList.length() == 0) return;
 
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, busStopFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });
+                busStopFragment = new BusStopFragment();
+                Bundle bundle = new Bundle();
+                bundle.putInt("busStopId", busStopList.getJSONObject(0).getInt("stop_id"));
+                busStopFragment.setArguments(bundle);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, busStopFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         } else if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -163,27 +155,8 @@ public class MainFragment extends Fragment {
             arrayList.clear();
             for (int i = 0; i < busRouteList.length(); i++) {
                 JSONObject jsonObject = busRouteList.getJSONObject(i);
-                String route;
-
-                int route_type = jsonObject.getInt("route_type");
-                switch (route_type) {
-                    case 43:
-                        route = "[세종광역]";
-                        break;
-                    case 50:
-                        route = "[대전광역]";
-                        break;
-                    case 51:
-                        route = "[청주광역]";
-                        break;
-                    case 30:
-                        route = "[마을]";
-                        break;
-                    default:
-                        route = "[일반]";
-                }
-
-                route += " " + jsonObject.getString("route_name") + "\n" +
+                String route = SejongBis.getRouteTypeString(jsonObject.getInt("route_type")) +
+                        jsonObject.getString("route_name") + "\n" +
                         jsonObject.getString("st_stop_name") + "~" +
                         jsonObject.getString("ed_stop_name");
                 arrayList.add(route);

@@ -16,8 +16,10 @@
         android:layout_marginRight="4dp"
         android:layout_toLeftOf="@+id/imageButton"
         android:layout_toStartOf="@+id/imageButton"
+        android:hint="(예) 11071, 조치원역, 111 등"
         android:imeOptions="actionSearch"
-        android:inputType="text" />
+        android:inputType="text"
+        android:singleLine="true" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -43,6 +45,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/imageButton"
         android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:text="표시할 내용이 없습니다."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
