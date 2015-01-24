@@ -1,6 +1,5 @@
 package kr.nogcha.sejongbus;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -9,9 +8,15 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends ActionBarActivity {
-    private static Context context;
+    public static Context context;
+
+    public static void toggleSoftInput() {
+        ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE))
+                .toggleSoftInput(0, 0);
+    }
 
     public static boolean isNetworkConnected() {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(
@@ -25,12 +30,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            Fragment busRouteFragment = new BusRouteFragment();
-            Bundle bundle = new Bundle();
-            bundle.putInt("busRouteId", 293000001);
-            busRouteFragment.setArguments(bundle);
-
-            getFragmentManager().beginTransaction().add(R.id.container, busRouteFragment)
+            getFragmentManager().beginTransaction().add(R.id.container, new MainFragment())
                     .commit();
         }
 

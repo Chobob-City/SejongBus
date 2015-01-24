@@ -135,42 +135,41 @@ public class SejongBis {
     }
 
     private static JSONObject execute(String relativeUri, String content) {
-        JSONObject object = null;
+        JSONObject jsonObject = null;
         try {
-            object = new JSONObject(new InternetTask().execute(relativeUri, content).get());
+            jsonObject = new JSONObject(new AsyncTask<String, Void, String>() {
+                @Override
+                protected String doInBackground(String... params) {
+                    HttpURLConnection httpURLConnection = null;
+                    String response = null;
+                    try {
+                        httpURLConnection = (HttpURLConnection) new URL(ABSOLUTE_URI + params[0])
+                                .openConnection();
+                        httpURLConnection.setDoOutput(true);
+                        httpURLConnection.setChunkedStreamingMode(0);
+
+                        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                                httpURLConnection.getOutputStream(), "UTF-8"));
+                        bufferedWriter.write(params[1]);
+                        bufferedWriter.close();
+
+                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                                httpURLConnection.getInputStream(), "UTF-8"));
+                        response = bufferedReader.readLine();
+                        bufferedReader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (httpURLConnection != null) {
+                            httpURLConnection.disconnect();
+                        }
+                    }
+                    return response;
+                }
+            }.execute(relativeUri, content).get());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return object;
-    }
-
-    private static class InternetTask extends AsyncTask<String, Void, String> {
-        protected String doInBackground(String... params) {
-            HttpURLConnection httpURLConnection = null;
-            String response = null;
-            try {
-                URL url = new URL(ABSOLUTE_URI + params[0]);
-                httpURLConnection = (HttpURLConnection) url.openConnection();
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setChunkedStreamingMode(0);
-
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-                        httpURLConnection.getOutputStream(), "UTF-8"));
-                bufferedWriter.write(params[1]);
-                bufferedWriter.close();
-
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                        httpURLConnection.getInputStream(), "UTF-8"));
-                response = bufferedReader.readLine();
-                bufferedReader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                if (httpURLConnection != null) {
-                    httpURLConnection.disconnect();
-                }
-            }
-            return response;
-        }
+        return jsonObject;
     }
 }

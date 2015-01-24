@@ -36,15 +36,15 @@ public class BusStopFragment extends Fragment {
                         .getJSONArray("busStopRouteList");
 
                 TextView textView = (TextView) rootView.findViewById(R.id.textView);
-                JSONObject object = busStopRouteList.getJSONObject(0);
-                textView.setText(object.getString("stop_name") + " [" +
-                        object.getString("service_id") + "]");
+                JSONObject jsonObject = busStopRouteList.getJSONObject(0);
+                textView.setText(jsonObject.getString("stop_name") + " [" +
+                        jsonObject.getString("service_id") + "]");
 
                 for (int i = 0; i < busStopRouteList.length(); i++) {
-                    object = busStopRouteList.getJSONObject(i);
+                    jsonObject = busStopRouteList.getJSONObject(i);
                     String route;
 
-                    int route_type = object.getInt("route_type");
+                    int route_type = jsonObject.getInt("route_type");
                     switch (route_type) {
                         case 43:
                             route = "[세종광역]";
@@ -62,18 +62,18 @@ public class BusStopFragment extends Fragment {
                             route = "[일반]";
                     }
 
-                    route += " " + object.getString("route_name") + "\n";
-                    int provide_code = object.getInt("provide_code");
+                    route += " " + jsonObject.getString("route_name") + "\n";
+                    int provide_code = jsonObject.getInt("provide_code");
                     switch (provide_code) {
                         case 1:
-                            route += object.getString("provide_type") + "\n현재 위치: 기점";
+                            route += jsonObject.getString("provide_type") + "\n현재 위치: 기점";
                             break;
                         case 2:
                             route += "회차지 대기 중";
                             break;
                         default:
-                            route += object.getString("provide_type") + "\n현재 위치: " +
-                                    object.getString("rstop");
+                            route += jsonObject.getString("provide_type") + "\n현재 위치: " +
+                                    jsonObject.getString("rstop");
                     }
                     list.add(route);
                 }
