@@ -146,28 +146,28 @@ public class SejongBis {
 
     private static class InternetTask extends AsyncTask<String, Void, String> {
         protected String doInBackground(String... params) {
-            HttpURLConnection urlConnection = null;
+            HttpURLConnection httpURLConnection = null;
             String response = null;
             try {
                 URL url = new URL(ABSOLUTE_URI + params[0]);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setDoOutput(true);
-                urlConnection.setChunkedStreamingMode(0);
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setChunkedStreamingMode(0);
 
-                BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
-                        urlConnection.getOutputStream(), "UTF-8"));
-                out.write(params[1]);
-                out.close();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
+                        httpURLConnection.getOutputStream(), "UTF-8"));
+                bufferedWriter.write(params[1]);
+                bufferedWriter.close();
 
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                        urlConnection.getInputStream(), "UTF-8"));
-                response = in.readLine();
-                in.close();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
+                        httpURLConnection.getInputStream(), "UTF-8"));
+                response = bufferedReader.readLine();
+                bufferedReader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
+                if (httpURLConnection != null) {
+                    httpURLConnection.disconnect();
                 }
             }
             return response;
