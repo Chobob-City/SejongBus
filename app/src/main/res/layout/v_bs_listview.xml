@@ -25,7 +25,11 @@
         android:layout_height="wrap_content"
         android:text="세종"/>
 
-    <ImageView
+    <TextView
+        style="@style/msize_textview_black"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:text=">"/>
 </RelativeLayout>
