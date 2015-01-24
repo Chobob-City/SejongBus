@@ -22,7 +22,7 @@ public class SejongBis {
      */
     public static JSONObject searchBusRealLocationDetail(int busRouteId) {
         String content = "busRouteId=" + busRouteId;
-        return call("web/traffic/searchBusRealLocationDetail", content);
+        return execute("web/traffic/searchBusRealLocationDetail", content);
     }
 
     /*
@@ -35,7 +35,7 @@ public class SejongBis {
      */
     public static JSONObject searchBusRoute(String busRoute) {
         String content = "busRoute=" + busRoute;
-        return call("mobile/traffic/searchBusRoute", content);
+        return execute("mobile/traffic/searchBusRoute", content);
     }
 
     /*
@@ -53,22 +53,24 @@ public class SejongBis {
      */
     public static JSONObject searchBusRouteDetail(int busRouteId) {
         String content = "busRouteId=" + busRouteId;
-        return call("mobile/traffic/searchBusRouteDetail", content);
+        return execute("mobile/traffic/searchBusRouteDetail", content);
     }
 
     /*
      * returns busRouteExpMapList
      */
-    public static JSONObject searchBusRouteExpMap1(int stRouteId, int sstOrd, int eedOrd,
+    public static JSONObject searchBusRouteExpMap1(int stRouteId,
+                                                   int sstOrd, int eedOrd,
                                                    int stStopId, int edStopId) {
-        String content = "stRouteId=" + stRouteId + "&sstOrd=" + sstOrd +
-                "&eedOrd=" + eedOrd + "&stStopId=" + stStopId + "&edStopId=" + edStopId;
-        return call("web/traffic/searchBusRouteExpMap1", content);
+        String content = "stRouteId=" + stRouteId +
+                "&sstOrd=" + sstOrd + "&eedOrd=" + eedOrd +
+                "&stStopId=" + stStopId + "&edStopId=" + edStopId;
+        return execute("web/traffic/searchBusRouteExpMap1", content);
     }
 
     public static JSONObject searchBusRouteMap(int busRouteId) {
         String content = "busRouteId=" + busRouteId;
-        return call("mobile/traffic/searchBusRouteMap", content);
+        return execute("mobile/traffic/searchBusRouteMap", content);
     }
 
     /*
@@ -81,7 +83,7 @@ public class SejongBis {
      */
     public static JSONObject searchBusStop(String busStop) {
         String content = "busStop=" + busStop;
-        return call("mobile/traffic/searchBusStop", content);
+        return execute("mobile/traffic/searchBusStop", content);
     }
 
     /*
@@ -98,7 +100,7 @@ public class SejongBis {
      */
     public static JSONObject searchBusStopRoute(int busStopId) {
         String content = "busStopId=" + busStopId;
-        return call("mobile/traffic/searchBusStopRoute", content);
+        return execute("mobile/traffic/searchBusStopRoute", content);
     }
 
     /*
@@ -116,7 +118,7 @@ public class SejongBis {
      */
     public static JSONObject searchRouteExplore(int stBusStop, int edBusStop) {
         String content = "stBusStop=" + stBusStop + "&edBusStop=" + edBusStop;
-        return call("mobile/traffic/searchRouteExplore", content);
+        return execute("mobile/traffic/searchRouteExplore", content);
     }
 
     /*
@@ -124,15 +126,15 @@ public class SejongBis {
      */
     public static JSONObject searchSurroundStopList(double lat, double lng) {
         String content = "lat=" + lat + "&lng=" + lng;
-        return call("mobile/traffic/searchSurroundStopList", content);
+        return execute("mobile/traffic/searchSurroundStopList", content);
     }
 
     public static JSONObject selectBusStop(int busStopId) {
         String content = "busStopId=" + busStopId;
-        return call("mobile/traffic/selectBusStop", content);
+        return execute("mobile/traffic/selectBusStop", content);
     }
 
-    private static JSONObject call(String relativeUri, String content) {
+    private static JSONObject execute(String relativeUri, String content) {
         JSONObject object = null;
         try {
             object = new JSONObject(new InternetTask().execute(relativeUri, content).get());
