@@ -1,6 +1,12 @@
 package kr.nogcha.sejongbus;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 
 import org.json.JSONObject;
 
@@ -134,19 +140,45 @@ public class SejongBis {
         return execute("mobile/traffic/selectBusStop", content);
     }
 
-    public static String getRouteTypeString(int route_type) {
+    public static Spannable getRouteType(int route_type) {
+        Spannable routeType;
         switch (route_type) {
             case 43:
-                return "[세종광역] ";
+                routeType = new SpannableString("세종광역");
+                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
             case 50:
-                return "[대전광역] ";
+                routeType = new SpannableString("대전광역");
+                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
             case 51:
-                return "[청주광역] ";
+                routeType = new SpannableString("청주광역");
+                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
             case 30:
-                return "[마을] ";
+                routeType = new SpannableString("마을");
+                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 2,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                routeType.setSpan(new BackgroundColorSpan(Color.GREEN), 0, 2,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
             default:
-                return "[일반] ";
+                routeType = new SpannableString("일반");
+                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 2,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                routeType.setSpan(new BackgroundColorSpan(Color.BLUE), 0, 2,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        return routeType;
     }
 
     private static JSONObject execute(String relativeUri, String content) {

@@ -3,6 +3,9 @@ package kr.nogcha.sejongbus;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -26,8 +29,8 @@ import java.util.regex.Pattern;
 public class MainFragment extends Fragment {
     private EditText editText;
     private ListView listView;
-    private ArrayList<String> arrayList;
-    private ArrayAdapter<String> arrayAdapter;
+    private ArrayList<Spanned> arrayList;
+    private ArrayAdapter<Spanned> arrayAdapter;
     private JSONArray busRouteList;
     private JSONArray busStopList;
 
@@ -155,10 +158,11 @@ public class MainFragment extends Fragment {
             arrayList.clear();
             for (int i = 0; i < busRouteList.length(); i++) {
                 JSONObject jsonObject = busRouteList.getJSONObject(i);
-                String route = SejongBis.getRouteTypeString(jsonObject.getInt("route_type")) +
-                        jsonObject.getString("route_name") + "\n" +
-                        jsonObject.getString("st_stop_name") + "~" +
-                        jsonObject.getString("ed_stop_name");
+                Spanned route = (Spanned) TextUtils.concat(
+                        SejongBis.getRouteType(jsonObject.getInt("route_type")),
+                        new SpannableString(" " + jsonObject.getString("route_name") + "\n" +
+                                jsonObject.getString("st_stop_name") + "~" +
+                                jsonObject.getString("ed_stop_name")));
                 arrayList.add(route);
             }
         } catch (JSONException e) {
@@ -174,8 +178,8 @@ public class MainFragment extends Fragment {
             arrayList.clear();
             for (int i = 0; i < busStopList.length(); i++) {
                 JSONObject jsonObject = busStopList.getJSONObject(i);
-                arrayList.add(jsonObject.getString("stop_name") + "\n[" +
-                        jsonObject.getString("service_id") + "]");
+                arrayList.add(new SpannableString(jsonObject.getString("stop_name") + "\n[" +
+                        jsonObject.getString("service_id") + "]"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
