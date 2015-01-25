@@ -29,8 +29,8 @@ import java.util.regex.Pattern;
 public class MainFragment extends Fragment {
     private EditText editText;
     private ListView listView;
-    private ArrayList<Spanned> arrayList;
-    private ArrayAdapter<Spanned> arrayAdapter;
+    private ArrayList<Spanned> list;
+    private ArrayAdapter<Spanned> adapter;
     private JSONArray busRouteList;
     private JSONArray busStopList;
 
@@ -68,10 +68,10 @@ public class MainFragment extends Fragment {
         listView = (ListView) rootView.findViewById(R.id.listView);
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
         listView.setEmptyView(textView);
-        arrayList = new ArrayList<>();
-        arrayAdapter = new ArrayAdapter<>(MainActivity.context, android.R.layout.simple_list_item_1,
-                arrayList);
-        listView.setAdapter(arrayAdapter);
+        list = new ArrayList<>();
+        adapter = new ArrayAdapter<>(MainActivity.context, android.R.layout.simple_list_item_1,
+                list);
+        listView.setAdapter(adapter);
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
@@ -155,35 +155,35 @@ public class MainFragment extends Fragment {
         try {
             busRouteList = SejongBis.searchBusRoute(busRoute).getJSONArray("busRouteList");
 
-            arrayList.clear();
+            list.clear();
             for (int i = 0; i < busRouteList.length(); i++) {
-                JSONObject jsonObject = busRouteList.getJSONObject(i);
+                JSONObject object = busRouteList.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        SejongBis.getRouteType(jsonObject.getInt("route_type")),
-                        new SpannableString(" " + jsonObject.getString("route_name") + "\n" +
-                                jsonObject.getString("st_stop_name") + "~" +
-                                jsonObject.getString("ed_stop_name")));
-                arrayList.add(route);
+                        SejongBis.getRouteType(object.getInt("route_type")),
+                        new SpannableString(" " + object.getString("route_name") + "\n" +
+                                object.getString("st_stop_name") + "~" +
+                                object.getString("ed_stop_name")));
+                list.add(route);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        arrayAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
     private void searchBusStop(String busStop) {
         try {
             busStopList = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
 
-            arrayList.clear();
+            list.clear();
             for (int i = 0; i < busStopList.length(); i++) {
-                JSONObject jsonObject = busStopList.getJSONObject(i);
-                arrayList.add(new SpannableString(jsonObject.getString("stop_name") + "\n[" +
-                        jsonObject.getString("service_id") + "]"));
+                JSONObject object = busStopList.getJSONObject(i);
+                list.add(new SpannableString(object.getString("stop_name") + "\n[" +
+                        object.getString("service_id") + "]"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        arrayAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 }

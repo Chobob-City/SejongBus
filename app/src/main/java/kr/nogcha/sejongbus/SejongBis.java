@@ -145,70 +145,62 @@ public class SejongBis {
         switch (route_type) {
             case 43:
                 routeType = new SpannableString("세종광역");
-                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             case 50:
                 routeType = new SpannableString("대전광역");
-                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             case 51:
                 routeType = new SpannableString("청주광역");
-                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             case 30:
                 routeType = new SpannableString("마을");
-                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 2,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 routeType.setSpan(new BackgroundColorSpan(Color.GREEN), 0, 2,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 break;
             default:
                 routeType = new SpannableString("일반");
-                routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, 2,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 routeType.setSpan(new BackgroundColorSpan(Color.BLUE), 0, 2,
                         Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }
+        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return routeType;
     }
 
     private static JSONObject execute(String relativeUri, String content) {
-        JSONObject jsonObject = null;
+        JSONObject object = null;
         try {
-            jsonObject = new JSONObject(new AsyncTask<String, Void, String>() {
+            object = new JSONObject(new AsyncTask<String, Void, String>() {
                 @Override
                 protected String doInBackground(String... params) {
-                    HttpURLConnection httpURLConnection = null;
+                    HttpURLConnection connection = null;
                     String response = null;
                     try {
-                        httpURLConnection = (HttpURLConnection) new URL(ABSOLUTE_URI + params[0])
+                        connection = (HttpURLConnection) new URL(ABSOLUTE_URI + params[0])
                                 .openConnection();
-                        httpURLConnection.setDoOutput(true);
-                        httpURLConnection.setChunkedStreamingMode(0);
+                        connection.setDoOutput(true);
+                        connection.setChunkedStreamingMode(0);
 
-                        BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(
-                                httpURLConnection.getOutputStream(), "UTF-8"));
-                        bufferedWriter.write(params[1]);
-                        bufferedWriter.close();
+                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                connection.getOutputStream(), "UTF-8"));
+                        writer.write(params[1]);
+                        writer.close();
 
-                        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(
-                                httpURLConnection.getInputStream(), "UTF-8"));
-                        response = bufferedReader.readLine();
-                        bufferedReader.close();
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                connection.getInputStream(), "UTF-8"));
+                        response = reader.readLine();
+                        reader.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     } finally {
-                        if (httpURLConnection != null) {
-                            httpURLConnection.disconnect();
+                        if (connection != null) {
+                            connection.disconnect();
                         }
                     }
                     return response;
@@ -217,6 +209,6 @@ public class SejongBis {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return jsonObject;
+        return object;
     }
 }
