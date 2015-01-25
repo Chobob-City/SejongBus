@@ -8,7 +8,7 @@
         android:id="@+id/lv_ll1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#2980bb">
+        android:background="#0051ff">
         <TextView
             android:id="@+id/lv_text1"
             style="@style/lsize_textview_white"

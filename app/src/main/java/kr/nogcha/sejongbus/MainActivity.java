@@ -1,26 +1,24 @@
 package kr.nogcha.sejongbus;
 
+import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
-public class MainActivity extends ActionBarActivity {
-    public static Context context;
+public class MainActivity extends Activity {
+    private static Context baseContext;
 
     public static void toggleSoftInput() {
-        ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE))
+        ((InputMethodManager) baseContext.getSystemService(Context.INPUT_METHOD_SERVICE))
                 .toggleSoftInput(0, 0);
     }
 
     public static boolean isNetworkConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                baseContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
@@ -34,26 +32,7 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        context = getBaseContext();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
-        return super.onOptionsItemSelected(item);
+        baseContext = getBaseContext();
     }
 
     @Override

@@ -37,7 +37,6 @@
             android:src="@drawable/ic_action_search"/>
     </RelativeLayout>
 
-
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
