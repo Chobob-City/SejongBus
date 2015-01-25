@@ -35,31 +35,31 @@ public class RouteExploreFragment extends Fragment {
                         .getJSONArray("routeExplore");
 
                 TextView textView = (TextView) rootView.findViewById(R.id.textView);
-                JSONObject jsonObject = routeExplore.getJSONObject(0);
-                textView.setText("출발: " + jsonObject.getString("sstationname") + " [" +
-                        jsonObject.getString("sService_id") + "]\n도착: " +
-                        jsonObject.getString("estationname") + " [" +
-                        jsonObject.getString("eService_id") + "]");
+                JSONObject object = routeExplore.getJSONObject(0);
+                textView.setText("출발: " + object.getString("sstationname") + " [" +
+                        object.getString("sService_id") + "]\n도착: " +
+                        object.getString("estationname") + " [" +
+                        object.getString("eService_id") + "]");
 
                 for (int i = 0; i < routeExplore.length(); i++) {
-                    jsonObject = routeExplore.getJSONObject(i);
+                    object = routeExplore.getJSONObject(i);
                     String route;
 
-                    int xtype = jsonObject.getInt("xtype");
+                    int xtype = object.getInt("xtype");
                     if (xtype == 1) {
                         route = "무";
                     } else {
                         route = "";
                     }
-                    route += "환승 경로\n" + jsonObject.getString("sstationname") + "에서 " +
-                            jsonObject.getString("srouteno") + "번에 승차\n";
+                    route += "환승 경로\n" + object.getString("sstationname") + "에서 " +
+                            object.getString("srouteno") + "번에 승차\n";
                     if (xtype != 1) {
-                        route += jsonObject.getString("tstationname") + "에서 " +
-                                jsonObject.getString("erouteno") + "번으로 환승\n";
+                        route += object.getString("tstationname") + "에서 " +
+                                object.getString("erouteno") + "번으로 환승\n";
                     }
-                    route += jsonObject.getString("estationname") + "에서 하차\n" +
-                            jsonObject.getString("seq") + "개 정류장, " +
-                            jsonObject.getInt("distance") / 1000. + "km";
+                    route += object.getString("estationname") + "에서 하차\n" +
+                            object.getString("seq") + "개 정류장, " +
+                            object.getInt("distance") / 1000. + "km";
 
                     list.add(route);
                 }
