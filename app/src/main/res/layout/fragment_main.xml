@@ -8,45 +8,45 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainFragment">
 
-    <EditText
-        android:id="@+id/editText"
+    <RelativeLayout
+        android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_toLeftOf="@+id/imageButton"
-        android:layout_toStartOf="@+id/imageButton"
-        android:hint="(예) 11071, 조치원역, 111 등"
-        android:imeOptions="actionSearch"
-        android:inputType="text"
-        android:singleLine="true" />
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="11071, 조치원역, 111"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true" />
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_toRightOf="@id/editText"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="검색"
+            android:src="@drawable/ic_action_search"/>
+    </RelativeLayout>
 
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:background="@android:color/transparent"
-        android:contentDescription="검색"
-        android:src="@drawable/ic_action_search" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/imageButton"
+        android:layout_below="@id/mainsearchbar"
         android:layout_marginTop="4dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/imageButton"
+        android:layout_below="@id/mainsearchbar"
         android:layout_marginTop="4dp"
         android:gravity="center"
-        android:text="표시할 내용이 없습니다."
+        android:text="검색결과가 없습니다."
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
