@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="SBAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="SBAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:colorBackground">#E5E5E5</item>
     </style>
 
