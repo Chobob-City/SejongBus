@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -34,6 +37,10 @@ public class MainFragment extends Fragment {
     private JSONArray busRouteList;
     private JSONArray busStopList;
 
+    private Animation transUp;
+
+    RelativeLayout MainSearchBar;
+
     public MainFragment() {
     }
 
@@ -41,6 +48,7 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
 
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
@@ -57,6 +65,8 @@ public class MainFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    //transUp = AnimationUtils.loadAnimation(getActivity(),R.anim.view_transup);
+                    //MainSearchBar.startAnimation(transUp);
                     String query = editText.getText().toString();
                     if (!query.equals("")) onSearch(query);
                     return true;

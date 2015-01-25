@@ -1,6 +1,6 @@
 <resources>
 
-    <style name="SBAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="SBAppTheme" parent="Theme.AppCompat.Light">
         <item name="android:colorBackground">#E5E5E5</item>
     </style>
 
