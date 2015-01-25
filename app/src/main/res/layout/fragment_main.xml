@@ -12,20 +12,26 @@
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        android:background="@drawable/cardview_bg_blue"
+        android:padding="12dp">
         <EditText
             android:id="@+id/editText"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:padding="8dp"
+            android:background="@drawable/edittext_blue"
+            android:textColorHint="#eeeeee"
             android:hint="11071, 조치원역, 111"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"/>
         <ImageButton
             android:id="@+id/imageButton"
-            android:layout_toRightOf="@id/editText"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
+            android:padding="4dp"
+            android:layout_alignParentRight="true"
             android:background="@android:color/transparent"
             android:contentDescription="검색"
             android:src="@drawable/ic_action_search"/>
