@@ -69,8 +69,7 @@ public class MainFragment extends Fragment {
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
         listView.setEmptyView(textView);
         list = new ArrayList<>();
-        adapter = new ArrayAdapter<>(MainActivity.context, android.R.layout.simple_list_item_1,
-                list);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
