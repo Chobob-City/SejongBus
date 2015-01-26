@@ -18,6 +18,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class BusRouteFragment extends Fragment {
+
     private JSONArray busRouteDetailList;
 
     public BusRouteFragment() {

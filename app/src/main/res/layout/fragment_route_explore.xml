@@ -8,6 +8,6 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".RouteExploreFragment">
 
-    <include layout="@layout/fragment_common" />
+    <include layout="@layout/v_common" />
 
 </RelativeLayout>

@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 
 public class MainFragment extends Fragment {
     private EditText editText;
+    private TextView textView;
     private ListView listView;
     private ArrayList<Spanned> list;
     private ArrayAdapter<Spanned> adapter;
@@ -41,6 +42,7 @@ public class MainFragment extends Fragment {
 
     RelativeLayout MainSearchBar;
 
+
     public MainFragment() {
     }
 
@@ -48,7 +50,8 @@ public class MainFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-        MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
+
+        //MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
 
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
@@ -75,8 +78,9 @@ public class MainFragment extends Fragment {
             }
         });
 
+        textView = (TextView) rootView.findViewById(R.id.textView);
+        textView.setVisibility(View.INVISIBLE);
         listView = (ListView) rootView.findViewById(R.id.listView);
-        TextView textView = (TextView) rootView.findViewById(R.id.textView);
         listView.setEmptyView(textView);
         list = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
@@ -115,6 +119,7 @@ public class MainFragment extends Fragment {
             transaction.replace(R.id.container, busStopFragment);
             transaction.addToBackStack(null);
             transaction.commit();
+
         } else if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -10,24 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/cardview_bg_blue"
-        android:paddingBottom="8dp"
-        android:paddingRight="8dp"
-        android:paddingLeft="8dp">
+        android:padding="8dp">
 
         <EditText
             android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:paddingTop="8dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="8dp"
-            android:paddingLeft="8dp"
+            android:padding="16dp"
             android:background="@drawable/edittext_blue"
-            android:textSize="16dp"
-            android:textColor="#eeeeee"
-            android:textColorHint="#eeeeee"
-            android:hint="11071, 조치원역, 111"
+            android:textSize="14dp"
+            android:hint="정류장 또는 노선번호를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:singleLine="true"/>
@@ -38,6 +31,7 @@
             android:layout_width="wrap_content"
             android:padding="4dp"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:contentDescription="검색"
             android:src="@drawable/ic_action_search"/>
@@ -62,6 +56,6 @@
             android:gravity="center"
             android:text="검색결과가 없습니다."
             android:textAppearance="?android:attr/textAppearanceMedium" />
-        </RelativeLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

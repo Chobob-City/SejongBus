@@ -6,6 +6,6 @@
     android:background="#E5E5E5"
     tools:context=".BusRouteFragment">
 
-    <include layout="@layout/fragment_common" />
+    <include layout="@layout/v_common" />
 
 </RelativeLayout>

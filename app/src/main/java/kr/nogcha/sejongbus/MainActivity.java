@@ -35,13 +35,11 @@ public class MainActivity extends Activity {
             bundle.putInt("edBusStop", 186004640);
             routeExploreFragment.setArguments(bundle);
 
-            getFragmentManager().beginTransaction().add(R.id.container, routeExploreFragment)
-                    .commit();
+        /*    getFragmentManager().beginTransaction().add(R.id.container, routeExploreFragment)
+                    .commit(); */
 
-        /*
             getFragmentManager().beginTransaction().add(R.id.container, new MainFragment())
                     .commit();
-        */
         }
 
         baseContext = getBaseContext();
