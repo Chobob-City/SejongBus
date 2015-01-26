@@ -118,11 +118,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "통합검색1";
+                    return "버스검색";
                 case 1:
-                    return "통합검색2";
+                    return "경로검색";
                 case 2:
-                    return "통합검색3";
+                    return "주변정류장";
                 default:
                     return super.getPageTitle(position);
             }
