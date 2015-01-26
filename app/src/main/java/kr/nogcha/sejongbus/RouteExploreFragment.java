@@ -24,7 +24,7 @@ public class RouteExploreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_route_explore, container, false);
+        View rootView = inflater.inflate(R.layout.f_main_2, container, false);
 
         if (BisHostActivity.isNetworkConnected()) {
             ArrayList<String> list = new ArrayList<>();

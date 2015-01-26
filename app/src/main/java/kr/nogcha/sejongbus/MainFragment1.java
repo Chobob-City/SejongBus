@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 public class MainFragment1 extends Fragment {
     private EditText editText;
-    private TextView textView;
     private ListView listView;
     private ArrayList<Spanned> list;
     private ArrayAdapter<Spanned> adapter;
@@ -45,7 +44,7 @@ public class MainFragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_main, container, false);
+        View rootView = inflater.inflate(R.layout.f_main_1, container, false);
 
         //MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
 
@@ -75,7 +74,7 @@ public class MainFragment1 extends Fragment {
         });
 
         listView = (ListView) rootView.findViewById(R.id.listView);
-        textView = (TextView) rootView.findViewById(R.id.textView);
+        TextView textView = (TextView) rootView.findViewById(R.id.textView);
         textView.setVisibility(View.INVISIBLE);
         listView.setEmptyView(textView);
         list = new ArrayList<>();
