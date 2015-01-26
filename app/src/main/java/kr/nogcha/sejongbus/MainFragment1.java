@@ -1,7 +1,7 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -98,63 +98,50 @@ public class MainFragment1 extends Fragment {
         MainActivity.toggleSoftInput();
 
         if (Pattern.matches("^\\d{5}$", query)) {
-            Fragment busStopFragment = null;
+            Intent intent = null;
             try {
                 busStopList = SejongBis.searchBusStop(query).getJSONArray("busStopList");
                 if (busStopList.length() == 0) return;
 
-                busStopFragment = new BusStopFragment();
-                Bundle bundle = new Bundle();
-                bundle.putInt("busStopId", busStopList.getJSONObject(0).getInt("stop_id"));
-                busStopFragment.setArguments(bundle);
+                intent = new Intent(getActivity(), BisHostActivity.class);
+                intent.putExtra("arg0", 1);
+                intent.putExtra("arg1", busStopList.getJSONObject(0).getInt("stop_id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, busStopFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            startActivity(intent);
         } else if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment busRouteFragment = new BusRouteFragment();
-                    Bundle bundle = new Bundle();
+                    Intent intent = new Intent(getActivity(), BisHostActivity.class);
+                    intent.putExtra("arg0", 0);
                     try {
-                        bundle.putInt("busRouteId", busRouteList.getJSONObject(position)
+                        intent.putExtra("arg1", busRouteList.getJSONObject(position)
                                 .getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    busRouteFragment.setArguments(bundle);
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, busRouteFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    startActivity(intent);
                 }
             });
         } else {
             searchBusStop(query);
+
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment busStopFragment = new BusStopFragment();
-                    Bundle bundle = new Bundle();
+                    Intent intent = new Intent(getActivity(), BisHostActivity.class);
+                    intent.putExtra("arg0", 1);
                     try {
-                        bundle.putInt("busStopId", busStopList.getJSONObject(position)
+                        intent.putExtra("arg1", busStopList.getJSONObject(position)
                                 .getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    busStopFragment.setArguments(bundle);
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, busStopFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    startActivity(intent);
                 }
             });
         }
