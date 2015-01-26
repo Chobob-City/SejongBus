@@ -2,5 +2,6 @@
 <resources>
 
     <string name="app_name">세종버스</string>
+    <string name="action_settings">설정</string>
 
 </resources>

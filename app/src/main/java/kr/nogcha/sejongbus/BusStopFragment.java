@@ -39,21 +39,21 @@ public class BusStopFragment extends Fragment {
                         .getJSONArray("busStopRouteList");
 
                 TextView textView = (TextView) rootView.findViewById(R.id.textView);
-                JSONObject object = busStopRouteList.getJSONObject(0);
-                textView.setText(object.getString("stop_name") + "\n[" +
-                        object.getString("service_id") + "]");
+                JSONObject json = busStopRouteList.getJSONObject(0);
+                textView.setText(json.getString("stop_name") + "\n[" +
+                        json.getString("service_id") + "]");
 
                 for (int i = 0; i < busStopRouteList.length(); i++) {
-                    object = busStopRouteList.getJSONObject(i);
+                    json = busStopRouteList.getJSONObject(i);
                     Spanned route = (Spanned) TextUtils.concat(
-                            SejongBis.getRouteType(object.getInt("route_type")),
-                            new SpannableString(" " + object.getString("route_name") + "\n"));
+                            MainActivity.getRouteType(json.getInt("route_type")),
+                            new SpannableString(" " + json.getString("route_name") + "\n"));
 
-                    int provide_code = object.getInt("provide_code");
+                    int provide_code = json.getInt("provide_code");
                     switch (provide_code) {
                         case 1:
                             route = (Spanned) TextUtils.concat(route, new SpannableString("예정: " +
-                                    object.getString("provide_type") +
+                                    json.getString("provide_type") +
                                     "\n현재 위치: 기점"));
                             break;
                         case 2:
@@ -62,8 +62,8 @@ public class BusStopFragment extends Fragment {
                             break;
                         default:
                             route = (Spanned) TextUtils.concat(route, new SpannableString("예정: " +
-                                    object.getString("provide_type") +
-                                    "\n현재 위치: " + object.getString("rstop")));
+                                    json.getString("provide_type") +
+                                    "\n현재 위치: " + json.getString("rstop")));
                     }
                     list.add(route);
                 }

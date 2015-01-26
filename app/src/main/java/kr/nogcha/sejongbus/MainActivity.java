@@ -2,27 +2,67 @@ package kr.nogcha.sejongbus;
 
 import android.app.FragmentManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends ActionBarActivity {
-    public static Context context;
+    private static Context baseContext;
 
     public static void toggleSoftInput() {
-        ((InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE))
-                .toggleSoftInput(0, 0);
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) baseContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, 0);
     }
 
     public static boolean isNetworkConnected() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(
-                Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) baseContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
+    }
+
+    public static Spannable getRouteType(int route_type) {
+        Spannable routeType;
+        switch (route_type) {
+            case 43:
+                routeType = new SpannableString("세종광역");
+                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
+            case 50:
+                routeType = new SpannableString("대전광역");
+                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
+            case 51:
+                routeType = new SpannableString("청주광역");
+                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
+            case 30:
+                routeType = new SpannableString("마을");
+                routeType.setSpan(new BackgroundColorSpan(Color.GREEN), 0, 2,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                break;
+            default:
+                routeType = new SpannableString("일반");
+                routeType.setSpan(new BackgroundColorSpan(Color.BLUE), 0, 2,
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
+        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return routeType;
     }
 
     @Override
@@ -34,24 +74,23 @@ public class MainActivity extends ActionBarActivity {
                     .commit();
         }
 
-        context = getBaseContext();
+        baseContext = getBaseContext();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

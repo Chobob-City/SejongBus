@@ -69,8 +69,7 @@ public class MainFragment extends Fragment {
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
         listView.setEmptyView(textView);
         list = new ArrayList<>();
-        adapter = new ArrayAdapter<>(MainActivity.context, android.R.layout.simple_list_item_1,
-                list);
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
@@ -157,12 +156,12 @@ public class MainFragment extends Fragment {
 
             list.clear();
             for (int i = 0; i < busRouteList.length(); i++) {
-                JSONObject object = busRouteList.getJSONObject(i);
+                JSONObject json = busRouteList.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        SejongBis.getRouteType(object.getInt("route_type")),
-                        new SpannableString(" " + object.getString("route_name") + "\n" +
-                                object.getString("st_stop_name") + "~" +
-                                object.getString("ed_stop_name")));
+                        MainActivity.getRouteType(json.getInt("route_type")),
+                        new SpannableString(" " + json.getString("route_name") + "\n" +
+                                json.getString("st_stop_name") + "~" +
+                                json.getString("ed_stop_name")));
                 list.add(route);
             }
         } catch (JSONException e) {
@@ -177,9 +176,9 @@ public class MainFragment extends Fragment {
 
             list.clear();
             for (int i = 0; i < busStopList.length(); i++) {
-                JSONObject object = busStopList.getJSONObject(i);
-                list.add(new SpannableString(object.getString("stop_name") + "\n[" +
-                        object.getString("service_id") + "]"));
+                JSONObject json = busStopList.getJSONObject(i);
+                list.add(new SpannableString(json.getString("stop_name") + "\n[" +
+                        json.getString("service_id") + "]"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
