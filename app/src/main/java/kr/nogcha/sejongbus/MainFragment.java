@@ -127,8 +127,7 @@ public class MainFragment extends Fragment {
                     Fragment busRouteFragment = new BusRouteFragment();
                     Bundle bundle = new Bundle();
                     try {
-                        bundle.putInt("busRouteId", busRouteList.getJSONObject(position)
-                                .getInt("route_id"));
+                        bundle.putInt("busRouteId", busRouteList.getJSONObject(position).getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }

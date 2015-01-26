@@ -4,7 +4,6 @@
     <color name="mainblue">#0048e3</color>
 
     <style name="SBAppTheme" parent="Theme.AppCompat.Light">
-        <item name="android:background">@color/whitegray</item>
         <item name="android:windowBackground">@color/whitegray</item>
         <item name="android:colorBackground">@color/whitegray</item>
     </style>

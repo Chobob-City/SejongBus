@@ -38,7 +38,7 @@ public class BusStopFragment extends Fragment {
                         .searchBusStopRoute(getArguments().getInt("busStopId"))
                         .getJSONArray("busStopRouteList");
 
-                TextView textView = (TextView) rootView.findViewById(R.id.textView);
+                TextView textView = (TextView) rootView.findViewById(R.id.textView1);
                 JSONObject object = busStopRouteList.getJSONObject(0);
                 textView.setText(object.getString("stop_name") + "\n[" +
                         object.getString("service_id") + "]");

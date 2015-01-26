@@ -36,13 +36,15 @@ public class BusRouteFragment extends Fragment {
                         .searchBusRouteDetail(getArguments().getInt("busRouteId"))
                         .getJSONArray("busRouteDetailList");
 
-                TextView textView = (TextView) rootView.findViewById(R.id.textView);
-                JSONObject object = busRouteDetailList.getJSONObject(
-                        busRouteDetailList.length() - 1);
-                textView.setText(object.getString("route_name") + "\n" +
-                        object.getString("st_stop_name") + "~" +
-                        object.getString("ed_stop_name") + "\n" +
-                        object.getString("alloc_time"));
+                TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+                TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
+                TextView textView3 = (TextView) rootView.findViewById(R.id.textView3);
+
+                JSONObject object = busRouteDetailList.getJSONObject(busRouteDetailList.length() - 1);
+
+                textView1.setText(object.getString("route_name"));
+                textView2.setText(object.getString("st_stop_name") + "~" +object.getString("ed_stop_name"));
+                textView3.setText(object.getString("alloc_time"));
 
                 for (int i = 0; i < busRouteDetailList.length() - 1; i++) {
                     object = busRouteDetailList.getJSONObject(i);
