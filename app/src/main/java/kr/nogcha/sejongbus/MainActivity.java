@@ -1,23 +1,21 @@
 package kr.nogcha.sejongbus;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
-import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
-import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
     private static Context baseContext;
+    private MainPagerAdapter mainPagerAdapter;
+    private ViewPager viewPager;
 
     public static void toggleSoftInput() {
         InputMethodManager inputMethodManager =
@@ -25,56 +23,39 @@ public class MainActivity extends ActionBarActivity {
         inputMethodManager.toggleSoftInput(0, 0);
     }
 
-    public static boolean isNetworkConnected() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) baseContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
-    public static Spannable getRouteType(int route_type) {
-        Spannable routeType;
-        switch (route_type) {
-            case 43:
-                routeType = new SpannableString("세종광역");
-                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                break;
-            case 50:
-                routeType = new SpannableString("대전광역");
-                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                break;
-            case 51:
-                routeType = new SpannableString("청주광역");
-                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                break;
-            case 30:
-                routeType = new SpannableString("마을");
-                routeType.setSpan(new BackgroundColorSpan(Color.GREEN), 0, 2,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                break;
-            default:
-                routeType = new SpannableString("일반");
-                routeType.setSpan(new BackgroundColorSpan(Color.BLUE), 0, 2,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
-        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return routeType;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getFragmentManager().beginTransaction().add(R.id.container, new MainFragment())
-                    .commit();
-        }
 
         baseContext = getBaseContext();
+
+        final ActionBar actionBar = getSupportActionBar();
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        mainPagerAdapter = new MainPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(mainPagerAdapter);
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                actionBar.setSelectedNavigationItem(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
+        for (int i = 0; i < mainPagerAdapter.getCount(); i++) {
+            actionBar.addTab(actionBar.newTab().setText(mainPagerAdapter.getPageTitle(i))
+                    .setTabListener(this));
+        }
     }
 
     @Override
@@ -96,12 +77,55 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) {
-            fragmentManager.popBackStack();
-        } else {
-            super.onBackPressed();
+    public void onTabSelected(ActionBar.Tab tab,
+                              android.support.v4.app.FragmentTransaction fragmentTransaction) {
+        viewPager.setCurrentItem(tab.getPosition());
+    }
+
+    @Override
+    public void onTabUnselected(ActionBar.Tab tab,
+                                android.support.v4.app.FragmentTransaction fragmentTransaction) {
+    }
+
+    @Override
+    public void onTabReselected(ActionBar.Tab tab,
+                                android.support.v4.app.FragmentTransaction fragmentTransaction) {
+    }
+
+    private class MainPagerAdapter extends FragmentStatePagerAdapter {
+        public MainPagerAdapter(FragmentManager fragmentManager) {
+            super(fragmentManager);
+        }
+
+        @Override
+        public Fragment getItem(int i) {
+            switch (i) {
+                case 0:
+                case 1:
+                case 2:
+                    return new MainFragment1();
+                default:
+                    return null;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            switch (position) {
+                case 0:
+                    return "통합검색1";
+                case 1:
+                    return "통합검색2";
+                case 2:
+                    return "통합검색3";
+                default:
+                    return super.getPageTitle(position);
+            }
         }
     }
 }

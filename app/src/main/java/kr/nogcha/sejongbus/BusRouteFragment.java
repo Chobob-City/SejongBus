@@ -28,7 +28,7 @@ public class BusRouteFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bus_route, container, false);
 
-        if (MainActivity.isNetworkConnected()) {
+        if (BisHostActivity.isNetworkConnected()) {
             ArrayList<String> list = new ArrayList<>();
             try {
                 busRouteDetailList = SejongBis

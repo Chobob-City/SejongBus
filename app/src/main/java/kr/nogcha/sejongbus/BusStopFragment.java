@@ -31,7 +31,7 @@ public class BusStopFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
 
-        if (MainActivity.isNetworkConnected()) {
+        if (BisHostActivity.isNetworkConnected()) {
             ArrayList<Spanned> list = new ArrayList<>();
             try {
                 busStopRouteList = SejongBis
@@ -46,7 +46,7 @@ public class BusStopFragment extends Fragment {
                 for (int i = 0; i < busStopRouteList.length(); i++) {
                     json = busStopRouteList.getJSONObject(i);
                     Spanned route = (Spanned) TextUtils.concat(
-                            MainActivity.getRouteType(json.getInt("route_type")),
+                            BisHostActivity.getRouteType(json.getInt("route_type")),
                             new SpannableString(" " + json.getString("route_name") + "\n"));
 
                     int provide_code = json.getInt("provide_code");

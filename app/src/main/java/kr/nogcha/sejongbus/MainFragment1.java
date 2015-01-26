@@ -26,7 +26,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class MainFragment extends Fragment {
+public class MainFragment1 extends Fragment {
     private EditText editText;
     private ListView listView;
     private ArrayList<Spanned> list;
@@ -34,13 +34,13 @@ public class MainFragment extends Fragment {
     private JSONArray busRouteList;
     private JSONArray busStopList;
 
-    public MainFragment() {
+    public MainFragment1() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_main_1, container, false);
 
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
@@ -158,7 +158,7 @@ public class MainFragment extends Fragment {
             for (int i = 0; i < busRouteList.length(); i++) {
                 JSONObject json = busRouteList.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        MainActivity.getRouteType(json.getInt("route_type")),
+                        BisHostActivity.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n" +
                                 json.getString("st_stop_name") + "~" +
                                 json.getString("ed_stop_name")));
