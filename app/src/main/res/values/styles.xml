@@ -3,7 +3,7 @@
     <color name="whitegray">#e5e5e5</color>
     <color name="mainblue">#0048e3</color>
 
-    <style name="SBAppTheme" parent="Theme.AppCompat.Light">
+    <style name="SBAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowBackground">@color/whitegray</item>
         <item name="android:colorBackground">@color/whitegray</item>
     </style>

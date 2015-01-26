@@ -26,7 +26,7 @@ public class RouteExploreFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_route_explore, container, false);
 
-        if (MainActivity.isNetworkConnected()) {
+        if (BisHostActivity.isNetworkConnected()) {
             ArrayList<String> list = new ArrayList<>();
             try {
                 routeExplore = SejongBis

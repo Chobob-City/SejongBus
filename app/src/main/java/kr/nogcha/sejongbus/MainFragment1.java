@@ -28,7 +28,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class MainFragment extends Fragment {
+public class MainFragment1 extends Fragment {
     private EditText editText;
     private TextView textView;
     private ListView listView;
@@ -41,17 +41,15 @@ public class MainFragment extends Fragment {
 
     RelativeLayout MainSearchBar;
 
-
-    public MainFragment() {
+    public MainFragment1() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_main, container, false);
-
         //MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
 
+        View rootView = inflater.inflate(R.layout.f_main, container, false);
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -169,12 +167,12 @@ public class MainFragment extends Fragment {
 
             list.clear();
             for (int i = 0; i < busRouteList.length(); i++) {
-                JSONObject object = busRouteList.getJSONObject(i);
+                JSONObject json = busRouteList.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        SejongBis.getRouteType(object.getInt("route_type")),
-                        new SpannableString(" " + object.getString("route_name") + "\n" +
-                                object.getString("st_stop_name") + "~" +
-                                object.getString("ed_stop_name")));
+                        BisHostActivity.getRouteType(json.getInt("route_type")),
+                        new SpannableString(" " + json.getString("route_name") + "\n" +
+                                json.getString("st_stop_name") + "~" +
+                                json.getString("ed_stop_name")));
                 list.add(route);
             }
         } catch (JSONException e) {
@@ -189,9 +187,9 @@ public class MainFragment extends Fragment {
 
             list.clear();
             for (int i = 0; i < busStopList.length(); i++) {
-                JSONObject object = busStopList.getJSONObject(i);
-                list.add(new SpannableString(object.getString("stop_name") + "\n[" +
-                        object.getString("service_id") + "]"));
+                JSONObject json = busStopList.getJSONObject(i);
+                list.add(new SpannableString(json.getString("stop_name") + "\n[" +
+                        json.getString("service_id") + "]"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
