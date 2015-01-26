@@ -61,7 +61,7 @@ public class BisHostActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bis_host);
+        setContentView(R.layout.a_bis_host);
 
         baseContext = getBaseContext();
     }
