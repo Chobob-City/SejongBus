@@ -4,7 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v13.app.FragmentStatePagerAdapter;
+import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
@@ -92,7 +92,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                 android.support.v4.app.FragmentTransaction fragmentTransaction) {
     }
 
-    private class MainPagerAdapter extends FragmentStatePagerAdapter {
+    private class MainPagerAdapter extends FragmentPagerAdapter {
         public MainPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
