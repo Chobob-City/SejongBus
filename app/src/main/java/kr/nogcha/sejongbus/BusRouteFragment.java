@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class BusRouteFragment extends Fragment {
-
     private JSONArray busRouteDetailList;
 
     public BusRouteFragment() {
@@ -39,17 +38,16 @@ public class BusRouteFragment extends Fragment {
                 TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
                 TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
                 TextView textView3 = (TextView) rootView.findViewById(R.id.textView3);
-
-                JSONObject object = busRouteDetailList.getJSONObject(busRouteDetailList.length() - 1);
-
-                textView1.setText(object.getString("route_name"));
-                textView2.setText(object.getString("st_stop_name") + "~" +object.getString("ed_stop_name"));
-                textView3.setText(object.getString("alloc_time"));
+                JSONObject json = busRouteDetailList.getJSONObject(busRouteDetailList.length() - 1);
+                textView1.setText(json.getString("route_name"));
+                textView2.setText(json.getString("st_stop_name") + "~" +
+                        json.getString("ed_stop_name"));
+                textView3.setText(json.getString("alloc_time"));
 
                 for (int i = 0; i < busRouteDetailList.length() - 1; i++) {
-                    object = busRouteDetailList.getJSONObject(i);
-                    list.add(object.getString("stop_name") + "\n[" +
-                            object.getString("service_id") + "]");
+                    json = busRouteDetailList.getJSONObject(i);
+                    list.add(json.getString("stop_name") + "\n[" +
+                            json.getString("service_id") + "]");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

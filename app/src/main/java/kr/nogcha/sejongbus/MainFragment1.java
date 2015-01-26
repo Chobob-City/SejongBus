@@ -36,10 +36,8 @@ public class MainFragment1 extends Fragment {
     private ArrayAdapter<Spanned> adapter;
     private JSONArray busRouteList;
     private JSONArray busStopList;
-
     private Animation transUp;
-
-    RelativeLayout MainSearchBar;
+    private RelativeLayout MainSearchBar;
 
     public MainFragment1() {
     }
@@ -47,9 +45,10 @@ public class MainFragment1 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.f_main, container, false);
+
         //MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
 
-        View rootView = inflater.inflate(R.layout.f_main, container, false);
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -75,9 +74,9 @@ public class MainFragment1 extends Fragment {
             }
         });
 
+        listView = (ListView) rootView.findViewById(R.id.listView);
         textView = (TextView) rootView.findViewById(R.id.textView);
         textView.setVisibility(View.INVISIBLE);
-        listView = (ListView) rootView.findViewById(R.id.listView);
         listView.setEmptyView(textView);
         list = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
@@ -116,7 +115,6 @@ public class MainFragment1 extends Fragment {
             transaction.replace(R.id.container, busStopFragment);
             transaction.addToBackStack(null);
             transaction.commit();
-
         } else if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -125,7 +123,8 @@ public class MainFragment1 extends Fragment {
                     Fragment busRouteFragment = new BusRouteFragment();
                     Bundle bundle = new Bundle();
                     try {
-                        bundle.putInt("busRouteId", busRouteList.getJSONObject(position).getInt("route_id"));
+                        bundle.putInt("busRouteId", busRouteList.getJSONObject(position)
+                                .getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
