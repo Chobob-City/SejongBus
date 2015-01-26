@@ -27,7 +27,7 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.a_main);
         if (savedInstanceState == null) {
             Fragment routeExploreFragment = new RouteExploreFragment();
             Bundle bundle = new Bundle();

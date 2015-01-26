@@ -29,7 +29,7 @@ public class BusStopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_bus_stop, container, false);
+        View rootView = inflater.inflate(R.layout.f_bus_stop, container, false);
 
         if (MainActivity.isNetworkConnected()) {
             ArrayList<Spanned> list = new ArrayList<>();
