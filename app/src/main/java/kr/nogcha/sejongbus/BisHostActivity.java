@@ -1,7 +1,9 @@
 package kr.nogcha.sejongbus;
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -67,6 +69,36 @@ public class BisHostActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+
+        Fragment fragment = null;
+        Intent intent = getIntent();
+        Bundle bundle;
+        switch (intent.getIntExtra("fragment", 0)) {
+            case 0:
+                fragment = new BusRouteFragment();
+                bundle = new Bundle();
+                bundle.putInt("busRouteId", intent.getIntExtra("arg1", 0));
+                fragment.setArguments(bundle);
+                break;
+            case 1:
+                fragment = new BusStopFragment();
+                bundle = new Bundle();
+                bundle.putInt("busStopId", intent.getIntExtra("arg1", 0));
+                fragment.setArguments(bundle);
+                break;
+            case 2:
+                fragment = new RouteExploreFragment();
+                bundle = new Bundle();
+                bundle.putInt("stBusStop", intent.getIntExtra("arg1", 0));
+                bundle.putInt("edBusStop", intent.getIntExtra("arg2", 0));
+                fragment.setArguments(bundle);
+        }
+        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bis_host, menu);
         return true;
@@ -83,7 +115,7 @@ public class BisHostActivity extends ActionBarActivity {
         if (fragmentManager.getBackStackEntryCount() > 0) {
             fragmentManager.popBackStack();
         } else {
-            super.onBackPressed();
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 }
