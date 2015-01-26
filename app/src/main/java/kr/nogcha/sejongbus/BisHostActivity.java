@@ -75,7 +75,7 @@ public class BisHostActivity extends ActionBarActivity {
         Fragment fragment = null;
         Intent intent = getIntent();
         Bundle bundle;
-        switch (intent.getIntExtra("fragment", 0)) {
+        switch (intent.getIntExtra("arg0", 0)) {
             case 0:
                 fragment = new BusRouteFragment();
                 bundle = new Bundle();

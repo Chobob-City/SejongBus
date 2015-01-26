@@ -104,7 +104,7 @@ public class MainFragment1 extends Fragment {
                 if (busStopList.length() == 0) return;
 
                 intent = new Intent(getActivity(), BisHostActivity.class);
-                intent.putExtra("fragment", 1);
+                intent.putExtra("arg0", 1);
                 intent.putExtra("arg1", busStopList.getJSONObject(0).getInt("stop_id"));
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -117,7 +117,7 @@ public class MainFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), BisHostActivity.class);
-                    intent.putExtra("fragment", 0);
+                    intent.putExtra("arg0", 0);
                     try {
                         intent.putExtra("arg1", busRouteList.getJSONObject(position)
                                 .getInt("route_id"));
@@ -134,7 +134,7 @@ public class MainFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), BisHostActivity.class);
-                    intent.putExtra("fragment", 1);
+                    intent.putExtra("arg0", 1);
                     try {
                         intent.putExtra("arg1", busStopList.getJSONObject(position)
                                 .getInt("stop_id"));
