@@ -101,9 +101,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public Fragment getItem(int i) {
             switch (i) {
                 case 0:
+                    return new MainFragment1();
                 case 1:
                 case 2:
-                    return new MainFragment1();
+                    return new MainFragment2();
                 default:
                     return null;
             }
