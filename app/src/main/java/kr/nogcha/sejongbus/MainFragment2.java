@@ -28,25 +28,30 @@ import java.util.ArrayList;
 
 public class MainFragment2 extends Fragment
         implements View.OnTouchListener, TextView.OnEditorActionListener {
-    private int stBusStop;
-    private int edBusStop;
+    private int stBusStop = 0;
+    private int edBusStop = 0;
+    private ArrayList<Spanned> list;
+    private ArrayAdapter<Spanned> adapter;
     private EditText editText1;
     private EditText editText2;
     private ListView listView;
-    private ArrayList<Spanned> list;
-    private ArrayAdapter<Spanned> adapter;
     private JSONArray busStopList;
 
     public MainFragment2() {
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        list = new ArrayList<>();
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_2, container, false);
-
-        stBusStop = 0;
-        edBusStop = 0;
 
         editText1 = (EditText) rootView.findViewById(R.id.editText1);
         editText1.setOnTouchListener(this);
@@ -60,8 +65,6 @@ public class MainFragment2 extends Fragment
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
         textView.setVisibility(View.INVISIBLE);
         listView.setEmptyView(textView);
-        list = new ArrayList<>();
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
 
         ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.imageButton1);

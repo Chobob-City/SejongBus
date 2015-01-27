@@ -11,14 +11,12 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -29,16 +27,24 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class MainFragment1 extends Fragment {
-    private EditText editText;
-    private ListView listView;
     private ArrayList<Spanned> list;
     private ArrayAdapter<Spanned> adapter;
+    private EditText editText;
+    private ListView listView;
     private JSONArray busRouteList;
     private JSONArray busStopList;
-    private Animation transUp;
-    private RelativeLayout MainSearchBar;
+//    private Animation transUp;
+//    private RelativeLayout MainSearchBar;
 
     public MainFragment1() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        list = new ArrayList<>();
+        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
     }
 
     @Override
@@ -46,7 +52,7 @@ public class MainFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_1, container, false);
 
-        //MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
+//        MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
 
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
@@ -63,10 +69,12 @@ public class MainFragment1 extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    //transUp = AnimationUtils.loadAnimation(getActivity(),R.anim.view_transup);
-                    //MainSearchBar.startAnimation(transUp);
+//                    transUp = AnimationUtils.loadAnimation(getActivity(),R.anim.view_transup);
+//                    MainSearchBar.startAnimation(transUp);
+
                     String query = editText.getText().toString();
                     if (!query.equals("")) onSearch(query);
+
                     return true;
                 }
                 return false;
@@ -77,8 +85,6 @@ public class MainFragment1 extends Fragment {
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
         textView.setVisibility(View.INVISIBLE);
         listView.setEmptyView(textView);
-        list = new ArrayList<>();
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
         listView.setAdapter(adapter);
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
