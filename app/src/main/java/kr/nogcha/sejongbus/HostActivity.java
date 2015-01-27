@@ -2,11 +2,8 @@ package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Spannable;
@@ -17,45 +14,38 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class BisHostActivity extends ActionBarActivity {
-    private static Context baseContext;
-
-    public static boolean isNetworkConnected() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) baseContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
+public class HostActivity extends ActionBarActivity {
+    public static final int BUS_ROUTE = 0;
+    public static final int BUS_STOP = 1;
+    public static final int ROUTE_EXPLORE = 2;
 
     public static Spannable getRouteType(int route_type) {
         Spannable routeType;
+        int backgroundColor;
         switch (route_type) {
             case 43:
                 routeType = new SpannableString("세종광역");
-                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                backgroundColor = Color.RED;
                 break;
             case 50:
                 routeType = new SpannableString("대전광역");
-                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                backgroundColor = Color.RED;
                 break;
             case 51:
                 routeType = new SpannableString("청주광역");
-                routeType.setSpan(new BackgroundColorSpan(Color.RED), 0, 4,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                backgroundColor = Color.RED;
                 break;
             case 30:
                 routeType = new SpannableString("마을");
-                routeType.setSpan(new BackgroundColorSpan(Color.GREEN), 0, 2,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                backgroundColor = Color.GREEN;
                 break;
             default:
                 routeType = new SpannableString("일반");
-                routeType.setSpan(new BackgroundColorSpan(Color.BLUE), 0, 2,
-                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                backgroundColor = Color.BLUE;
         }
         routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return routeType;
     }
@@ -63,44 +53,44 @@ public class BisHostActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_bis_host);
-
-        baseContext = getBaseContext();
+        setContentView(R.layout.a_host);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-        Fragment fragment = null;
-        Intent intent = getIntent();
+        Fragment fragment;
+        Bundle extras = getIntent().getExtras();
         Bundle bundle;
-        switch (intent.getIntExtra("arg0", 0)) {
-            case 0:
+        switch (extras.getInt("arg0")) {
+            case BUS_ROUTE:
                 fragment = new BusRouteFragment();
                 bundle = new Bundle();
-                bundle.putInt("busRouteId", intent.getIntExtra("arg1", 0));
-                fragment.setArguments(bundle);
+                bundle.putInt("busRouteId", extras.getInt("arg1"));
                 break;
-            case 1:
+            case BUS_STOP:
                 fragment = new BusStopFragment();
                 bundle = new Bundle();
-                bundle.putInt("busStopId", intent.getIntExtra("arg1", 0));
-                fragment.setArguments(bundle);
+                bundle.putInt("busStopId", extras.getInt("arg1"));
                 break;
-            case 2:
+            case ROUTE_EXPLORE:
                 fragment = new RouteExploreFragment();
                 bundle = new Bundle();
-                bundle.putInt("stBusStop", intent.getIntExtra("arg1", 0));
-                bundle.putInt("edBusStop", intent.getIntExtra("arg2", 0));
-                fragment.setArguments(bundle);
+                bundle.putInt("stBusStop", extras.getInt("arg1"));
+                bundle.putInt("edBusStop", extras.getInt("arg2"));
+                break;
+            default:
+                return;
         }
+        fragment.setArguments(bundle);
+
         getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_bis_host, menu);
+        getMenuInflater().inflate(R.menu.menu_host, menu);
         return true;
     }
 

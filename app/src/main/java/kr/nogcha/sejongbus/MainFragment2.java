@@ -1,7 +1,6 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -35,7 +34,7 @@ public class MainFragment2 extends Fragment
     private EditText editText1;
     private EditText editText2;
     private ListView listView;
-    private JSONArray busStopList;
+    private JSONArray jsonArray;
 
     public MainFragment2() {
     }
@@ -63,7 +62,6 @@ public class MainFragment2 extends Fragment
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
-        textView.setVisibility(View.INVISIBLE);
         listView.setEmptyView(textView);
         listView.setAdapter(adapter);
 
@@ -72,7 +70,11 @@ public class MainFragment2 extends Fragment
             @Override
             public void onClick(View v) {
                 String query = editText1.getText().toString();
-                if (!query.equals("")) onSearch1(query);
+                if (!query.equals("")) {
+                    MainActivity.toggleSoftInput();
+
+                    onSearch1(query);
+                }
             }
         });
 
@@ -81,7 +83,11 @@ public class MainFragment2 extends Fragment
             @Override
             public void onClick(View v) {
                 String query = editText2.getText().toString();
-                if (!query.equals("")) onSearch2(query);
+                if (!query.equals("")) {
+                    MainActivity.toggleSoftInput();
+
+                    onSearch2(query);
+                }
             }
         });
 
@@ -96,11 +102,8 @@ public class MainFragment2 extends Fragment
                     Toast.makeText(getActivity(), "도착할 정류장을 검색하세요.", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    Intent intent = new Intent(getActivity(), BisHostActivity.class);
-                    intent.putExtra("arg0", 2);
-                    intent.putExtra("arg1", stBusStop);
-                    intent.putExtra("arg2", edBusStop);
-                    startActivity(intent);
+                    MainActivity.startHostActivity(HostActivity.ROUTE_EXPLORE, stBusStop,
+                            edBusStop);
                 }
             }
         });
@@ -141,11 +144,21 @@ public class MainFragment2 extends Fragment
             int id = v.getId();
             if (id == R.id.editText1) {
                 String query = editText1.getText().toString();
-                if (!query.equals("")) onSearch1(query);
+                if (!query.equals("")) {
+                    MainActivity.toggleSoftInput();
+
+                    onSearch1(query);
+                }
+
                 return true;
             } else if (id == R.id.editText2) {
                 String query = editText2.getText().toString();
-                if (!query.equals("")) onSearch2(query);
+                if (!query.equals("")) {
+                    MainActivity.toggleSoftInput();
+
+                    onSearch2(query);
+                }
+
                 return true;
             }
         }
@@ -153,18 +166,16 @@ public class MainFragment2 extends Fragment
     }
 
     private void onSearch1(String query) {
-        MainActivity.toggleSoftInput();
-
         searchBusStop(query);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    JSONObject json = busStopList.getJSONObject(position);
+                    JSONObject json = jsonArray.getJSONObject(position);
                     stBusStop = json.getInt("stop_id");
-                    editText1.setHint(json.getString("stop_name") + " [" +
-                            json.getString("service_id") + "]");
+                    editText1.setHint(json.getString("stop_name") + "(" +
+                            json.getString("service_id") + ")");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -174,18 +185,16 @@ public class MainFragment2 extends Fragment
     }
 
     private void onSearch2(String query) {
-        MainActivity.toggleSoftInput();
-
         searchBusStop(query);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    JSONObject json = busStopList.getJSONObject(position);
+                    JSONObject json = jsonArray.getJSONObject(position);
                     stBusStop = json.getInt("stop_id");
-                    editText2.setHint(json.getString("stop_name") + " [" +
-                            json.getString("service_id") + "]");
+                    editText2.setHint(json.getString("stop_name") + "(" +
+                            json.getString("service_id") + ")");
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -196,13 +205,13 @@ public class MainFragment2 extends Fragment
 
     private void searchBusStop(String busStop) {
         try {
-            busStopList = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
+            jsonArray = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
 
             list.clear();
-            for (int i = 0; i < busStopList.length(); i++) {
-                JSONObject json = busStopList.getJSONObject(i);
-                list.add(new SpannableString(json.getString("stop_name") + "\n[" +
-                        json.getString("service_id") + "]"));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
+                list.add(new SpannableString(json.getString("stop_name") + "\n(" +
+                        json.getString("service_id") + ")"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

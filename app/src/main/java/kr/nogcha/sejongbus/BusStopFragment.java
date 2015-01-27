@@ -21,7 +21,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class BusStopFragment extends Fragment {
-    JSONArray busStopRouteList;
+    JSONArray jsonArray;
 
     public BusStopFragment() {
     }
@@ -31,69 +31,66 @@ public class BusStopFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_bus_stop, container, false);
 
-        if (BisHostActivity.isNetworkConnected()) {
-            ArrayList<Spanned> list = new ArrayList<>();
-            try {
-                busStopRouteList = SejongBis
-                        .searchBusStopRoute(getArguments().getInt("busStopId"))
-                        .getJSONArray("busStopRouteList");
+        ArrayList<Spanned> list = new ArrayList<>();
+        try {
+            jsonArray = SejongBis.searchBusStopRoute(getArguments().getInt("busStopId"))
+                    .getJSONArray("busStopRouteList");
 
-                TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
-                JSONObject json = busStopRouteList.getJSONObject(0);
-                textView1.setText(json.getString("stop_name") + "\n[" +
-                        json.getString("service_id") + "]");
+            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+            JSONObject json = jsonArray.getJSONObject(0);
+            textView1.setText(json.getString("stop_name") + "(" + json.getString("service_id") +
+                    ")");
 
-                for (int i = 0; i < busStopRouteList.length(); i++) {
-                    json = busStopRouteList.getJSONObject(i);
-                    Spanned route = (Spanned) TextUtils.concat(
-                            BisHostActivity.getRouteType(json.getInt("route_type")),
-                            new SpannableString(" " + json.getString("route_name") + "\n"));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                json = jsonArray.getJSONObject(i);
 
-                    int provide_code = json.getInt("provide_code");
-                    switch (provide_code) {
-                        case 1:
-                            route = (Spanned) TextUtils.concat(route, new SpannableString("예정: " +
-                                    json.getString("provide_type") +
-                                    "\n현재 위치: 기점"));
-                            break;
-                        case 2:
-                            route = (Spanned) TextUtils.concat(route,
-                                    new SpannableString("회차지 대기 중"));
-                            break;
-                        default:
-                            route = (Spanned) TextUtils.concat(route, new SpannableString("예정: " +
-                                    json.getString("provide_type") +
-                                    "\n현재 위치: " + json.getString("rstop")));
-                    }
-                    list.add(route);
+                Spanned route = (Spanned) TextUtils.concat(
+                        HostActivity.getRouteType(json.getInt("route_type")),
+                        new SpannableString(" " + json.getString("route_name") + "\n"));
+
+                int provide_code = json.getInt("provide_code");
+                switch (provide_code) {
+                    case 1:
+                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: " +
+                                json.getString("provide_type") + "\n현위치: 기점"));
+                        break;
+                    case 2:
+                        route = (Spanned) TextUtils.concat(route,
+                                new SpannableString("회차지 대기 중"));
+                        break;
+                    default:
+                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: " +
+                                json.getString("provide_type") + "\n현위치: " +
+                                json.getString("rstop")));
                 }
-            } catch (JSONException e) {
-                e.printStackTrace();
+                list.add(route);
             }
-
-            ListView listView = (ListView) rootView.findViewById(R.id.listView);
-            listView.setAdapter(new ArrayAdapter<>(getActivity(),
-                    android.R.layout.simple_list_item_1, list));
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment busRouteFragment = new BusRouteFragment();
-                    Bundle bundle = new Bundle();
-                    try {
-                        bundle.putInt("busRouteId", busStopRouteList.getJSONObject(position)
-                                .getInt("route_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    busRouteFragment.setArguments(bundle);
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, busRouteFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }
-            });
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        listView.setAdapter(new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_list_item_1, list));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Fragment busRouteFragment = new BusRouteFragment();
+                Bundle bundle = new Bundle();
+                try {
+                    bundle.putInt("busRouteId", jsonArray.getJSONObject(position)
+                            .getInt("route_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                busRouteFragment.setArguments(bundle);
+
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, busRouteFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         return rootView;
     }

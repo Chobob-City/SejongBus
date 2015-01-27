@@ -71,39 +71,41 @@ public class SejongBis {
 
     private static JSONObject execute(String relativeUri, String content) {
         JSONObject json = null;
-        try {
-            json = new JSONObject(new AsyncTask<String, Void, String>() {
-                @Override
-                protected String doInBackground(String... params) {
-                    HttpURLConnection connection = null;
-                    String response = null;
-                    try {
-                        connection = (HttpURLConnection) new URL(ABSOLUTE_URI + params[0])
-                                .openConnection();
-                        connection.setDoOutput(true);
-                        connection.setChunkedStreamingMode(0);
+        if (MainActivity.checkNetworkConnected()) {
+            try {
+                json = new JSONObject(new AsyncTask<String, Void, String>() {
+                    @Override
+                    protected String doInBackground(String... params) {
+                        HttpURLConnection urlConnection = null;
+                        String response = null;
+                        try {
+                            urlConnection = (HttpURLConnection) new URL(ABSOLUTE_URI + params[0])
+                                    .openConnection();
+                            urlConnection.setDoOutput(true);
+                            urlConnection.setChunkedStreamingMode(0);
 
-                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                                connection.getOutputStream(), "UTF-8"));
-                        writer.write(params[1]);
-                        writer.close();
+                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                    urlConnection.getOutputStream(), "UTF-8"));
+                            writer.write(params[1]);
+                            writer.close();
 
-                        BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                connection.getInputStream(), "UTF-8"));
-                        response = reader.readLine();
-                        reader.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } finally {
-                        if (connection != null) {
-                            connection.disconnect();
+                            BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                    urlConnection.getInputStream(), "UTF-8"));
+                            response = reader.readLine();
+                            reader.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } finally {
+                            if (urlConnection != null) {
+                                urlConnection.disconnect();
+                            }
                         }
+                        return response;
                     }
-                    return response;
-                }
-            }.execute(relativeUri, content).get());
-        } catch (Exception e) {
-            e.printStackTrace();
+                }.execute(relativeUri, content).get());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return json;
     }

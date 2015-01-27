@@ -1,7 +1,6 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -31,8 +30,7 @@ public class MainFragment1 extends Fragment {
     private ArrayAdapter<Spanned> adapter;
     private EditText editText;
     private ListView listView;
-    private JSONArray busRouteList;
-    private JSONArray busStopList;
+    private JSONArray jsonArray;
 //    private Animation transUp;
 //    private RelativeLayout MainSearchBar;
 
@@ -73,7 +71,11 @@ public class MainFragment1 extends Fragment {
 //                    MainSearchBar.startAnimation(transUp);
 
                     String query = editText.getText().toString();
-                    if (!query.equals("")) onSearch(query);
+                    if (!query.equals("")) {
+                        MainActivity.toggleSoftInput();
+
+                        onSearch(query);
+                    }
 
                     return true;
                 }
@@ -83,7 +85,6 @@ public class MainFragment1 extends Fragment {
 
         listView = (ListView) rootView.findViewById(R.id.listView);
         TextView textView = (TextView) rootView.findViewById(R.id.textView);
-        textView.setVisibility(View.INVISIBLE);
         listView.setEmptyView(textView);
         listView.setAdapter(adapter);
 
@@ -92,7 +93,11 @@ public class MainFragment1 extends Fragment {
             @Override
             public void onClick(View v) {
                 String query = editText.getText().toString();
-                if (!query.equals("")) onSearch(query);
+                if (!query.equals("")) {
+                    MainActivity.toggleSoftInput();
+
+                    onSearch(query);
+                }
             }
         });
 
@@ -100,36 +105,28 @@ public class MainFragment1 extends Fragment {
     }
 
     private void onSearch(String query) {
-        MainActivity.toggleSoftInput();
-
         if (Pattern.matches("^\\d{5}$", query)) {
-            Intent intent = null;
             try {
-                busStopList = SejongBis.searchBusStop(query).getJSONArray("busStopList");
-                if (busStopList.length() == 0) return;
+                jsonArray = SejongBis.searchBusStop(query).getJSONArray("busStopList");
+                if (jsonArray.length() == 0) return;
 
-                intent = new Intent(getActivity(), BisHostActivity.class);
-                intent.putExtra("arg0", 1);
-                intent.putExtra("arg1", busStopList.getJSONObject(0).getInt("stop_id"));
+                MainActivity.startHostActivity(HostActivity.BUS_STOP,
+                        jsonArray.getJSONObject(0).getInt("stop_id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            startActivity(intent);
         } else if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), BisHostActivity.class);
-                    intent.putExtra("arg0", 0);
                     try {
-                        intent.putExtra("arg1", busRouteList.getJSONObject(position)
-                                .getInt("route_id"));
+                        MainActivity.startHostActivity(HostActivity.BUS_ROUTE,
+                                jsonArray.getJSONObject(position).getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    startActivity(intent);
                 }
             });
         } else {
@@ -138,15 +135,12 @@ public class MainFragment1 extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), BisHostActivity.class);
-                    intent.putExtra("arg0", 1);
                     try {
-                        intent.putExtra("arg1", busStopList.getJSONObject(position)
-                                .getInt("stop_id"));
+                        MainActivity.startHostActivity(HostActivity.BUS_STOP,
+                                jsonArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    startActivity(intent);
                 }
             });
         }
@@ -154,13 +148,12 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusRoute(String busRoute) {
         try {
-            busRouteList = SejongBis.searchBusRoute(busRoute).getJSONArray("busRouteList");
-
+            jsonArray = SejongBis.searchBusRoute(busRoute).getJSONArray("busRouteList");
             list.clear();
-            for (int i = 0; i < busRouteList.length(); i++) {
-                JSONObject json = busRouteList.getJSONObject(i);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        BisHostActivity.getRouteType(json.getInt("route_type")),
+                        HostActivity.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n" +
                                 json.getString("st_stop_name") + "~" +
                                 json.getString("ed_stop_name")));
@@ -174,13 +167,12 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusStop(String busStop) {
         try {
-            busStopList = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
-
+            jsonArray = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
             list.clear();
-            for (int i = 0; i < busStopList.length(); i++) {
-                JSONObject json = busStopList.getJSONObject(i);
-                list.add(new SpannableString(json.getString("stop_name") + "\n[" +
-                        json.getString("service_id") + "]"));
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject json = jsonArray.getJSONObject(i);
+                list.add(new SpannableString(json.getString("stop_name") + "\n(" +
+                        json.getString("service_id") + ")"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
