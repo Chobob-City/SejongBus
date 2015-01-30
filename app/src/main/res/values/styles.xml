@@ -10,19 +10,24 @@
         <item name="actionBarStyle">@style/MyActionBar</item>
         <item name="android:actionBarTabStyle">@style/MyActionBarTabs</item>
         <item name="actionBarTabStyle">@style/MyActionBarTabs</item>
-        <item name="android:actionBarTabTextStyle">@style/MyActionBarTabText</item>
-        <item name="actionBarTabTextStyle">@style/MyActionBarTabText</item>
     </style>
 
     <style name="MyActionBar" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
         <item name="android:background">@color/mainblue</item>
+        <item name="android:backgroundStacked">@color/mainblue</item>
+        <item name="android:backgroundSplit">@color/mainblue</item>
         <item name="background">@color/mainblue</item>
+        <item name="backgroundStacked">@color/mainblue</item>
+        <item name="backgroundSplit">@color/mainblue</item>
     </style>
-
     <style name="MyActionBarTabs"
         parent="@style/Widget.AppCompat.ActionBar.TabView">
         <item name="android:background">@drawable/d_tapindicater</item>
+        <item name="android:backgroundStacked">@color/mainblue</item>
+        <item name="android:backgroundSplit">@color/mainblue</item>
         <item name="background">@drawable/d_tapindicater</item>
+        <item name="backgroundStacked">@color/mainblue</item>
+        <item name="backgroundSplit">@color/mainblue</item>
     </style>
     <style name="MyActionBarTabText"
         parent="@style/Widget.AppCompat.ActionBar.TabText">

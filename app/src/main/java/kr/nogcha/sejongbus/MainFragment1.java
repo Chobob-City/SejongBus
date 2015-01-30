@@ -31,8 +31,6 @@ public class MainFragment1 extends Fragment {
     private EditText editText;
     private ListView listView;
     private JSONArray jsonArray;
-//    private Animation transUp;
-//    private RelativeLayout MainSearchBar;
 
     public MainFragment1() {
     }
@@ -50,8 +48,6 @@ public class MainFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_1, container, false);
 
-//        MainSearchBar = (RelativeLayout)rootView.findViewById(R.id.mainsearchbar);
-
         editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -67,8 +63,6 @@ public class MainFragment1 extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-//                    transUp = AnimationUtils.loadAnimation(getActivity(),R.anim.view_transup);
-//                    MainSearchBar.startAnimation(transUp);
 
                     String query = editText.getText().toString();
                     if (!query.equals("")) {
