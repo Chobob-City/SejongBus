@@ -29,6 +29,7 @@ public class MainFragment2 extends Fragment
         implements View.OnTouchListener, TextView.OnEditorActionListener {
     private int stBusStop = 0;
     private int edBusStop = 0;
+    private SejongBisClient bisClient;
     private ArrayList<Spanned> list;
     private ArrayAdapter<Spanned> adapter;
     private EditText editText1;
@@ -43,6 +44,7 @@ public class MainFragment2 extends Fragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        bisClient = new SejongBisClient(getActivity());
         list = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
     }
@@ -205,7 +207,7 @@ public class MainFragment2 extends Fragment
 
     private void searchBusStop(String busStop) {
         try {
-            jsonArray = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
+            jsonArray = bisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
 
             list.clear();
             for (int i = 0; i < jsonArray.length(); i++) {

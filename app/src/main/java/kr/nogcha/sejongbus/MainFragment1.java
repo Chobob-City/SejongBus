@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class MainFragment1 extends Fragment {
+    private SejongBisClient bisClient;
     private ArrayList<Spanned> list;
     private ArrayAdapter<Spanned> adapter;
     private EditText editText;
@@ -39,6 +40,7 @@ public class MainFragment1 extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        bisClient = new SejongBisClient(getActivity());
         list = new ArrayList<>();
         adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
     }
@@ -63,7 +65,6 @@ public class MainFragment1 extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-
                     String query = editText.getText().toString();
                     if (!query.equals("")) {
                         MainActivity.toggleSoftInput();
@@ -99,17 +100,7 @@ public class MainFragment1 extends Fragment {
     }
 
     private void onSearch(String query) {
-        if (Pattern.matches("^\\d{5}$", query)) {
-            try {
-                jsonArray = SejongBis.searchBusStop(query).getJSONArray("busStopList");
-                if (jsonArray.length() == 0) return;
-
-                MainActivity.startHostActivity(HostActivity.BUS_STOP,
-                        jsonArray.getJSONObject(0).getInt("stop_id"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else if (Pattern.matches("^[0-9-]+$", query)) {
+        if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -142,7 +133,7 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusRoute(String busRoute) {
         try {
-            jsonArray = SejongBis.searchBusRoute(busRoute).getJSONArray("busRouteList");
+            jsonArray = bisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
             list.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
@@ -161,7 +152,7 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusStop(String busStop) {
         try {
-            jsonArray = SejongBis.searchBusStop(busStop).getJSONArray("busStopList");
+            jsonArray = bisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
             list.clear();
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);

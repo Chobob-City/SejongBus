@@ -18,9 +18,17 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class BusRouteFragment extends Fragment {
+    private SejongBisClient bisClient;
     private JSONArray jsonArray;
 
     public BusRouteFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        bisClient = new SejongBisClient(getActivity());
     }
 
     @Override
@@ -30,7 +38,7 @@ public class BusRouteFragment extends Fragment {
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            jsonArray = SejongBis.searchBusRouteDetail(getArguments().getInt("busRouteId"))
+            jsonArray = bisClient.searchBusRouteDetail(getArguments().getInt("busRouteId"), true)
                     .getJSONArray("busRouteDetailList");
 
             TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
