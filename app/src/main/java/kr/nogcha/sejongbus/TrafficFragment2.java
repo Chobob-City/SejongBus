@@ -83,6 +83,7 @@ public class TrafficFragment2 extends Fragment {
                                 + json.getString("provide_type") + "\n현위치: "
                                 + json.getString("rstop")));
                 }
+
                 list.add(route);
             }
         } catch (JSONException e) {

@@ -147,7 +147,7 @@ public class MainActivity extends ActionBarActivity {
                 case 1:
                     return "경로탐색";
                 case 2:
-                    return "주변정류장";
+                    return "주변정류소";
                 default:
                     return super.getPageTitle(position);
             }

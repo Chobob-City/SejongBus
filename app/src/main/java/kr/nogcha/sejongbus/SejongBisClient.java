@@ -145,7 +145,6 @@ class SejongBisClient {
                         HttpURLConnection connection = null;
                         String response = null;
                         try {
-                            Log.v("SejongBisClient", "Network is working");
                             connection = (HttpURLConnection) new URL(params[0]).openConnection();
                             connection.setDoOutput(true);
                             connection.setChunkedStreamingMode(0);
@@ -158,6 +157,7 @@ class SejongBisClient {
                             BufferedReader reader = new BufferedReader(new InputStreamReader(
                                     connection.getInputStream(), "UTF-8"));
                             response = reader.readLine();
+                            Log.v("SejongBisClient", "Retrieved " + response.length() + "B");
                             reader.close();
                         } catch (IOException e) {
                             e.printStackTrace();

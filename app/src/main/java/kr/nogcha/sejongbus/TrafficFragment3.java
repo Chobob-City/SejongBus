@@ -35,32 +35,33 @@ public class TrafficFragment3 extends Fragment {
     private SejongBisClient bisClient;
     private JSONArray jsonArray;
 
-    public TrafficFragment3() {
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         bisClient = new SejongBisClient(getActivity());
+
+        Bundle arguments = getArguments();
+        try {
+            jsonArray = bisClient
+                    .searchRouteExplore(arguments.getInt("arg1"), arguments.getInt("arg2"), true)
+                    .getJSONArray("routeExplore");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_main_2, container, false);
+        View rootView = inflater.inflate(R.layout.f_traffic_3, container, false);
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            jsonArray = bisClient.searchRouteExplore(getArguments().getInt("arg1"),
-                    getArguments().getInt("arg2"), true).getJSONArray("routeExplore");
-
-            TextView textView = (TextView) rootView.findViewById(R.id.textView);
+            TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
             JSONObject json = jsonArray.getJSONObject(0);
-            textView.setText("출발: " + json.getString("sstationname") + "(" +
-                    json.getString("sService_id") + ")\n도착: " +
-                    json.getString("estationname") + "(" +
-                    json.getString("eService_id") + ")");
+            textView2.setText("출발: " + json.getString("sstationname") + "("
+                    + json.getString("sService_id") + ")\n도착: " + json.getString("estationname")
+                    + "(" + json.getString("eService_id") + ")");
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 json = jsonArray.getJSONObject(i);
@@ -72,15 +73,16 @@ public class TrafficFragment3 extends Fragment {
                 } else {
                     route = "";
                 }
-                route += "환승 경로\n" + json.getString("sstationname") + "에서 " +
-                        json.getString("srouteno") + "번 버스에 승차\n";
+                route += "환승 경로\n" + json.getString("sstationname") + "(" +
+                        json.getString("sService_id") + ")에서 " + json.getString("srouteno")
+                        + "번 버스에 승차\n";
                 if (xtype != 1) {
-                    route += json.getString("tstationname") + "에서 " +
-                            json.getString("erouteno") + "번 버스로 환승\n";
+                    route += json.getString("tstationname") + "(" + json.getString("tService_id")
+                            + ")에서 " + json.getString("erouteno") + "번 버스로 환승\n";
                 }
-                route += json.getString("estationname") + "에서 하차\n" +
-                        json.getString("seq") + "개 정류장, " +
-                        json.getInt("distance") / 1000. + "km";
+                route += json.getString("estationname") + "(" + json.getString("eService_id")
+                        + ")에서 하차\n" + json.getString("seq") + "개 정류소, "
+                        + json.getInt("distance") / 1000. + "km";
 
                 list.add(route);
             }
@@ -89,8 +91,8 @@ public class TrafficFragment3 extends Fragment {
         }
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, list));
+        listView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
+                list));
 
         return rootView;
     }
