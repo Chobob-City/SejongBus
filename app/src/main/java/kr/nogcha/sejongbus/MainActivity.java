@@ -21,8 +21,6 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
@@ -32,22 +30,21 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-    private static Activity instance;
+public class MainActivity extends ActionBarActivity {
+    private static Activity mInstance;
     private ViewPager viewPager;
 
     public static void toggleSoftInput() {
-        InputMethodManager inputMethodManager =
-                (InputMethodManager) instance.getSystemService(Context.INPUT_METHOD_SERVICE);
+        final InputMethodManager inputMethodManager =
+                (InputMethodManager) mInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(0, 0);
     }
 
     public static void startHostActivity(int... args) {
-        Intent intent = new Intent(instance, TrafficActivity.class);
+        Intent intent = new Intent(mInstance, TrafficActivity.class);
         for (int i = 0; i < args.length; i++) intent.putExtra("arg" + i, args[i]);
-        instance.startActivity(intent);
+        mInstance.startActivity(intent);
     }
 
     @Override
@@ -55,7 +52,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
-        instance = this;
+        mInstance = this;
 
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -81,7 +78,25 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         for (int i = 0; i < mainPagerAdapter.getCount(); i++) {
             actionBar.addTab(actionBar.newTab().setText(mainPagerAdapter.getPageTitle(i))
-                    .setTabListener(this));
+                    .setTabListener(new ActionBar.TabListener() {
+                        @Override
+                        public void onTabSelected(ActionBar.Tab tab,
+                                                  FragmentTransaction fragmentTransaction) {
+                            viewPager.setCurrentItem(tab.getPosition());
+                        }
+
+                        @Override
+                        public void onTabUnselected(ActionBar.Tab tab,
+                                                    FragmentTransaction fragmentTransaction) {
+
+                        }
+
+                        @Override
+                        public void onTabReselected(ActionBar.Tab tab,
+                                                    FragmentTransaction fragmentTransaction) {
+
+                        }
+                    }));
         }
     }
 
@@ -101,19 +116,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-        viewPager.setCurrentItem(tab.getPosition());
-    }
-
-    @Override
-    public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
-    }
-
-    @Override
-    public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
     private class MainPagerAdapter extends FragmentPagerAdapter {

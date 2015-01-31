@@ -39,10 +39,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 class SejongBisClient {
-    private Context context;
+    private Context mContext;
 
     SejongBisClient(Context context) {
-        this.context = context;
+        mContext = context;
     }
 
     JSONObject searchBusRealLocationDetail(int busRouteId) {
@@ -134,7 +134,7 @@ class SejongBisClient {
 
     private JSONObject sendRequest(String url, String params, boolean isMobile) {
         final ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         if ((activeNetworkInfo != null) && activeNetworkInfo.isConnected()) {
             try {
@@ -170,7 +170,7 @@ class SejongBisClient {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(context, "네트워크에 연결해 주세요.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "네트워크에 연결해 주세요.", Toast.LENGTH_SHORT).show();
         }
         return null;
     }
