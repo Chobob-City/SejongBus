@@ -113,14 +113,14 @@ class SejongBisClient {
         return sendRequest("searchRouteExplore", params, isMobile);
     }
 
-    JSONObject searchSurroundStopList(double lat, double lng, boolean isMobile) {
+    JSONObject searchSurroundStopList(double lat, double lng) {
         String params = "lat=" + lat + "&lng=" + lng;
-        return sendRequest("searchSurroundStopList", params, isMobile);
+        return sendRequest("searchSurroundStopList", params, true);
     }
 
-    JSONObject selectBusStop(int busStopId, boolean isMobile) {
+    JSONObject selectBusStop(int busStopId) {
         String params = "busStopId=" + busStopId;
-        return sendRequest("selectBusStop", params, isMobile);
+        return sendRequest("selectBusStop", params, true);
     }
 
     Spannable getRouteType(int route_type) {
