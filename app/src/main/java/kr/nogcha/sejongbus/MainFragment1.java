@@ -123,7 +123,7 @@ public class MainFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE,
+                        MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE_DETAIL,
                                 jsonArray.getJSONObject(position).getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -137,7 +137,7 @@ public class MainFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        MainActivity.startHostActivity(TrafficActivity.BUS_STOP,
+                        MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
                                 jsonArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -154,7 +154,7 @@ public class MainFragment1 extends Fragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        TrafficActivity.getRouteType(json.getInt("route_type")),
+                        bisClient.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n" +
                                 json.getString("st_stop_name") + "~" +
                                 json.getString("ed_stop_name")));

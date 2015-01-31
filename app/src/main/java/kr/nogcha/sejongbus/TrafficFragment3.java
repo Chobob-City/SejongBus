@@ -52,8 +52,8 @@ public class TrafficFragment3 extends Fragment {
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            jsonArray = bisClient.searchRouteExplore(getArguments().getInt("stBusStop"),
-                    getArguments().getInt("edBusStop"), true).getJSONArray("routeExplore");
+            jsonArray = bisClient.searchRouteExplore(getArguments().getInt("arg1"),
+                    getArguments().getInt("arg2"), true).getJSONArray("routeExplore");
 
             TextView textView = (TextView) rootView.findViewById(R.id.textView);
             JSONObject json = jsonArray.getJSONObject(0);

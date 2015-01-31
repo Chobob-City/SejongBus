@@ -17,9 +17,15 @@
 package kr.nogcha.sejongbus;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.BackgroundColorSpan;
+import android.text.style.ForegroundColorSpan;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -89,6 +95,37 @@ class SejongBisClient {
     JSONObject selectBusStop(int busStopId, boolean isMobile) {
         String params = "busStopId=" + busStopId;
         return sendRequest("selectBusStop", params, isMobile);
+    }
+
+    Spannable getRouteType(int route_type) {
+        Spannable routeType;
+        int backgroundColor;
+        switch (route_type) {
+            case 30:
+                routeType = new SpannableString("마을");
+                backgroundColor = Color.GREEN;
+                break;
+            case 43:
+                routeType = new SpannableString("세종광역");
+                backgroundColor = Color.RED;
+                break;
+            case 50:
+                routeType = new SpannableString("대전광역");
+                backgroundColor = Color.RED;
+                break;
+            case 51:
+                routeType = new SpannableString("청주광역");
+                backgroundColor = Color.RED;
+                break;
+            default:
+                routeType = new SpannableString("일반");
+                backgroundColor = Color.BLUE;
+        }
+        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return routeType;
     }
 
     private JSONObject sendRequest(String url, String params) {

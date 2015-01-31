@@ -54,7 +54,7 @@ public class TrafficFragment1 extends Fragment {
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            jsonArray = bisClient.searchBusRouteDetail(getArguments().getInt("busRouteId"), true)
+            jsonArray = bisClient.searchBusRouteDetail(getArguments().getInt("arg1"), true)
                     .getJSONArray("busRouteDetailList");
 
             TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
@@ -84,7 +84,7 @@ public class TrafficFragment1 extends Fragment {
                 Fragment busStopFragment = new TrafficFragment2();
                 Bundle bundle = new Bundle();
                 try {
-                    bundle.putInt("busStopId", jsonArray.getJSONObject(position)
+                    bundle.putInt("arg1", jsonArray.getJSONObject(position)
                             .getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
