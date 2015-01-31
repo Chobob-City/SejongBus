@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Chobob City
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
@@ -20,11 +36,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class BusStopFragment extends Fragment {
+public class TrafficFragment2 extends Fragment {
     private SejongBisClient bisClient;
     private JSONArray jsonArray;
 
-    public BusStopFragment() {
+    public TrafficFragment2() {
     }
 
     @Override
@@ -37,7 +53,7 @@ public class BusStopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_bus_stop, container, false);
+        View rootView = inflater.inflate(R.layout.f_traffic_2, container, false);
 
         ArrayList<Spanned> list = new ArrayList<>();
         try {
@@ -53,7 +69,7 @@ public class BusStopFragment extends Fragment {
                 json = jsonArray.getJSONObject(i);
 
                 Spanned route = (Spanned) TextUtils.concat(
-                        HostActivity.getRouteType(json.getInt("route_type")),
+                        TrafficActivity.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n"));
 
                 int provide_code = json.getInt("provide_code");
@@ -83,7 +99,7 @@ public class BusStopFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment busRouteFragment = new BusRouteFragment();
+                Fragment busRouteFragment = new TrafficFragment1();
                 Bundle bundle = new Bundle();
                 try {
                     bundle.putInt("busRouteId", jsonArray.getJSONObject(position)

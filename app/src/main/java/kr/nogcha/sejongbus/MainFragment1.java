@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Chobob City
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
@@ -107,7 +123,7 @@ public class MainFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        MainActivity.startHostActivity(HostActivity.BUS_ROUTE,
+                        MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE,
                                 jsonArray.getJSONObject(position).getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -121,7 +137,7 @@ public class MainFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        MainActivity.startHostActivity(HostActivity.BUS_STOP,
+                        MainActivity.startHostActivity(TrafficActivity.BUS_STOP,
                                 jsonArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -138,7 +154,7 @@ public class MainFragment1 extends Fragment {
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
                 Spanned route = (Spanned) TextUtils.concat(
-                        HostActivity.getRouteType(json.getInt("route_type")),
+                        TrafficActivity.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n" +
                                 json.getString("st_stop_name") + "~" +
                                 json.getString("ed_stop_name")));

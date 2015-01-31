@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Chobob City
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package kr.nogcha.sejongbus;
 
 import android.app.Activity;
@@ -28,21 +44,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         inputMethodManager.toggleSoftInput(0, 0);
     }
 
-    public static boolean checkNetworkConnected() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) instance.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo != null && networkInfo.isConnected()) {
-            return true;
-        } else {
-            Toast.makeText(instance, "네트워크에 연결해 주세요.", Toast.LENGTH_SHORT)
-                    .show();
-            return false;
-        }
-    }
-
     public static void startHostActivity(int... args) {
-        Intent intent = new Intent(instance, HostActivity.class);
+        Intent intent = new Intent(instance, TrafficActivity.class);
         for (int i = 0; i < args.length; i++) intent.putExtra("arg" + i, args[i]);
         instance.startActivity(intent);
     }

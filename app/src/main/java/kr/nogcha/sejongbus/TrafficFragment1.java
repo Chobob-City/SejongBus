@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Chobob City
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
@@ -17,11 +33,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class BusRouteFragment extends Fragment {
+public class TrafficFragment1 extends Fragment {
     private SejongBisClient bisClient;
     private JSONArray jsonArray;
 
-    public BusRouteFragment() {
+    public TrafficFragment1() {
     }
 
     @Override
@@ -34,7 +50,7 @@ public class BusRouteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_bus_route, container, false);
+        View rootView = inflater.inflate(R.layout.f_traffic_1, container, false);
 
         ArrayList<String> list = new ArrayList<>();
         try {
@@ -65,7 +81,7 @@ public class BusRouteFragment extends Fragment {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Fragment busStopFragment = new BusStopFragment();
+                Fragment busStopFragment = new TrafficFragment2();
                 Bundle bundle = new Bundle();
                 try {
                     bundle.putInt("busStopId", jsonArray.getJSONObject(position)

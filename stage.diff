@@ -1,0 +1,876 @@
+diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+index f35935a..b1341bb 100644
+--- a/app/src/main/AndroidManifest.xml
++++ b/app/src/main/AndroidManifest.xml
+@@ -22,7 +22,7 @@
+             </intent-filter>
+         </activity>
+         <activity
+-            android:name=".HostActivity"
++            android:name=".TrafficActivity"
+             android:label="@string/app_name" />
+ 
+         <meta-data
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/BusRouteFragment.java b/app/src/main/java/kr/nogcha/sejongbus/BusRouteFragment.java
+deleted file mode 100644
+index a583f21..0000000
+--- a/app/src/main/java/kr/nogcha/sejongbus/BusRouteFragment.java
++++ /dev/null
+@@ -1,87 +0,0 @@
+-package kr.nogcha.sejongbus;
+-
+-import android.app.Fragment;
+-import android.app.FragmentTransaction;
+-import android.os.Bundle;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-import android.widget.AdapterView;
+-import android.widget.ArrayAdapter;
+-import android.widget.ListView;
+-import android.widget.TextView;
+-
+-import org.json.JSONArray;
+-import org.json.JSONException;
+-import org.json.JSONObject;
+-
+-import java.util.ArrayList;
+-
+-public class BusRouteFragment extends Fragment {
+-    private SejongBisClient bisClient;
+-    private JSONArray jsonArray;
+-
+-    public BusRouteFragment() {
+-    }
+-
+-    @Override
+-    public void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-
+-        bisClient = new SejongBisClient(getActivity());
+-    }
+-
+-    @Override
+-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+-                             Bundle savedInstanceState) {
+-        View rootView = inflater.inflate(R.layout.f_bus_route, container, false);
+-
+-        ArrayList<String> list = new ArrayList<>();
+-        try {
+-            jsonArray = bisClient.searchBusRouteDetail(getArguments().getInt("busRouteId"), true)
+-                    .getJSONArray("busRouteDetailList");
+-
+-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+-            TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
+-            TextView textView3 = (TextView) rootView.findViewById(R.id.textView3);
+-            JSONObject json = jsonArray.getJSONObject(jsonArray.length() - 1);
+-            textView1.setText(json.getString("route_name"));
+-            textView2.setText(json.getString("st_stop_name") + "~" +
+-                    json.getString("ed_stop_name"));
+-            textView3.setText(json.getString("alloc_time"));
+-
+-            for (int i = 0; i < jsonArray.length() - 1; i++) {
+-                json = jsonArray.getJSONObject(i);
+-                list.add(json.getString("stop_name") + "\n(" +
+-                        json.getString("service_id") + ")");
+-            }
+-        } catch (JSONException e) {
+-            e.printStackTrace();
+-        }
+-
+-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
+-                android.R.layout.simple_list_item_1, list));
+-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+-            @Override
+-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+-                Fragment busStopFragment = new BusStopFragment();
+-                Bundle bundle = new Bundle();
+-                try {
+-                    bundle.putInt("busStopId", jsonArray.getJSONObject(position)
+-                            .getInt("stop_id"));
+-                } catch (JSONException e) {
+-                    e.printStackTrace();
+-                }
+-                busStopFragment.setArguments(bundle);
+-
+-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+-                transaction.replace(R.id.container, busStopFragment);
+-                transaction.addToBackStack(null);
+-                transaction.commit();
+-            }
+-        });
+-
+-        return rootView;
+-    }
+-}
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/BusStopFragment.java b/app/src/main/java/kr/nogcha/sejongbus/BusStopFragment.java
+deleted file mode 100644
+index 1f8797d..0000000
+--- a/app/src/main/java/kr/nogcha/sejongbus/BusStopFragment.java
++++ /dev/null
+@@ -1,105 +0,0 @@
+-package kr.nogcha.sejongbus;
+-
+-import android.app.Fragment;
+-import android.app.FragmentTransaction;
+-import android.os.Bundle;
+-import android.text.SpannableString;
+-import android.text.Spanned;
+-import android.text.TextUtils;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-import android.widget.AdapterView;
+-import android.widget.ArrayAdapter;
+-import android.widget.ListView;
+-import android.widget.TextView;
+-
+-import org.json.JSONArray;
+-import org.json.JSONException;
+-import org.json.JSONObject;
+-
+-import java.util.ArrayList;
+-
+-public class BusStopFragment extends Fragment {
+-    private SejongBisClient bisClient;
+-    private JSONArray jsonArray;
+-
+-    public BusStopFragment() {
+-    }
+-
+-    @Override
+-    public void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-
+-        bisClient = new SejongBisClient(getActivity());
+-    }
+-
+-    @Override
+-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+-                             Bundle savedInstanceState) {
+-        View rootView = inflater.inflate(R.layout.f_bus_stop, container, false);
+-
+-        ArrayList<Spanned> list = new ArrayList<>();
+-        try {
+-            jsonArray = bisClient.searchBusStopRoute(getArguments().getInt("busStopId"), true)
+-                    .getJSONArray("busStopRouteList");
+-
+-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+-            JSONObject json = jsonArray.getJSONObject(0);
+-            textView1.setText(json.getString("stop_name") + "(" + json.getString("service_id") +
+-                    ")");
+-
+-            for (int i = 0; i < jsonArray.length(); i++) {
+-                json = jsonArray.getJSONObject(i);
+-
+-                Spanned route = (Spanned) TextUtils.concat(
+-                        HostActivity.getRouteType(json.getInt("route_type")),
+-                        new SpannableString(" " + json.getString("route_name") + "\n"));
+-
+-                int provide_code = json.getInt("provide_code");
+-                switch (provide_code) {
+-                    case 1:
+-                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: " +
+-                                json.getString("provide_type") + "\n현위치: 기점"));
+-                        break;
+-                    case 2:
+-                        route = (Spanned) TextUtils.concat(route,
+-                                new SpannableString("회차지 대기 중"));
+-                        break;
+-                    default:
+-                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: " +
+-                                json.getString("provide_type") + "\n현위치: " +
+-                                json.getString("rstop")));
+-                }
+-                list.add(route);
+-            }
+-        } catch (JSONException e) {
+-            e.printStackTrace();
+-        }
+-
+-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
+-                android.R.layout.simple_list_item_1, list));
+-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+-            @Override
+-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+-                Fragment busRouteFragment = new BusRouteFragment();
+-                Bundle bundle = new Bundle();
+-                try {
+-                    bundle.putInt("busRouteId", jsonArray.getJSONObject(position)
+-                            .getInt("route_id"));
+-                } catch (JSONException e) {
+-                    e.printStackTrace();
+-                }
+-                busRouteFragment.setArguments(bundle);
+-
+-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+-                transaction.replace(R.id.container, busRouteFragment);
+-                transaction.addToBackStack(null);
+-                transaction.commit();
+-            }
+-        });
+-
+-        return rootView;
+-    }
+-}
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/HostActivity.java b/app/src/main/java/kr/nogcha/sejongbus/HostActivity.java
+deleted file mode 100644
+index e2ec7f7..0000000
+--- a/app/src/main/java/kr/nogcha/sejongbus/HostActivity.java
++++ /dev/null
+@@ -1,111 +0,0 @@
+-package kr.nogcha.sejongbus;
+-
+-import android.app.Fragment;
+-import android.app.FragmentManager;
+-import android.content.Intent;
+-import android.graphics.Color;
+-import android.os.Bundle;
+-import android.support.v7.app.ActionBarActivity;
+-import android.text.Spannable;
+-import android.text.SpannableString;
+-import android.text.Spanned;
+-import android.text.style.BackgroundColorSpan;
+-import android.text.style.ForegroundColorSpan;
+-import android.view.Menu;
+-import android.view.MenuItem;
+-
+-public class HostActivity extends ActionBarActivity {
+-    public static final int BUS_ROUTE = 0;
+-    public static final int BUS_STOP = 1;
+-    public static final int ROUTE_EXPLORE = 2;
+-
+-    public static Spannable getRouteType(int route_type) {
+-        Spannable routeType;
+-        int backgroundColor;
+-        switch (route_type) {
+-            case 43:
+-                routeType = new SpannableString("세종광역");
+-                backgroundColor = Color.RED;
+-                break;
+-            case 50:
+-                routeType = new SpannableString("대전광역");
+-                backgroundColor = Color.RED;
+-                break;
+-            case 51:
+-                routeType = new SpannableString("청주광역");
+-                backgroundColor = Color.RED;
+-                break;
+-            case 30:
+-                routeType = new SpannableString("마을");
+-                backgroundColor = Color.GREEN;
+-                break;
+-            default:
+-                routeType = new SpannableString("일반");
+-                backgroundColor = Color.BLUE;
+-        }
+-        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
+-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+-        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
+-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+-        return routeType;
+-    }
+-
+-    @Override
+-    protected void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-        setContentView(R.layout.a_host);
+-    }
+-
+-    @Override
+-    protected void onStart() {
+-        super.onStart();
+-
+-        Fragment fragment;
+-        Bundle extras = getIntent().getExtras();
+-        Bundle bundle;
+-        switch (extras.getInt("arg0")) {
+-            case BUS_ROUTE:
+-                fragment = new BusRouteFragment();
+-                bundle = new Bundle();
+-                bundle.putInt("busRouteId", extras.getInt("arg1"));
+-                break;
+-            case BUS_STOP:
+-                fragment = new BusStopFragment();
+-                bundle = new Bundle();
+-                bundle.putInt("busStopId", extras.getInt("arg1"));
+-                break;
+-            case ROUTE_EXPLORE:
+-                fragment = new RouteExploreFragment();
+-                bundle = new Bundle();
+-                bundle.putInt("stBusStop", extras.getInt("arg1"));
+-                bundle.putInt("edBusStop", extras.getInt("arg2"));
+-                break;
+-            default:
+-                return;
+-        }
+-        fragment.setArguments(bundle);
+-
+-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+-    }
+-
+-    @Override
+-    public boolean onCreateOptionsMenu(Menu menu) {
+-        getMenuInflater().inflate(R.menu.menu_host, menu);
+-        return true;
+-    }
+-
+-    @Override
+-    public boolean onOptionsItemSelected(MenuItem item) {
+-        return super.onOptionsItemSelected(item);
+-    }
+-
+-    @Override
+-    public void onBackPressed() {
+-        FragmentManager fragmentManager = getFragmentManager();
+-        if (fragmentManager.getBackStackEntryCount() > 0) {
+-            fragmentManager.popBackStack();
+-        } else {
+-            startActivity(new Intent(this, MainActivity.class));
+-        }
+-    }
+-}
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/MainActivity.java b/app/src/main/java/kr/nogcha/sejongbus/MainActivity.java
+index 6068621..d249b49 100644
+--- a/app/src/main/java/kr/nogcha/sejongbus/MainActivity.java
++++ b/app/src/main/java/kr/nogcha/sejongbus/MainActivity.java
+@@ -1,3 +1,19 @@
++/*
++ * Copyright (C) 2015 Chobob City
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
+ package kr.nogcha.sejongbus;
+ 
+ import android.app.Activity;
+@@ -28,21 +44,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
+         inputMethodManager.toggleSoftInput(0, 0);
+     }
+ 
+-    public static boolean checkNetworkConnected() {
+-        ConnectivityManager connectivityManager =
+-                (ConnectivityManager) instance.getSystemService(Context.CONNECTIVITY_SERVICE);
+-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+-        if (networkInfo != null && networkInfo.isConnected()) {
+-            return true;
+-        } else {
+-            Toast.makeText(instance, "네트워크에 연결해 주세요.", Toast.LENGTH_SHORT)
+-                    .show();
+-            return false;
+-        }
+-    }
+-
+     public static void startHostActivity(int... args) {
+-        Intent intent = new Intent(instance, HostActivity.class);
++        Intent intent = new Intent(instance, TrafficActivity.class);
+         for (int i = 0; i < args.length; i++) intent.putExtra("arg" + i, args[i]);
+         instance.startActivity(intent);
+     }
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/MainFragment1.java b/app/src/main/java/kr/nogcha/sejongbus/MainFragment1.java
+index 25dc923..13c6c09 100644
+--- a/app/src/main/java/kr/nogcha/sejongbus/MainFragment1.java
++++ b/app/src/main/java/kr/nogcha/sejongbus/MainFragment1.java
+@@ -1,3 +1,19 @@
++/*
++ * Copyright (C) 2015 Chobob City
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
+ package kr.nogcha.sejongbus;
+ 
+ import android.app.Fragment;
+@@ -107,7 +123,7 @@ public class MainFragment1 extends Fragment {
+                 @Override
+                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                     try {
+-                        MainActivity.startHostActivity(HostActivity.BUS_ROUTE,
++                        MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE,
+                                 jsonArray.getJSONObject(position).getInt("route_id"));
+                     } catch (JSONException e) {
+                         e.printStackTrace();
+@@ -121,7 +137,7 @@ public class MainFragment1 extends Fragment {
+                 @Override
+                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                     try {
+-                        MainActivity.startHostActivity(HostActivity.BUS_STOP,
++                        MainActivity.startHostActivity(TrafficActivity.BUS_STOP,
+                                 jsonArray.getJSONObject(position).getInt("stop_id"));
+                     } catch (JSONException e) {
+                         e.printStackTrace();
+@@ -138,7 +154,7 @@ public class MainFragment1 extends Fragment {
+             for (int i = 0; i < jsonArray.length(); i++) {
+                 JSONObject json = jsonArray.getJSONObject(i);
+                 Spanned route = (Spanned) TextUtils.concat(
+-                        HostActivity.getRouteType(json.getInt("route_type")),
++                        TrafficActivity.getRouteType(json.getInt("route_type")),
+                         new SpannableString(" " + json.getString("route_name") + "\n" +
+                                 json.getString("st_stop_name") + "~" +
+                                 json.getString("ed_stop_name")));
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/MainFragment2.java b/app/src/main/java/kr/nogcha/sejongbus/MainFragment2.java
+index f3ef161..378e5b2 100644
+--- a/app/src/main/java/kr/nogcha/sejongbus/MainFragment2.java
++++ b/app/src/main/java/kr/nogcha/sejongbus/MainFragment2.java
+@@ -1,3 +1,19 @@
++/*
++ * Copyright (C) 2015 Chobob City
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License");
++ * you may not use this file except in compliance with the License.
++ * You may obtain a copy of the License at
++ *
++ *      http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ */
++
+ package kr.nogcha.sejongbus;
+ 
+ import android.app.Fragment;
+@@ -104,7 +120,7 @@ public class MainFragment2 extends Fragment
+                     Toast.makeText(getActivity(), "도착할 정류장을 검색하세요.", Toast.LENGTH_SHORT)
+                             .show();
+                 } else {
+-                    MainActivity.startHostActivity(HostActivity.ROUTE_EXPLORE, stBusStop,
++                    MainActivity.startHostActivity(TrafficActivity.ROUTE_EXPLORE, stBusStop,
+                             edBusStop);
+                 }
+             }
+diff --git a/app/src/main/java/kr/nogcha/sejongbus/RouteExploreFragment.java b/app/src/main/java/kr/nogcha/sejongbus/RouteExploreFragment.java
+deleted file mode 100644
+index 7f0f0ee..0000000
+--- a/app/src/main/java/kr/nogcha/sejongbus/RouteExploreFragment.java
++++ /dev/null
+@@ -1,81 +0,0 @@
+-package kr.nogcha.sejongbus;
+-
+-import android.app.Fragment;
+-import android.os.Bundle;
+-import android.view.LayoutInflater;
+-import android.view.View;
+-import android.view.ViewGroup;
+-import android.widget.ArrayAdapter;
+-import android.widget.ListView;
+-import android.widget.TextView;
+-
+-import org.json.JSONArray;
+-import org.json.JSONException;
+-import org.json.JSONObject;
+-
+-import java.util.ArrayList;
+-
+-public class RouteExploreFragment extends Fragment {
+-    private SejongBisClient bisClient;
+-    private JSONArray jsonArray;
+-
+-    public RouteExploreFragment() {
+-    }
+-
+-    @Override
+-    public void onCreate(Bundle savedInstanceState) {
+-        super.onCreate(savedInstanceState);
+-
+-        bisClient = new SejongBisClient(getActivity());
+-    }
+-
+-    @Override
+-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+-                             Bundle savedInstanceState) {
+-        View rootView = inflater.inflate(R.layout.f_main_2, container, false);
+-
+-        ArrayList<String> list = new ArrayList<>();
+-        try {
+-            jsonArray = bisClient.searchRouteExplore(getArguments().getInt("stBusStop"),
+-                    getArguments().getInt("edBusStop"), true).getJSONArray("routeExplore");
+-
+-            TextView textView = (TextView) rootView.findViewById(R.id.textView);
+-            JSONObject json = jsonArray.getJSONObject(0);
+-            textView.setText("출발: " + json.getString("sstationname") + "(" +
+-                    json.getString("sService_id") + ")\n도착: " +
+-                    json.getString("estationname") + "(" +
+-                    json.getString("eService_id") + ")");
+-
+-            for (int i = 0; i < jsonArray.length(); i++) {
+-                json = jsonArray.getJSONObject(i);
+-                String route;
+-
+-                int xtype = json.getInt("xtype");
+-                if (xtype == 1) {
+-                    route = "무";
+-                } else {
+-                    route = "";
+-                }
+-                route += "환승 경로\n" + json.getString("sstationname") + "에서 " +
+-                        json.getString("srouteno") + "번 버스에 승차\n";
+-                if (xtype != 1) {
+-                    route += json.getString("tstationname") + "에서 " +
+-                            json.getString("erouteno") + "번 버스로 환승\n";
+-                }
+-                route += json.getString("estationname") + "에서 하차\n" +
+-                        json.getString("seq") + "개 정류장, " +
+-                        json.getInt("distance") / 1000. + "km";
+-
+-                list.add(route);
+-            }
+-        } catch (JSONException e) {
+-            e.printStackTrace();
+-        }
+-
+-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
+-                android.R.layout.simple_list_item_1, list));
+-
+-        return rootView;
+-    }
+-}
+diff --git a/app/src/main/res/layout/a_host.xml b/app/src/main/res/layout/a_host.xml
+index dd51329..e6959e4 100644
+--- a/app/src/main/res/layout/a_host.xml
++++ b/app/src/main/res/layout/a_host.xml
+@@ -1,3 +1,20 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2015 Chobob City
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
+ <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:id="@+id/container"
+diff --git a/app/src/main/res/layout/a_main.xml b/app/src/main/res/layout/a_main.xml
+index b6c7125..b131df2 100644
+--- a/app/src/main/res/layout/a_main.xml
++++ b/app/src/main/res/layout/a_main.xml
+@@ -1,13 +1,30 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2015 Chobob City
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent">
++    android:layout_height="match_parent"
++    tools:context=".MainActivity">
+ 
+     <android.support.v4.view.ViewPager
+         android:id="@+id/pager"
+         android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        tools:context=".MainActivity" />
++        android:layout_height="match_parent" />
+ 
+     <ImageButton
+         android:layout_width="56dp"
+diff --git a/app/src/main/res/layout/f_bus_route.xml b/app/src/main/res/layout/f_bus_route.xml
+deleted file mode 100644
+index 3157d18..0000000
+--- a/app/src/main/res/layout/f_bus_route.xml
++++ /dev/null
+@@ -1,65 +0,0 @@
+-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:background="@color/whitegray"
+-    tools:context=".BusRouteFragment">
+-
+-    <RelativeLayout
+-        android:id="@+id/rl_common_txt"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:background="@drawable/d_cardview_bg_blue">
+-
+-        <TextView
+-            android:id="@+id/textView1"
+-            style="@style/lsize_textview_white"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:layout_centerVertical="true" />
+-
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="wrap_content"
+-            android:layout_centerVertical="true"
+-            android:layout_marginBottom="8dp"
+-            android:layout_marginRight="8dp"
+-            android:layout_marginTop="8dp"
+-            android:layout_toRightOf="@id/textView1"
+-            android:background="@drawable/d_rounded_white"
+-            android:orientation="vertical"
+-            android:padding="8dp">
+-
+-            <TextView
+-                android:id="@+id/textView2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginBottom="2dp"
+-                android:layout_marginLeft="2dp"
+-                android:textColor="#000000"
+-                android:textSize="18dp" />
+-
+-            <TextView
+-                android:id="@+id/textView3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginLeft="2dp"
+-                android:textSize="14dp" />
+-
+-        </LinearLayout>
+-
+-    </RelativeLayout>
+-
+-    <RelativeLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:layout_below="@id/rl_common_txt">
+-
+-        <ListView
+-            android:id="@+id/listView"
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent" />
+-
+-    </RelativeLayout>
+-
+-</RelativeLayout>
+diff --git a/app/src/main/res/layout/f_bus_stop.xml b/app/src/main/res/layout/f_bus_stop.xml
+deleted file mode 100644
+index 5acf75c..0000000
+--- a/app/src/main/res/layout/f_bus_stop.xml
++++ /dev/null
+@@ -1,65 +0,0 @@
+-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    xmlns:tools="http://schemas.android.com/tools"
+-    android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:background="@color/whitegray"
+-    tools:context=".BusStopFragment">
+-
+-    <RelativeLayout
+-        android:id="@+id/rl_common_txt"
+-        android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:background="@drawable/d_cardview_bg_blue">
+-
+-        <TextView
+-            android:id="@+id/textView1"
+-            style="@style/lsize_textview_white"
+-            android:layout_width="wrap_content"
+-            android:layout_height="wrap_content"
+-            android:layout_centerVertical="true" />
+-
+-        <LinearLayout
+-            android:layout_width="match_parent"
+-            android:layout_height="wrap_content"
+-            android:layout_centerVertical="true"
+-            android:layout_marginBottom="8dp"
+-            android:layout_marginRight="8dp"
+-            android:layout_marginTop="8dp"
+-            android:layout_toRightOf="@id/textView1"
+-            android:background="@drawable/d_rounded_white"
+-            android:orientation="vertical"
+-            android:padding="8dp">
+-
+-            <TextView
+-                android:id="@+id/textView2"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginBottom="2dp"
+-                android:layout_marginLeft="2dp"
+-                android:textColor="#000000"
+-                android:textSize="18dp" />
+-
+-            <TextView
+-                android:id="@+id/textView3"
+-                android:layout_width="wrap_content"
+-                android:layout_height="wrap_content"
+-                android:layout_marginLeft="2dp"
+-                android:textSize="14dp" />
+-
+-        </LinearLayout>
+-
+-    </RelativeLayout>
+-
+-    <RelativeLayout
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"
+-        android:layout_below="@id/rl_common_txt">
+-
+-        <ListView
+-            android:id="@+id/listView"
+-            android:layout_width="match_parent"
+-            android:layout_height="match_parent" />
+-
+-    </RelativeLayout>
+-
+-</RelativeLayout>
+diff --git a/app/src/main/res/layout/f_main_1.xml b/app/src/main/res/layout/f_main_1.xml
+index 251f83b..cb8608d 100644
+--- a/app/src/main/res/layout/f_main_1.xml
++++ b/app/src/main/res/layout/f_main_1.xml
+@@ -1,3 +1,20 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2015 Chobob City
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+diff --git a/app/src/main/res/layout/f_main_2.xml b/app/src/main/res/layout/f_main_2.xml
+index 51c7aa6..dc0846c 100644
+--- a/app/src/main/res/layout/f_main_2.xml
++++ b/app/src/main/res/layout/f_main_2.xml
+@@ -1,3 +1,20 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2015 Chobob City
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
+ <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_width="match_parent"
+diff --git a/app/src/main/res/layout/v_custom_listitem.xml b/app/src/main/res/layout/v_custom_listitem.xml
+index 193a284..336de6c 100644
+--- a/app/src/main/res/layout/v_custom_listitem.xml
++++ b/app/src/main/res/layout/v_custom_listitem.xml
+@@ -1,4 +1,3 @@
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:orientation="vertical" />
++    android:layout_height="match_parent" />
+diff --git a/app/src/main/res/values/strings.xml b/app/src/main/res/values/strings.xml
+index a6fc94a..a424b55 100644
+--- a/app/src/main/res/values/strings.xml
++++ b/app/src/main/res/values/strings.xml
+@@ -1,4 +1,20 @@
+ <?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2015 Chobob City
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
+ <resources>
+ 
+     <string name="app_name">세종버스</string>
+diff --git a/app/src/main/res/values/styles.xml b/app/src/main/res/values/styles.xml
+index 0e5c258..b2a3819 100644
+--- a/app/src/main/res/values/styles.xml
++++ b/app/src/main/res/values/styles.xml
+@@ -1,3 +1,20 @@
++<?xml version="1.0" encoding="utf-8"?>
++<!--
++     Copyright (C) 2015 Chobob City
++
++     Licensed under the Apache License, Version 2.0 (the "License");
++     you may not use this file except in compliance with the License.
++     You may obtain a copy of the License at
++
++          http://www.apache.org/licenses/LICENSE-2.0
++
++     Unless required by applicable law or agreed to in writing, software
++     distributed under the License is distributed on an "AS IS" BASIS,
++     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++     See the License for the specific language governing permissions and
++     limitations under the License.
++-->
++
+ <resources>
+ 
+     <color name="whitegray">#e5e5e5</color>
+@@ -35,7 +52,7 @@
+         <item name="android:textColor">#99eeeeee</item>
+         <item name="android:textSize">12dp</item>
+     </style>
+-    
++
+     <?버튼스타일?>
+     <style name="btn_blue">
+         <item name="android:background">@color/mainblue</item>

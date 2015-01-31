@@ -1,3 +1,19 @@
+/*
+ * Copyright (C) 2015 Chobob City
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
@@ -14,7 +30,7 @@ import android.text.style.ForegroundColorSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class HostActivity extends ActionBarActivity {
+public class TrafficActivity extends ActionBarActivity {
     public static final int BUS_ROUTE = 0;
     public static final int BUS_STOP = 1;
     public static final int ROUTE_EXPLORE = 2;
@@ -65,17 +81,17 @@ public class HostActivity extends ActionBarActivity {
         Bundle bundle;
         switch (extras.getInt("arg0")) {
             case BUS_ROUTE:
-                fragment = new BusRouteFragment();
+                fragment = new TrafficFragment1();
                 bundle = new Bundle();
                 bundle.putInt("busRouteId", extras.getInt("arg1"));
                 break;
             case BUS_STOP:
-                fragment = new BusStopFragment();
+                fragment = new TrafficFragment2();
                 bundle = new Bundle();
                 bundle.putInt("busStopId", extras.getInt("arg1"));
                 break;
             case ROUTE_EXPLORE:
-                fragment = new RouteExploreFragment();
+                fragment = new TrafficFragment3();
                 bundle = new Bundle();
                 bundle.putInt("stBusStop", extras.getInt("arg1"));
                 bundle.putInt("edBusStop", extras.getInt("arg2"));
