@@ -13,9 +13,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_margin="16dp"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/btn_search_cir"/>
+        android:layout_width="56dp"
+        android:layout_height="56dp"/>
 
 </RelativeLayout>
 
