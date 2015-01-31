@@ -26,6 +26,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.widget.Toast;
 
 import org.json.JSONObject;
@@ -144,6 +145,7 @@ class SejongBisClient {
                         HttpURLConnection connection = null;
                         String response = null;
                         try {
+                            Log.v("SejongBisClient", "Network is working");
                             connection = (HttpURLConnection) new URL(params[0]).openConnection();
                             connection.setDoOutput(true);
                             connection.setChunkedStreamingMode(0);
