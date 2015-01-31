@@ -46,6 +46,12 @@ class SejongBisClient {
         mContext = context;
     }
 
+    // VERY HEAVY (~500KB)
+    JSONObject searchBusRealLocation(int busRouteId) {
+        String params = "busRouteId=" + busRouteId;
+        return sendRequest("searchBusRealLocation", params);
+    }
+
     JSONObject searchBusRealLocationDetail(int busRouteId) {
         String params = "busRouteId=" + busRouteId;
         return sendRequest("searchBusRealLocationDetail", params);
@@ -61,11 +67,20 @@ class SejongBisClient {
         return sendRequest("searchBusRouteDetail", params, isMobile);
     }
 
+    // VERY HEAVY (~580KB)
+    JSONObject searchBusRouteExpMap(int stRouteId, int edRouteId, int sstOrd, int sedOrd,
+                                    int estOrd, int eedOrd, int stStopId, int edStopId) {
+        String params = "stRouteId=" + stRouteId + "&edRouteId=" + edRouteId + "&sstOrd=" + sstOrd
+        + "&sedOrd=" + sedOrd + "&estOrd=" + estOrd + "&eedOrd=" + eedOrd + "&stStopId=" + stStopId
+        + "&edStopId=" + edStopId;
+        return sendRequest("searchBusRouteExpMap", params);
+    }
+
     JSONObject searchBusRouteExpMap1(int stRouteId, int sstOrd, int eedOrd, int stStopId,
                                      int edStopId) {
         String params = "stRouteId=" + stRouteId + "&sstOrd=" + sstOrd + "&eedOrd=" + eedOrd
                 + "&stStopId=" + stStopId + "&edStopId=" + edStopId;
-        return sendRequest("web/traffic/searchBusRouteExpMap1", params);
+        return sendRequest("searchBusRouteExpMap1", params);
     }
 
     JSONObject searchBusRouteMap(int busRouteId, boolean isMobile) {
@@ -78,9 +93,19 @@ class SejongBisClient {
         return sendRequest("searchBusStop", params, isMobile);
     }
 
+    JSONObject searchBusStopNearUserPoint(double lat, double lng) {
+        String params = "lat=" + lat + "&lng=" + lng;
+        return sendRequest("searchBusStopNearUserPoint", params);
+    }
+
     JSONObject searchBusStopRoute(int busStopId, boolean isMobile) {
         String params = "busStopId=" + busStopId;
         return sendRequest("searchBusStopRoute", params, isMobile);
+    }
+
+    JSONObject searchBusTimeList(int busRouteId) {
+        String params = "busRouteId=" + busRouteId;
+        return sendRequest("searchBusTimeList", params);
     }
 
     JSONObject searchRouteExplore(int stBusStop, int edBusStop, boolean isMobile) {
