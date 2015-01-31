@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e5e5e5"
+    android:background="@color/whitegray"
     tools:context=".MainFragment1">
 
     <RelativeLayout
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cardview_bg_blue"
+        android:background="@drawable/d_cardview_bg_blue"
         android:padding="8dp">
 
         <EditText
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/rounded_white"
+            android:background="@drawable/d_rounded_white"
             android:hint="정류장 또는 노선번호를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"

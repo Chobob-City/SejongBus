@@ -2,14 +2,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5E5E5"
+    android:background="@color/whitegray"
     tools:context=".BusRouteFragment">
 
     <RelativeLayout
         android:id="@+id/rl_common_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/cardview_bg_blue">
+        android:background="@drawable/d_cardview_bg_blue">
 
         <TextView
             android:id="@+id/textView1"
@@ -26,7 +26,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/textView1"
-            android:background="@drawable/rounded_white"
+            android:background="@drawable/d_rounded_white"
             android:orientation="vertical"
             android:padding="8dp">
 
