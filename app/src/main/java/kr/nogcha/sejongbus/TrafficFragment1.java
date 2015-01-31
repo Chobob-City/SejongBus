@@ -34,17 +34,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class TrafficFragment1 extends Fragment {
-    private SejongBisClient bisClient;
-    private JSONArray jsonArray;
-
-    public TrafficFragment1() {
-    }
+    private SejongBisClient mBisClient;
+    private JSONArray mJsonArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bisClient = new SejongBisClient(getActivity());
+        mBisClient = new SejongBisClient(getActivity());
     }
 
     @Override
@@ -54,38 +50,36 @@ public class TrafficFragment1 extends Fragment {
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            jsonArray = bisClient.searchBusRouteDetail(getArguments().getInt("arg1"), true)
+            mJsonArray = mBisClient.searchBusRouteDetail(getArguments().getInt("arg1"), true)
                     .getJSONArray("busRouteDetailList");
 
             TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
             TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
             TextView textView3 = (TextView) rootView.findViewById(R.id.textView3);
-            JSONObject json = jsonArray.getJSONObject(jsonArray.length() - 1);
+            JSONObject json = mJsonArray.getJSONObject(mJsonArray.length() - 1);
             textView1.setText(json.getString("route_name"));
-            textView2.setText(json.getString("st_stop_name") + "~" +
-                    json.getString("ed_stop_name"));
+            textView2.setText(json.getString("st_stop_name") + "~"
+                    + json.getString("ed_stop_name"));
             textView3.setText(json.getString("alloc_time"));
 
-            for (int i = 0; i < jsonArray.length() - 1; i++) {
-                json = jsonArray.getJSONObject(i);
-                list.add(json.getString("stop_name") + "\n(" +
-                        json.getString("service_id") + ")");
+            for (int i = 0; i < mJsonArray.length() - 1; i++) {
+                json = mJsonArray.getJSONObject(i);
+                list.add(json.getString("stop_name") + "(" + json.getString("service_id") + ")");
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, list));
+        listView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
+                list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Fragment busStopFragment = new TrafficFragment2();
                 Bundle bundle = new Bundle();
                 try {
-                    bundle.putInt("arg1", jsonArray.getJSONObject(position)
-                            .getInt("stop_id"));
+                    bundle.putInt("arg1", mJsonArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

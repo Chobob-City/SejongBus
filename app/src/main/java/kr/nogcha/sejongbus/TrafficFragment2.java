@@ -37,17 +37,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class TrafficFragment2 extends Fragment {
-    private SejongBisClient bisClient;
-    private JSONArray jsonArray;
-
-    public TrafficFragment2() {
-    }
+    private SejongBisClient mBisClient;
+    private JSONArray mJsonArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bisClient = new SejongBisClient(getActivity());
+        mBisClient = new SejongBisClient(getActivity());
     }
 
     @Override
@@ -57,35 +53,35 @@ public class TrafficFragment2 extends Fragment {
 
         ArrayList<Spanned> list = new ArrayList<>();
         try {
-            jsonArray = bisClient.searchBusStopRoute(getArguments().getInt("arg1"), true)
+            mJsonArray = mBisClient.searchBusStopRoute(getArguments().getInt("arg1"), true)
                     .getJSONArray("busStopRouteList");
 
-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
-            JSONObject json = jsonArray.getJSONObject(0);
-            textView1.setText(json.getString("stop_name") + "(" + json.getString("service_id") +
-                    ")");
+            TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
+            JSONObject json = mJsonArray.getJSONObject(0);
+            textView2.setText(json.getString("stop_name") + "(" + json.getString("service_id")
+                    + ")");
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                json = jsonArray.getJSONObject(i);
+            for (int i = 0; i < mJsonArray.length(); i++) {
+                json = mJsonArray.getJSONObject(i);
 
                 Spanned route = (Spanned) TextUtils.concat(
-                        bisClient.getRouteType(json.getInt("route_type")),
+                        mBisClient.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n"));
 
                 int provide_code = json.getInt("provide_code");
                 switch (provide_code) {
                     case 1:
-                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: " +
-                                json.getString("provide_type") + "\n현위치: 기점"));
+                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: "
+                                + json.getString("provide_type") + "\n현위치: 기점"));
                         break;
                     case 2:
                         route = (Spanned) TextUtils.concat(route,
                                 new SpannableString("회차지 대기 중"));
                         break;
                     default:
-                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: " +
-                                json.getString("provide_type") + "\n현위치: " +
-                                json.getString("rstop")));
+                        route = (Spanned) TextUtils.concat(route, new SpannableString("도착: "
+                                + json.getString("provide_type") + "\n현위치: "
+                                + json.getString("rstop")));
                 }
                 list.add(route);
             }
@@ -94,16 +90,15 @@ public class TrafficFragment2 extends Fragment {
         }
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, list));
+        listView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
+                list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Fragment busRouteFragment = new TrafficFragment1();
                 Bundle bundle = new Bundle();
                 try {
-                    bundle.putInt("arg1", jsonArray.getJSONObject(position)
-                            .getInt("route_id"));
+                    bundle.putInt("arg1", mJsonArray.getJSONObject(position).getInt("route_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

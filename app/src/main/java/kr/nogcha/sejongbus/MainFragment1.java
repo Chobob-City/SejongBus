@@ -42,23 +42,18 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class MainFragment1 extends Fragment {
-    private SejongBisClient bisClient;
-    private ArrayList<Spanned> list;
-    private ArrayAdapter<Spanned> adapter;
-    private EditText editText;
-    private ListView listView;
-    private JSONArray jsonArray;
-
-    public MainFragment1() {
-    }
+    private SejongBisClient mBisClient;
+    private ArrayList<Spanned> mList;
+    private ArrayAdapter<Spanned> mAdapter;
+    private ListView mListView;
+    private JSONArray mJsonArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        bisClient = new SejongBisClient(getActivity());
-        list = new ArrayList<>();
-        adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
+        mBisClient = new SejongBisClient(getActivity());
+        mList = new ArrayList<>();
+        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mList);
     }
 
     @Override
@@ -66,7 +61,7 @@ public class MainFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_1, container, false);
 
-        editText = (EditText) rootView.findViewById(R.id.editText);
+        final EditText editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -82,33 +77,23 @@ public class MainFragment1 extends Fragment {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     String query = editText.getText().toString();
-                    if (!query.equals("")) {
-                        MainActivity.toggleSoftInput();
-
-                        onSearch(query);
-                    }
-
+                    if (!query.equals("")) onSearch(query);
                     return true;
                 }
                 return false;
             }
         });
 
-        listView = (ListView) rootView.findViewById(R.id.listView);
-        TextView textView = (TextView) rootView.findViewById(R.id.textView);
-        listView.setEmptyView(textView);
-        listView.setAdapter(adapter);
+        mListView = (ListView) rootView.findViewById(R.id.listView);
+        mListView.setEmptyView(rootView.findViewById(R.id.textView));
+        mListView.setAdapter(mAdapter);
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String query = editText.getText().toString();
-                if (!query.equals("")) {
-                    MainActivity.toggleSoftInput();
-
-                    onSearch(query);
-                }
+                if (!query.equals("")) onSearch(query);
             }
         });
 
@@ -116,15 +101,17 @@ public class MainFragment1 extends Fragment {
     }
 
     private void onSearch(String query) {
+        MainActivity.hideSoftInput();
+
         if (Pattern.matches("^[0-9-]+$", query)) {
             searchBusRoute(query);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE_DETAIL,
-                                jsonArray.getJSONObject(position).getInt("route_id"));
+                                mJsonArray.getJSONObject(position).getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -133,12 +120,12 @@ public class MainFragment1 extends Fragment {
         } else {
             searchBusStop(query);
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
-                                jsonArray.getJSONObject(position).getInt("stop_id"));
+                                mJsonArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -149,35 +136,34 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusRoute(String busRoute) {
         try {
-            jsonArray = bisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
-            list.clear();
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                Spanned route = (Spanned) TextUtils.concat(
-                        bisClient.getRouteType(json.getInt("route_type")),
-                        new SpannableString(" " + json.getString("route_name") + "\n" +
-                                json.getString("st_stop_name") + "~" +
-                                json.getString("ed_stop_name")));
-                list.add(route);
+            mJsonArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
+            mList.clear();
+            for (int i = 0; i < mJsonArray.length(); i++) {
+                JSONObject json = mJsonArray.getJSONObject(i);
+                mList.add((Spanned) TextUtils.concat(
+                        mBisClient.getRouteType(json.getInt("route_type")),
+                        new SpannableString(" " + json.getString("route_name") + "\n"
+                                + json.getString("st_stop_name") + "~"
+                                + json.getString("ed_stop_name"))));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        adapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void searchBusStop(String busStop) {
         try {
-            jsonArray = bisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
-            list.clear();
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject json = jsonArray.getJSONObject(i);
-                list.add(new SpannableString(json.getString("stop_name") + "\n(" +
-                        json.getString("service_id") + ")"));
+            mJsonArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
+            mList.clear();
+            for (int i = 0; i < mJsonArray.length(); i++) {
+                JSONObject json = mJsonArray.getJSONObject(i);
+                mList.add(new SpannableString(json.getString("stop_name") + "\n("
+                        + json.getString("service_id") + ")"));
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        adapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 }

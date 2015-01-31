@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
     private static Activity mInstance;
     private ViewPager viewPager;
 
-    public static void toggleSoftInput() {
+    public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
                 (InputMethodManager) mInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.toggleSoftInput(0, 0);
@@ -88,13 +88,11 @@ public class MainActivity extends ActionBarActivity {
                         @Override
                         public void onTabUnselected(ActionBar.Tab tab,
                                                     FragmentTransaction fragmentTransaction) {
-
                         }
 
                         @Override
                         public void onTabReselected(ActionBar.Tab tab,
                                                     FragmentTransaction fragmentTransaction) {
-
                         }
                     }));
         }

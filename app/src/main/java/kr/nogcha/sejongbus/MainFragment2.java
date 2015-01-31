@@ -89,7 +89,7 @@ public class MainFragment2 extends Fragment
             public void onClick(View v) {
                 String query = editText1.getText().toString();
                 if (!query.equals("")) {
-                    MainActivity.toggleSoftInput();
+                    MainActivity.hideSoftInput();
 
                     onSearch1(query);
                 }
@@ -102,7 +102,7 @@ public class MainFragment2 extends Fragment
             public void onClick(View v) {
                 String query = editText2.getText().toString();
                 if (!query.equals("")) {
-                    MainActivity.toggleSoftInput();
+                    MainActivity.hideSoftInput();
 
                     onSearch2(query);
                 }
@@ -163,7 +163,7 @@ public class MainFragment2 extends Fragment
             if (id == R.id.editText1) {
                 String query = editText1.getText().toString();
                 if (!query.equals("")) {
-                    MainActivity.toggleSoftInput();
+                    MainActivity.hideSoftInput();
 
                     onSearch1(query);
                 }
@@ -172,7 +172,7 @@ public class MainFragment2 extends Fragment
             } else if (id == R.id.editText2) {
                 String query = editText2.getText().toString();
                 if (!query.equals("")) {
-                    MainActivity.toggleSoftInput();
+                    MainActivity.hideSoftInput();
 
                     onSearch2(query);
                 }
