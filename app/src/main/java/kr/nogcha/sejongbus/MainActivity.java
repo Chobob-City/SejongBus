@@ -127,8 +127,9 @@ public class MainActivity extends ActionBarActivity {
                 case 0:
                     return new MainFragment1();
                 case 1:
-                case 2:
                     return new MainFragment2();
+                case 2:
+                    return new MainFragment3();
                 default:
                     return null;
             }
