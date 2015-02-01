@@ -19,7 +19,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
-    tools:context=".TrafficFragment1">
+    tools:context="kr.nogcha.sejongbus.TrafficFragment1">
 
     <RelativeLayout
         android:id="@+id/rl_common_txt"
