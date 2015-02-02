@@ -33,7 +33,7 @@ import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends ActionBarActivity {
     private static Activity mInstance;
-    private ViewPager viewPager;
+    private ViewPager mPager;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
@@ -47,6 +47,7 @@ public class MainActivity extends ActionBarActivity {
         mInstance.startActivity(intent);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +55,11 @@ public class MainActivity extends ActionBarActivity {
 
         mInstance = this;
 
+        mPager = (ViewPager) findViewById(R.id.pager);
+        MainAdapter adapter = new MainAdapter(getFragmentManager());
+        mPager.setAdapter(adapter);
         final ActionBar actionBar = getSupportActionBar();
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-
-        viewPager = (ViewPager) findViewById(R.id.pager);
-        MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(getFragmentManager());
-        viewPager.setAdapter(mainPagerAdapter);
-        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
@@ -76,13 +75,14 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        for (int i = 0; i < mainPagerAdapter.getCount(); i++) {
-            actionBar.addTab(actionBar.newTab().setText(mainPagerAdapter.getPageTitle(i))
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        for (int i = 0; i < adapter.getCount(); i++) {
+            actionBar.addTab(actionBar.newTab().setText(adapter.getPageTitle(i))
                     .setTabListener(new ActionBar.TabListener() {
                         @Override
                         public void onTabSelected(ActionBar.Tab tab,
                                                   FragmentTransaction fragmentTransaction) {
-                            viewPager.setCurrentItem(tab.getPosition());
+                            mPager.setCurrentItem(tab.getPosition());
                         }
 
                         @Override
@@ -116,8 +116,8 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class MainPagerAdapter extends FragmentPagerAdapter {
-        public MainPagerAdapter(FragmentManager fm) {
+    private class MainAdapter extends FragmentPagerAdapter {
+        public MainAdapter(FragmentManager fm) {
             super(fm);
         }
 
