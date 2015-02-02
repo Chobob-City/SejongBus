@@ -87,8 +87,7 @@ public class MainFragment2 extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String query = mEditText1.getText().toString();
-                    if (!query.equals("")) onSearch1(query);
+                    onSearch1();
                     return true;
                 }
                 return false;
@@ -115,8 +114,7 @@ public class MainFragment2 extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String query = mEditText2.getText().toString();
-                    if (!query.equals("")) onSearch2(query);
+                    onSearch2();
                     return true;
                 }
                 return false;
@@ -131,8 +129,7 @@ public class MainFragment2 extends Fragment {
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = mEditText1.getText().toString();
-                if (!query.equals("")) onSearch1(query);
+                onSearch1();
             }
         });
 
@@ -140,8 +137,7 @@ public class MainFragment2 extends Fragment {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = mEditText2.getText().toString();
-                if (!query.equals("")) onSearch2(query);
+                onSearch2();
             }
         });
 
@@ -165,46 +161,54 @@ public class MainFragment2 extends Fragment {
         return rootView;
     }
 
-    private void onSearch1(String query) {
-        MainActivity.hideSoftInput();
+    private void onSearch1() {
+        String query = mEditText1.getText().toString();
+        if (!query.equals("")) {
+            MainActivity.hideSoftInput();
 
-        searchBusStop(query);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    JSONObject json = mJSONArray.getJSONObject(position);
-                    stBusStop = json.getInt("stop_id");
-                    mEditText1.setHint(json.getString("stop_name") + "("
-                            + json.getString("service_id") + ")");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mEditText1.setText("");
+            if (mBisClient.isNetworkConnected()) {
+                searchBusStop(query);
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        try {
+                            JSONObject json = mJSONArray.getJSONObject(position);
+                            stBusStop = json.getInt("stop_id");
+                            mEditText1.setHint(json.getString("stop_name") + "("
+                                    + json.getString("service_id") + ")");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mEditText1.setText("");
+                    }
+                });
             }
-        });
+        }
     }
 
-    private void onSearch2(String query) {
-        MainActivity.hideSoftInput();
+    private void onSearch2() {
+        String query = mEditText2.getText().toString();
+        if (!query.equals("")) {
+            MainActivity.hideSoftInput();
 
-        searchBusStop(query);
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                try {
-                    JSONObject json = mJSONArray.getJSONObject(position);
-                    edBusStop = json.getInt("stop_id");
-                    mEditText2.setHint(json.getString("stop_name") + "("
-                            + json.getString("service_id") + ")");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mEditText2.setText("");
+            if (mBisClient.isNetworkConnected()) {
+                searchBusStop(query);
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        try {
+                            JSONObject json = mJSONArray.getJSONObject(position);
+                            edBusStop = json.getInt("stop_id");
+                            mEditText2.setHint(json.getString("stop_name") + "("
+                                    + json.getString("service_id") + ")");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mEditText2.setText("");
+                    }
+                });
             }
-        });
+        }
     }
 
     private void searchBusStop(String busStop) {

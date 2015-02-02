@@ -42,11 +42,13 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class MainFragment1 extends Fragment {
+    private EditText editText;
+    private ListView mListView;
+
     private SejongBisClient mBisClient;
+    private JSONArray mJSONArray;
     private ArrayList<Spanned> mList;
     private ArrayAdapter<Spanned> mAdapter;
-    private ListView mListView;
-    private JSONArray mJSONArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,7 +63,7 @@ public class MainFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_1, container, false);
 
-        final EditText editText = (EditText) rootView.findViewById(R.id.editText);
+        editText = (EditText) rootView.findViewById(R.id.editText);
         editText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -76,8 +78,7 @@ public class MainFragment1 extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    String query = editText.getText().toString();
-                    if (!query.equals("")) onSearch(query);
+                    onSearch();
                     return true;
                 }
                 return false;
@@ -92,45 +93,25 @@ public class MainFragment1 extends Fragment {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String query = editText.getText().toString();
-                if (!query.equals("")) onSearch(query);
+                onSearch();
             }
         });
 
         return rootView;
     }
 
-    private void onSearch(String query) {
-        MainActivity.hideSoftInput();
+    private void onSearch() {
+        String query = editText.getText().toString();
+        if (!query.equals("")) {
+            MainActivity.hideSoftInput();
 
-        if (Pattern.matches("^[0-9-]+$", query)) {
-            searchBusRoute(query);
-
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE_DETAIL,
-                                mJSONArray.getJSONObject(position).getInt("route_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+            if (mBisClient.isNetworkConnected()) {
+                if (Pattern.matches("^[0-9-]+$", query)) {
+                    searchBusRoute(query);
+                } else {
+                    searchBusStop(query);
                 }
-            });
-        } else {
-            searchBusStop(query);
-
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    try {
-                        MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
-                                mJSONArray.getJSONObject(position).getInt("stop_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
+            }
         }
     }
 
@@ -150,6 +131,17 @@ public class MainFragment1 extends Fragment {
             e.printStackTrace();
         }
         mAdapter.notifyDataSetChanged();
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE_DETAIL,
+                            mJSONArray.getJSONObject(position).getInt("route_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     private void searchBusStop(String busStop) {
@@ -165,5 +157,16 @@ public class MainFragment1 extends Fragment {
             e.printStackTrace();
         }
         mAdapter.notifyDataSetChanged();
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
+                            mJSONArray.getJSONObject(position).getInt("stop_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }
