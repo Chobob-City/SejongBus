@@ -42,23 +42,22 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class MainFragment2 extends Fragment {
+    private EditText mEditText1;
+    private EditText mEditText2;
+
+    private SejongBisClient mBisClient;
+    private JSONArray mJSONArray;
+    private ArrayList<Spanned> mList = new ArrayList<>();
+    private ArrayAdapter<Spanned> mAdapter;
+    private ListView mListView;
     // TODO
     private int stBusStop = 293018070;
     private int edBusStop = 293018069;
-    private SejongBisClient mBisClient;
-    private ArrayList<Spanned> mList;
-    private ArrayAdapter<Spanned> mAdapter;
-    private EditText mEditText1;
-    private EditText mEditText2;
-    private ListView mListView;
-    private JSONArray mJSONArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mBisClient = new SejongBisClient(getActivity());
-        mList = new ArrayList<>();
         mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mList);
     }
 
