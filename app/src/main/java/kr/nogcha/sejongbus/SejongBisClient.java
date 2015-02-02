@@ -46,7 +46,18 @@ class SejongBisClient {
         mContext = context;
     }
 
-    // VERY HEAVY (~500KB)
+    boolean isNetworkConnected() {
+        final ConnectivityManager connectivityManager =
+                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        if ((activeNetworkInfo != null) && activeNetworkInfo.isConnected()) {
+            return true;
+        } else {
+            Toast.makeText(mContext, "네트워크에 연결해 주세요.", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
     JSONObject searchBusRealLocation(int busRouteId) {
         String params = "busRouteId=" + busRouteId;
         return sendRequest("searchBusRealLocation", params);
@@ -67,12 +78,11 @@ class SejongBisClient {
         return sendRequest("searchBusRouteDetail", params, isMobile);
     }
 
-    // VERY HEAVY (~580KB)
     JSONObject searchBusRouteExpMap(int stRouteId, int edRouteId, int sstOrd, int sedOrd,
                                     int estOrd, int eedOrd, int stStopId, int edStopId) {
         String params = "stRouteId=" + stRouteId + "&edRouteId=" + edRouteId + "&sstOrd=" + sstOrd
-        + "&sedOrd=" + sedOrd + "&estOrd=" + estOrd + "&eedOrd=" + eedOrd + "&stStopId=" + stStopId
-        + "&edStopId=" + edStopId;
+                + "&sedOrd=" + sedOrd + "&estOrd=" + estOrd + "&eedOrd=" + eedOrd + "&stStopId="
+                + stStopId + "&edStopId=" + edStopId;
         return sendRequest("searchBusRouteExpMap", params);
     }
 
@@ -159,46 +169,40 @@ class SejongBisClient {
     }
 
     private JSONObject sendRequest(String url, String params, boolean isMobile) {
-        final ConnectivityManager connectivityManager =
-                (ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        if ((activeNetworkInfo != null) && activeNetworkInfo.isConnected()) {
-            try {
-                return new JSONObject(new AsyncTask<String, Void, String>() {
-                    @Override
-                    protected String doInBackground(String... params) {
-                        HttpURLConnection connection = null;
-                        String response = null;
-                        try {
-                            connection = (HttpURLConnection) new URL(params[0]).openConnection();
-                            connection.setDoOutput(true);
-                            connection.setChunkedStreamingMode(0);
+        JSONObject json = null;
+        try {
+            json = new JSONObject(new AsyncTask<String, Void, String>() {
+                @Override
+                protected String doInBackground(String... params) {
+                    HttpURLConnection connection = null;
+                    String response = null;
+                    try {
+                        connection = (HttpURLConnection) new URL(params[0]).openConnection();
+                        connection.setDoOutput(true);
+                        connection.setChunkedStreamingMode(0);
 
-                            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-                                    connection.getOutputStream(), "UTF-8"));
-                            writer.write(params[1]);
-                            writer.close();
+                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                connection.getOutputStream(), "UTF-8"));
+                        writer.write(params[1]);
+                        writer.close();
 
-                            BufferedReader reader = new BufferedReader(new InputStreamReader(
-                                    connection.getInputStream(), "UTF-8"));
-                            response = reader.readLine();
-                            Log.v("SejongBisClient", "Retrieved " + response.length() + "B");
-                            reader.close();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } finally {
-                            if (connection != null) connection.disconnect();
-                        }
-                        return response;
+                        BufferedReader reader = new BufferedReader(new InputStreamReader(
+                                connection.getInputStream(), "UTF-8"));
+                        response = reader.readLine();
+                        Log.v("SejongBisClient", "Retrieved " + response.length() + "B");
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } finally {
+                        if (connection != null) connection.disconnect();
                     }
-                }.execute("http://bis.sejong.go.kr/" + (!isMobile ? "web" : "mobile") + "/traffic/"
-                        + url, params).get());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Toast.makeText(mContext, "네트워크에 연결해 주세요.", Toast.LENGTH_SHORT).show();
+                    return response;
+                }
+            }.execute("http://bis.sejong.go.kr/" + (!isMobile ? "web" : "mobile") + "/traffic/"
+                    + url, params).get());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return null;
+        return json;
     }
 }
