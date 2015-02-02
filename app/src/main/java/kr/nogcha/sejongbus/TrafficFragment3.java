@@ -32,17 +32,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class TrafficFragment3 extends Fragment {
-    private SejongBisClient bisClient;
-    private JSONArray jsonArray;
+    private JSONArray mJSONArray = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        bisClient = new SejongBisClient(getActivity());
-
+        SejongBisClient bisClient = new SejongBisClient(getActivity());
         Bundle arguments = getArguments();
         try {
-            jsonArray = bisClient
+            mJSONArray = bisClient
                     .searchRouteExplore(arguments.getInt("arg1"), arguments.getInt("arg2"), true)
                     .getJSONArray("routeExplore");
         } catch (JSONException e) {
@@ -55,44 +53,48 @@ public class TrafficFragment3 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_traffic_3, container, false);
 
-        ArrayList<String> list = new ArrayList<>();
-        try {
-            TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
-            JSONObject json = jsonArray.getJSONObject(0);
-            textView2.setText("출발: " + json.getString("sstationname") + "("
-                    + json.getString("sService_id") + ")\n도착: " + json.getString("estationname")
-                    + "(" + json.getString("eService_id") + ")");
+        if (mJSONArray != null) {
+            ArrayList<String> list = new ArrayList<>();
+            try {
+                TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+                JSONObject json = mJSONArray.getJSONObject(0);
+                textView1.setText("출발: " + json.getString("sstationname") + "("
+                        + json.getString("sService_id") + ")\n도착: "
+                        + json.getString("estationname") + "(" + json.getString("eService_id")
+                        + ")");
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                json = jsonArray.getJSONObject(i);
-                String route;
+                for (int i = 0; i < mJSONArray.length(); i++) {
+                    json = mJSONArray.getJSONObject(i);
+                    String route;
 
-                int xtype = json.getInt("xtype");
-                if (xtype == 1) {
-                    route = "무";
-                } else {
-                    route = "";
+                    int xtype = json.getInt("xtype");
+                    if (xtype == 1) {
+                        route = "무";
+                    } else {
+                        route = "";
+                    }
+                    route += "환승 경로\n" + json.getString("sstationname") + "(" +
+                            json.getString("sService_id") + ")에서 " + json.getString("srouteno")
+                            + "번 버스에 승차\n";
+                    if (xtype != 1) {
+                        route += json.getString("tstationname") + "("
+                                + json.getString("tService_id") + ")에서 "
+                                + json.getString("erouteno") + "번 버스로 환승\n";
+                    }
+                    route += json.getString("estationname") + "(" + json.getString("eService_id")
+                            + ")에서 하차\n" + json.getString("seq") + "개 정류소, "
+                            + json.getInt("distance") / 1000. + "km";
+
+                    list.add(route);
                 }
-                route += "환승 경로\n" + json.getString("sstationname") + "(" +
-                        json.getString("sService_id") + ")에서 " + json.getString("srouteno")
-                        + "번 버스에 승차\n";
-                if (xtype != 1) {
-                    route += json.getString("tstationname") + "(" + json.getString("tService_id")
-                            + ")에서 " + json.getString("erouteno") + "번 버스로 환승\n";
-                }
-                route += json.getString("estationname") + "(" + json.getString("eService_id")
-                        + ")에서 하차\n" + json.getString("seq") + "개 정류소, "
-                        + json.getInt("distance") / 1000. + "km";
-
-                list.add(route);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1,
-                list));
+            ListView listView = (ListView) rootView.findViewById(R.id.listView);
+            listView.setAdapter(new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_list_item_1, list));
+        }
 
         return rootView;
     }
