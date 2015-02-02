@@ -46,7 +46,7 @@ public class MainFragment1 extends Fragment {
     private ArrayList<Spanned> mList;
     private ArrayAdapter<Spanned> mAdapter;
     private ListView mListView;
-    private JSONArray mJsonArray;
+    private JSONArray mJSONArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class MainFragment1 extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE_DETAIL,
-                                mJsonArray.getJSONObject(position).getInt("route_id"));
+                                mJSONArray.getJSONObject(position).getInt("route_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -125,7 +125,7 @@ public class MainFragment1 extends Fragment {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
-                                mJsonArray.getJSONObject(position).getInt("stop_id"));
+                                mJSONArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -136,10 +136,10 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusRoute(String busRoute) {
         try {
-            mJsonArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
+            mJSONArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
             mList.clear();
-            for (int i = 0; i < mJsonArray.length(); i++) {
-                JSONObject json = mJsonArray.getJSONObject(i);
+            for (int i = 0; i < mJSONArray.length(); i++) {
+                JSONObject json = mJSONArray.getJSONObject(i);
                 mList.add((Spanned) TextUtils.concat(
                         mBisClient.getRouteType(json.getInt("route_type")),
                         new SpannableString(" " + json.getString("route_name") + "\n"
@@ -154,10 +154,10 @@ public class MainFragment1 extends Fragment {
 
     private void searchBusStop(String busStop) {
         try {
-            mJsonArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
+            mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
             mList.clear();
-            for (int i = 0; i < mJsonArray.length(); i++) {
-                JSONObject json = mJsonArray.getJSONObject(i);
+            for (int i = 0; i < mJSONArray.length(); i++) {
+                JSONObject json = mJSONArray.getJSONObject(i);
                 mList.add(new SpannableString(json.getString("stop_name") + "\n("
                         + json.getString("service_id") + ")"));
             }

@@ -51,7 +51,7 @@ public class MainFragment2 extends Fragment {
     private EditText mEditText1;
     private EditText mEditText2;
     private ListView mListView;
-    private JSONArray mJsonArray;
+    private JSONArray mJSONArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -174,7 +174,7 @@ public class MainFragment2 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    JSONObject json = mJsonArray.getJSONObject(position);
+                    JSONObject json = mJSONArray.getJSONObject(position);
                     stBusStop = json.getInt("stop_id");
                     mEditText1.setHint(json.getString("stop_name") + "("
                             + json.getString("service_id") + ")");
@@ -195,7 +195,7 @@ public class MainFragment2 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    JSONObject json = mJsonArray.getJSONObject(position);
+                    JSONObject json = mJSONArray.getJSONObject(position);
                     edBusStop = json.getInt("stop_id");
                     mEditText2.setHint(json.getString("stop_name") + "("
                             + json.getString("service_id") + ")");
@@ -209,10 +209,10 @@ public class MainFragment2 extends Fragment {
 
     private void searchBusStop(String busStop) {
         try {
-            mJsonArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
+            mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
             mList.clear();
-            for (int i = 0; i < mJsonArray.length(); i++) {
-                JSONObject json = mJsonArray.getJSONObject(i);
+            for (int i = 0; i < mJSONArray.length(); i++) {
+                JSONObject json = mJSONArray.getJSONObject(i);
                 mList.add(new SpannableString(json.getString("stop_name") + "\n("
                         + json.getString("service_id") + ")"));
             }
