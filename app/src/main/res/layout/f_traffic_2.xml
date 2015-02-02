@@ -27,39 +27,32 @@
         android:layout_height="wrap_content"
         android:background="@drawable/d_cardview_bg_blue">
 
-        <TextView
-            android:id="@+id/textView1"
-            style="@style/lsize_textview_white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/textView1"
             android:background="@drawable/d_rounded_white"
             android:orientation="vertical"
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/textView1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:layout_marginLeft="2dp"
                 android:textColor="#000000"
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="2dp"
                 android:textSize="14dp" />
 
         </LinearLayout>
