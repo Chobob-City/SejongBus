@@ -22,10 +22,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-public class MainFragment3 extends Fragment {
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+
+public class MainFragment3 extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.f_main_3, container, false);
+        View rootView = inflater.inflate(R.layout.f_main_3, container, false);
+
+        MapFragment map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        map.getMapAsync(this);
+
+        return rootView;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        googleMap.setMyLocationEnabled(true);
     }
 }
