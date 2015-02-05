@@ -22,11 +22,30 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 
-public class MainFragment3 extends Fragment implements OnMapReadyCallback {
+public class MainFragment3 extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
+    GoogleApiClient mApiClient;
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
+        if (errorCode == ConnectionResult.SUCCESS) {
+            mApiClient = new GoogleApiClient.Builder(getActivity()).addApi(LocationServices.API)
+                    .addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(errorCode, getActivity(), 0);
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,6 +55,21 @@ public class MainFragment3 extends Fragment implements OnMapReadyCallback {
         map.getMapAsync(this);
 
         return rootView;
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
     @Override
