@@ -21,29 +21,35 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainFragment3 extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
-    GoogleApiClient mApiClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class MainFragment3 extends Fragment implements OnMapReadyCallback {
+    private SejongBisClient mBisClient;
+    private JSONArray mJSONArray;
+    private ArrayList<String> mList = new ArrayList<>();
+    private ArrayAdapter<String> mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getActivity());
-        if (errorCode == ConnectionResult.SUCCESS) {
-            mApiClient = new GoogleApiClient.Builder(getActivity()).addApi(LocationServices.API)
-                    .addConnectionCallbacks(this).addOnConnectionFailedListener(this).build();
-        } else {
-            GooglePlayServicesUtil.getErrorDialog(errorCode, getActivity(), 0);
-        }
+        mBisClient = new SejongBisClient(getActivity());
+        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mList);
     }
 
     @Override
@@ -54,26 +60,53 @@ public class MainFragment3 extends Fragment implements GoogleApiClient.Connectio
         MapFragment map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);
 
+        ListView listView = (ListView) rootView.findViewById(R.id.listView);
+        listView.setEmptyView(rootView.findViewById(R.id.textView));
+        listView.setAdapter(mAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                try {
+                    MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
+                            mJSONArray.getJSONObject(position).getInt("stop_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return rootView;
     }
 
     @Override
-    public void onConnected(Bundle bundle) {
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
+    public void onMapReady(final GoogleMap googleMap) {
+        // 조치원역
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(36.601031, 127.295882)));
         googleMap.setMyLocationEnabled(true);
+        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+            @Override
+            public void onCameraChange(CameraPosition cameraPosition) {
+                LatLng target = cameraPosition.target;
+                try {
+                    mJSONArray = mBisClient
+                            .searchSurroundStopList(target.latitude, target.longitude)
+                            .getJSONArray("busStopList");
+                    googleMap.clear();
+                    mList.clear();
+                    for (int i = 0; i < mJSONArray.length(); i++) {
+                        JSONObject json = mJSONArray.getJSONObject(i);
+                        String stop = json.getString("stop_name") + " ["
+                                + json.getString("service_id") + "]";
+                        googleMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
+                                .title(stop));
+                        mList.add(stop + "\n" + json.getString("distance") + "m");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mAdapter.notifyDataSetChanged();
+            }
+        });
     }
 }
