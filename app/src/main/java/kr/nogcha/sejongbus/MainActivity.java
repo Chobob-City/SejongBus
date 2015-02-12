@@ -53,7 +53,6 @@ public class MainActivity extends ActionBarActivity {
 
         mInstance = this;
         mFragmentManager = getFragmentManager();
-
         mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment1).commit();
     }
 
@@ -66,13 +65,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_search:
+            case R.id.action_main_1:
                 mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment1).commit();
                 return true;
-            case R.id.action_split:
+            case R.id.action_main_2:
                 mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment2).commit();
                 return true;
-            case R.id.action_place:
+            case R.id.action_main_3:
                 mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment3).commit();
                 return true;
             case R.id.action_settings:

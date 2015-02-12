@@ -17,6 +17,7 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,6 +77,14 @@ public class MainFragment3 extends Fragment implements OnMapReadyCallback {
         });
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        final FragmentManager fragmentManager = getFragmentManager();
+        MapFragment mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.map);
+        if (mapFragment != null) fragmentManager.beginTransaction().remove(mapFragment).commit();
     }
 
     @Override
