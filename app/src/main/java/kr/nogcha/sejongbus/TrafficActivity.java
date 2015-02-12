@@ -53,7 +53,7 @@ public class TrafficActivity extends ActionBarActivity {
                 return;
         }
         fragment.setArguments(extras);
-        getFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.frame, fragment).commit();
     }
 
     @Override

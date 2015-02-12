@@ -92,7 +92,7 @@ public class TrafficFragment1 extends Fragment {
                     fragment.setArguments(bundle);
 
                     FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, fragment);
+                    transaction.replace(R.id.frame, fragment);
                     transaction.addToBackStack(null);
                     transaction.commit();
                 }
