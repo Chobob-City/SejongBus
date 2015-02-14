@@ -42,9 +42,8 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 public class MainFragment1 extends Fragment {
-    private EditText editText;
+    private EditText mEditText;
     private ListView mListView;
-
     private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
     private ArrayList<Spanned> mList;
@@ -63,18 +62,18 @@ public class MainFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_1, container, false);
 
-        editText = (EditText) rootView.findViewById(R.id.editText);
-        editText.setOnTouchListener(new View.OnTouchListener() {
+        mEditText = (EditText) rootView.findViewById(R.id.editText);
+        mEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    editText.setText("");
+                    mEditText.setText("");
                     return true;
                 }
                 return false;
             }
         });
-        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -101,7 +100,7 @@ public class MainFragment1 extends Fragment {
     }
 
     private void onSearch() {
-        String query = editText.getText().toString();
+        String query = mEditText.getText().toString();
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
 

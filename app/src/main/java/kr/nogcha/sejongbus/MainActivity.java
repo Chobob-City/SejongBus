@@ -55,7 +55,7 @@ public class MainActivity extends ActionBarActivity {
 
         sInstance = this;
         mFragmentManager = getFragmentManager();
-        mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1).commit();
+        mFragmentManager.beginTransaction().add(R.id.frameLayout, mMainFragment1).commit();
     }
 
     @Override

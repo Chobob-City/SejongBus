@@ -37,8 +37,8 @@ public class TrafficActivity extends ActionBarActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Bundle extras = getIntent().getExtras();
         Fragment fragment;
+        Bundle extras = getIntent().getExtras();
         switch (extras.getInt("arg0")) {
             case BUS_ROUTE_DETAIL:
                 fragment = new TrafficFragment1();

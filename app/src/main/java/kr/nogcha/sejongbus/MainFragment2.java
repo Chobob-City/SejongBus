@@ -44,7 +44,6 @@ import java.util.ArrayList;
 public class MainFragment2 extends Fragment {
     private EditText mEditText1;
     private EditText mEditText2;
-
     private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
     private ArrayList<Spanned> mList = new ArrayList<>();
