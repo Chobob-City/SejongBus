@@ -28,22 +28,24 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 public class MainActivity extends ActionBarActivity {
-    private static Activity mInstance;
+    private static Activity sInstance;
     private FragmentManager mFragmentManager;
-    private Fragment mMainFragment1 = new MainFragment1();
-    private Fragment mMainFragment2 = new MainFragment2();
-    private Fragment mMainFragment3 = new MainFragment3();
+    private Fragment mMainFragment1;
+    private Fragment mMainFragment2;
+    private Fragment mMainFragment3;
+    private Fragment mSettingsFragment;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
-                (InputMethodManager) mInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(0, 0);
+                (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
+        //noinspection ConstantConditions
+        inputMethodManager.hideSoftInputFromWindow(sInstance.getCurrentFocus().getWindowToken(), 0);
     }
 
     public static void startHostActivity(int... args) {
-        Intent intent = new Intent(mInstance, TrafficActivity.class);
+        Intent intent = new Intent(sInstance, TrafficActivity.class);
         for (int i = 0; i < args.length; i++) intent.putExtra("arg" + i, args[i]);
-        mInstance.startActivity(intent);
+        sInstance.startActivity(intent);
     }
 
     @Override
@@ -51,9 +53,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
-        mInstance = this;
+        sInstance = this;
         mFragmentManager = getFragmentManager();
-        mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment1).commit();
+        mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1).commit();
     }
 
     @Override
@@ -66,15 +68,24 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_main_1:
-                mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment1).commit();
+                if (mMainFragment1 == null) mMainFragment1 = new MainFragment1();
+                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1)
+                        .commit();
                 return true;
             case R.id.action_main_2:
-                mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment2).commit();
+                if (mMainFragment2 == null) mMainFragment2 = new MainFragment2();
+                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment2)
+                        .commit();
                 return true;
             case R.id.action_main_3:
-                mFragmentManager.beginTransaction().replace(R.id.frame, mMainFragment3).commit();
+                if (mMainFragment3 == null) mMainFragment3 = new MainFragment3();
+                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment3)
+                        .commit();
                 return true;
             case R.id.action_settings:
+                if (mSettingsFragment == null) mSettingsFragment = new SettingsFragment();
+                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mSettingsFragment)
+                        .commit();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

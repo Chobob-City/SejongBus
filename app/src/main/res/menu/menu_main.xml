@@ -1,18 +1,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="kr.nogcha.sejongbus.MainActivity">
+    tools:context="kr.nogcha.sejongbus.MainActivity"
+    tools:ignore="AlwaysShowAction">
     <item
         android:id="@+id/action_main_1"
-        android:title="통합검색"
+        android:title="@string/action_main_1"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_main_2"
-        android:title="경로탐색"
+        android:title="@string/action_main_2"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_main_3"
-        android:title="주변정류장"
+        android:title="@string/action_main_3"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
