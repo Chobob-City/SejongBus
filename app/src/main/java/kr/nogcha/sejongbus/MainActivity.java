@@ -30,7 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 public class MainActivity extends ActionBarActivity {
     private static Activity sInstance;
     private FragmentManager mFragmentManager;
-    private Fragment mMainFragment1;
+    private Fragment mMainFragment1 = new MainFragment1();
     private Fragment mMainFragment2;
     private Fragment mMainFragment3;
     private Fragment mSettingsFragment;
@@ -73,7 +73,6 @@ public class MainActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_main_1:
-                if (mMainFragment1 == null) mMainFragment1 = new MainFragment1();
                 mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1)
                         .commit();
                 return true;
