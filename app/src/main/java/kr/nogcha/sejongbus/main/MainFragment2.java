@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -40,6 +40,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.SejongBisClient;
+import kr.nogcha.sejongbus.host.HostActivity;
 
 public class MainFragment2 extends Fragment {
     private EditText mEditText1;
@@ -150,7 +154,7 @@ public class MainFragment2 extends Fragment {
                     Toast.makeText(getActivity(), "도착할 정류소를 검색하세요.", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    MainActivity.startHostActivity(TrafficActivity.ROUTE_EXPLORE, stBusStop,
+                    MainActivity.startHostActivity(HostActivity.ROUTE_EXPLORE, stBusStop,
                             edBusStop);
                 }
             }

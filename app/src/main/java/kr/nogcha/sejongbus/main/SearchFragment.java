@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -41,7 +41,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-public class MainFragment1 extends Fragment {
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.SejongBisClient;
+import kr.nogcha.sejongbus.host.HostActivity;
+
+public class SearchFragment extends Fragment {
     private EditText mEditText;
     private ListView mListView;
     private SejongBisClient mBisClient;
@@ -134,7 +138,7 @@ public class MainFragment1 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    MainActivity.startHostActivity(TrafficActivity.BUS_ROUTE_DETAIL,
+                    MainActivity.startHostActivity(HostActivity.BUS_ROUTE_DETAIL,
                             mJSONArray.getJSONObject(position).getInt("route_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -160,7 +164,7 @@ public class MainFragment1 extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
+                    MainActivity.startHostActivity(HostActivity.BUS_STOP_ROUTE,
                             mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();

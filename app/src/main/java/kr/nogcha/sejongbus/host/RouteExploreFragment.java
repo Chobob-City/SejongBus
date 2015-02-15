@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.host;
 
 import android.app.Fragment;
 import android.os.Bundle;
@@ -31,7 +31,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TrafficFragment3 extends Fragment {
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.SejongBisClient;
+
+public class RouteExploreFragment extends Fragment {
     private JSONArray mJSONArray;
 
     @Override

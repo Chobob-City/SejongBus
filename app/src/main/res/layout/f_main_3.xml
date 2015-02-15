@@ -20,7 +20,7 @@
     android:layout_height="match_parent"
     android:background="@color/whitegray"
     android:orientation="vertical"
-    tools:context="kr.nogcha.sejongbus.MainFragment3">
+    tools:context="kr.nogcha.sejongbus.main.MainFragment3">
 
     <fragment
         android:id="@+id/map"

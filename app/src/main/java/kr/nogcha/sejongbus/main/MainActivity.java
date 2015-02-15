@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.main;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -27,10 +27,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.host.HostActivity;
+
 public class MainActivity extends ActionBarActivity {
     private static Activity sInstance;
     private FragmentManager mFragmentManager;
-    private Fragment mMainFragment1 = new MainFragment1();
+    private Fragment mMainFragment1 = new SearchFragment();
     private Fragment mMainFragment2;
     private Fragment mMainFragment3;
     private Fragment mSettingsFragment;
@@ -43,7 +46,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public static void startHostActivity(int... args) {
-        Intent intent = new Intent(sInstance, TrafficActivity.class);
+        Intent intent = new Intent(sInstance, HostActivity.class);
         for (int i = 0; i < args.length; i++) intent.putExtra("arg" + i, args[i]);
         sInstance.startActivity(intent);
     }
@@ -57,7 +60,7 @@ public class MainActivity extends ActionBarActivity {
         mFragmentManager = getFragmentManager();
         if (findViewById(R.id.frameLayout) != null) {
             if (savedInstanceState != null) {return;}
-            mMainFragment1 = new MainFragment1();
+            mMainFragment1 = new SearchFragment();
             mMainFragment1.setArguments(getIntent().getExtras());
             mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1).commit();
         }

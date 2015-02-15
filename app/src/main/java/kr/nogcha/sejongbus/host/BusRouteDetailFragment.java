@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.host;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -33,7 +33,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TrafficFragment1 extends Fragment {
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.SejongBisClient;
+
+public class BusRouteDetailFragment extends Fragment {
     private JSONArray mJSONArray;
     private ArrayAdapter<String> mAdapter = null;
 
@@ -82,7 +85,7 @@ public class TrafficFragment1 extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment fragment = new TrafficFragment2();
+                    Fragment fragment = new BusStopRouteFragment();
                     Bundle bundle = new Bundle();
                     try {
                         bundle.putInt("arg1", mJSONArray.getJSONObject(position).getInt("stop_id"));

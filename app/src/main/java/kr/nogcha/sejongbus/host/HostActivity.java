@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.host;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -23,7 +23,10 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
-public class TrafficActivity extends ActionBarActivity {
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.main.MainActivity;
+
+public class HostActivity extends ActionBarActivity {
     public static final int BUS_ROUTE_DETAIL = 1;
     public static final int BUS_STOP_ROUTE = 2;
     public static final int ROUTE_EXPLORE = 3;
@@ -41,13 +44,13 @@ public class TrafficActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         switch (extras.getInt("arg0")) {
             case BUS_ROUTE_DETAIL:
-                fragment = new TrafficFragment1();
+                fragment = new BusRouteDetailFragment();
                 break;
             case BUS_STOP_ROUTE:
-                fragment = new TrafficFragment2();
+                fragment = new BusStopRouteFragment();
                 break;
             case ROUTE_EXPLORE:
-                fragment = new TrafficFragment3();
+                fragment = new RouteExploreFragment();
                 break;
             default:
                 return;

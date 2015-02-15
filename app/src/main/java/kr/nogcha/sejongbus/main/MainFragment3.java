@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -39,6 +39,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+
+import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.SejongBisClient;
+import kr.nogcha.sejongbus.host.HostActivity;
 
 public class MainFragment3 extends Fragment implements OnMapReadyCallback {
     private SejongBisClient mBisClient;
@@ -68,7 +72,7 @@ public class MainFragment3 extends Fragment implements OnMapReadyCallback {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 try {
-                    MainActivity.startHostActivity(TrafficActivity.BUS_STOP_ROUTE,
+                    MainActivity.startHostActivity(HostActivity.BUS_STOP_ROUTE,
                             mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
