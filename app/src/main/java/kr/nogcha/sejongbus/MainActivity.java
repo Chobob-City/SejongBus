@@ -55,7 +55,12 @@ public class MainActivity extends ActionBarActivity {
 
         sInstance = this;
         mFragmentManager = getFragmentManager();
-        mFragmentManager.beginTransaction().add(R.id.frameLayout, mMainFragment1).commit();
+        if (findViewById(R.id.frameLayout) != null) {
+            if (savedInstanceState != null) {return;}
+            mMainFragment1 = new MainFragment1();
+            mMainFragment1.setArguments(getIntent().getExtras());
+            mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1).commit();
+        }
     }
 
     @Override
