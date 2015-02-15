@@ -31,10 +31,12 @@ class ListItem {
     String text2;
 
     class CustomArrayAdapter extends ArrayAdapter<ListItem> {
+        private int mResource;
         private LayoutInflater mInflater;
 
         public CustomArrayAdapter(Context context, int resource, List<ListItem> objects) {
             super(context, resource, objects);
+            mResource = resource;
             mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         }
 
@@ -43,7 +45,7 @@ class ListItem {
             View view;
             ViewHolder viewHolder;
             if (convertView == null) {
-                view = mInflater.inflate(R.layout.v_list_item, null);
+                view = mInflater.inflate(mResource, parent);
                 viewHolder = new ViewHolder();
                 viewHolder.textView1 = (TextView) view.findViewById(R.id.textView1);
                 viewHolder.textView2 = (TextView) view.findViewById(R.id.textView2);
