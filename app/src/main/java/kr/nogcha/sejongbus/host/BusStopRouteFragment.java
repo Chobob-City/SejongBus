@@ -59,8 +59,8 @@ public class BusStopRouteFragment extends Fragment {
                 mJSONArray = bisClient.searchBusStopRoute(getArguments().getInt("arg1"), true)
                         .getJSONArray("busStopRouteList");
 
-                TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
-                TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
+                TextView textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
+                TextView textView2 = (TextView) rootView.findViewById(R.id.text_view_2);
                 JSONObject json = mJSONArray.getJSONObject(0);
                 textView1.setText(json.getString("stop_name"));
                 textView2.setText("[" + json.getString("service_id") + "]");

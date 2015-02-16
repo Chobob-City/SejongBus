@@ -19,11 +19,11 @@ package kr.nogcha.sejongbus.host;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,43 +33,46 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import kr.nogcha.sejongbus.CommonArrayAdapter;
+import kr.nogcha.sejongbus.CommonListItem;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class BusRouteDetailFragment extends Fragment {
     private JSONArray mJSONArray;
-    private ArrayAdapter<String> mAdapter = null;
+    private CommonArrayAdapter mAdapter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SejongBisClient bisClient = new SejongBisClient(getActivity());
         if (bisClient.isNetworkConnected()) {
-            ArrayList<String> list = new ArrayList<>();
+            ArrayList<CommonListItem> list = new ArrayList<>();
             try {
                 mJSONArray = bisClient.searchBusRouteDetail(getArguments().getInt("arg1"), true)
                         .getJSONArray("busRouteDetailList");
                 for (int i = 0; i < mJSONArray.length() - 1; i++) {
                     JSONObject json = mJSONArray.getJSONObject(i);
-                    list.add(json.getString("stop_name") + " [" + json.getString("service_id")
-                            + "]");
+                    list.add(new CommonListItem(
+                            new SpannableString(json.getString("stop_name")),
+                            "[" + json.getString("service_id") + "]"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, list);
+            mAdapter = new CommonArrayAdapter(getActivity(), R.layout.common_list_item, list);
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_traffic_1, container, false);
+        View rootView = inflater.inflate(R.layout.f_bus_route_detail, container, false);
 
         if (mAdapter != null) {
-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
-            TextView textView2 = (TextView) rootView.findViewById(R.id.textView2);
-            TextView textView3 = (TextView) rootView.findViewById(R.id.textView3);
+            TextView textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
+            TextView textView2 = (TextView) rootView.findViewById(R.id.text_view_2);
+            TextView textView3 = (TextView) rootView.findViewById(R.id.text_view_3);
             try {
                 JSONObject json = mJSONArray.getJSONObject(mJSONArray.length() - 1);
                 textView1.setText(json.getString("route_name"));

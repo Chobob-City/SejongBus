@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus.host;
+package kr.nogcha.sejongbus;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,7 +24,10 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 
 import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.main.MainActivity;
+import kr.nogcha.sejongbus.MainActivity;
+import kr.nogcha.sejongbus.host.BusRouteDetailFragment;
+import kr.nogcha.sejongbus.host.BusStopRouteFragment;
+import kr.nogcha.sejongbus.host.RouteExploreFragment;
 
 public class HostActivity extends ActionBarActivity {
     public static final int BUS_ROUTE_DETAIL = 1;

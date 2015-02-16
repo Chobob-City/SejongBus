@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus.main;
+package kr.nogcha.sejongbus;
 
 import android.app.FragmentManager;
 import android.content.Context;
@@ -25,9 +25,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.SettingsActivity;
-import kr.nogcha.sejongbus.host.HostActivity;
+import kr.nogcha.sejongbus.main.ExploreFragment;
+import kr.nogcha.sejongbus.main.SearchFragment;
+import kr.nogcha.sejongbus.main.SurroundStopFragment;
 
 public class MainActivity extends ActionBarActivity {
     private static MainActivity sInstance;

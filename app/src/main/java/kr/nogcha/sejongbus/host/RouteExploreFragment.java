@@ -58,7 +58,7 @@ public class RouteExploreFragment extends Fragment {
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            TextView textView1 = (TextView) rootView.findViewById(R.id.textView1);
+            TextView textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
             JSONObject json = mJSONArray.getJSONObject(0);
             textView1.setText("출발: " + json.getString("sstationname") + "("
                     + json.getString("sService_id") + ")\n도착: "

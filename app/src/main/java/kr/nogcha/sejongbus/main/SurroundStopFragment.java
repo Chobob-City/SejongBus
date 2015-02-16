@@ -41,9 +41,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
-import kr.nogcha.sejongbus.host.HostActivity;
+import kr.nogcha.sejongbus.HostActivity;
 
 public class SurroundStopFragment extends Fragment implements OnMapReadyCallback {
     private SejongBisClient mBisClient;

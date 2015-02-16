@@ -1,5 +1,4 @@
-<!--
-     Copyright (C) 2015 Chobob City
+<!-- Copyright (C) 2015 Chobob City
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,12 +12,12 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
+    android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.host.BusRouteDetailFragment">
 
     <RelativeLayout
@@ -28,7 +27,7 @@
         android:background="@drawable/d_cardview_bg_blue">
 
         <TextView
-            android:id="@+id/textView1"
+            android:id="@+id/text_view_1"
             style="@style/lsize_textview_white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -42,14 +41,14 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/textView1"
-            android:layout_toRightOf="@id/textView1"
+            android:layout_toEndOf="@id/text_view_1"
+            android:layout_toRightOf="@id/text_view_1"
             android:background="@drawable/d_rounded_white"
             android:orientation="vertical"
             android:padding="8dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/text_view_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
@@ -59,7 +58,7 @@
                 android:textSize="18dp" />
 
             <TextView
-                android:id="@+id/textView3"
+                android:id="@+id/text_view_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
@@ -70,16 +69,9 @@
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rl_common_txt">
+        android:layout_height="match_parent" />
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

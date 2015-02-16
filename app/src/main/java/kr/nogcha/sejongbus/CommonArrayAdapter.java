@@ -42,8 +42,8 @@ public class CommonArrayAdapter extends ArrayAdapter<CommonListItem> {
         if (convertView == null) {
             view = mInflater.inflate(mResource, null);
             viewHolder = new CommonViewHolder();
-            viewHolder.textView1 = (TextView) view.findViewById(R.id.textView1);
-            viewHolder.textView2 = (TextView) view.findViewById(R.id.textView2);
+            viewHolder.textView1 = (TextView) view.findViewById(R.id.text_view_1);
+            viewHolder.textView2 = (TextView) view.findViewById(R.id.text_view_2);
             view.setTag(viewHolder);
         } else {
             view = convertView;

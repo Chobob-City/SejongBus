@@ -17,7 +17,6 @@
 package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
-import android.app.LauncherActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,7 +28,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -44,9 +42,10 @@ import java.util.regex.Pattern;
 
 import kr.nogcha.sejongbus.CommonArrayAdapter;
 import kr.nogcha.sejongbus.CommonListItem;
+import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
-import kr.nogcha.sejongbus.host.HostActivity;
+import kr.nogcha.sejongbus.HostActivity;
 
 public class SearchFragment extends Fragment {
     private EditText mEditText;
