@@ -24,6 +24,7 @@ import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
+import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
@@ -133,7 +134,7 @@ public class SejongBisClient {
         return sendRequest("selectBusStop", params, true);
     }
 
-    public Spannable getRouteType(int route_type) {
+    public CharSequence getRouteType(int route_type) {
         Spannable routeType;
         int backgroundColor;
         switch (route_type) {
@@ -161,7 +162,7 @@ public class SejongBisClient {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return routeType;
+        return TextUtils.concat(routeType, " ");
     }
 
     private JSONObject sendRequest(String url, String params) {

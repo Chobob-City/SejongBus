@@ -25,11 +25,11 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CommonArrayAdapter extends ArrayAdapter<CommonListItem> {
+public class CommonAdapter extends ArrayAdapter<CommonListItem> {
     private LayoutInflater mInflater;
     private int mResource;
 
-    public CommonArrayAdapter(Context context, int resource, List<CommonListItem> objects) {
+    public CommonAdapter(Context context, int resource, List<CommonListItem> objects) {
         super(context, resource, objects);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mResource = resource;
@@ -44,6 +44,7 @@ public class CommonArrayAdapter extends ArrayAdapter<CommonListItem> {
             viewHolder = new CommonViewHolder();
             viewHolder.textView1 = (TextView) view.findViewById(R.id.text_view_1);
             viewHolder.textView2 = (TextView) view.findViewById(R.id.text_view_2);
+            viewHolder.textView3 = (TextView) view.findViewById(R.id.text_view_3);
             view.setTag(viewHolder);
         } else {
             view = convertView;
@@ -53,6 +54,7 @@ public class CommonArrayAdapter extends ArrayAdapter<CommonListItem> {
         CommonListItem item = getItem(position);
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
+        viewHolder.textView3.setText(item.text3);
 
         return view;
     }

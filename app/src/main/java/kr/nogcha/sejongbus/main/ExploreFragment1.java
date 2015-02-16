@@ -49,15 +49,11 @@ import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment extends Fragment {
     private EditText mEditText1;
-    private EditText mEditText2;
     private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
     private ArrayList<Spanned> mList = new ArrayList<>();
     private ArrayAdapter<Spanned> mAdapter;
     private ListView mListView;
-    // TODO
-    private int stBusStop = 293018070;
-    private int edBusStop = 293018069;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +67,33 @@ public class ExploreFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
+        mEditText1 = (EditText) rootView.findViewById(R.id.editText1);
+        mEditText1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mList.clear();
+                    mAdapter.notifyDataSetChanged();
+
+                    stBusStop = 0;
+                    mEditText1.setHint("");
+                    mEditText1.setText("");
+                    return true;
+                }
+                return false;
+            }
+        });
+        mEditText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    onSearch1();
+                    return true;
+                }
+                return false;
+            }
+        });
+
         mListView = (ListView) rootView.findViewById(R.id.listView);
         mListView.setEmptyView(rootView.findViewById(R.id.textView));
         mListView.setAdapter(mAdapter);
@@ -79,39 +102,47 @@ public class ExploreFragment extends Fragment {
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//TODO start fragment
-            }
-        });
-
-        ImageButton imageButton2 = (ImageButton) rootView.findViewById(R.id.imageButton2);
-        imageButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//TODO start fragment
-            }
-        });
-
-        Button button = (Button) rootView.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (stBusStop == 0) {
-                    Toast.makeText(getActivity(), "출발할 정류소를 검색하세요.", Toast.LENGTH_SHORT)
-                            .show();
-                } else if (edBusStop == 0) {
-                    Toast.makeText(getActivity(), "도착할 정류소를 검색하세요.", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Intent intent = new Intent(getActivity(), RouteExploreActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("stBusStop", stBusStop);
-                    bundle.putInt("edBusStop", edBusStop);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
-                }
+                onSearch1();
             }
         });
 
         return rootView;
+    }
+
+    private void onSearch1() {
+        String query = mEditText1.getText().toString();
+        if (!query.equals("")) {
+            MainActivity.hideSoftInput();
+
+            if (mBisClient.isNetworkConnected()) {
+                try {
+                    mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
+                    mList.clear();
+                    for (int i = 0; i < mJSONArray.length(); i++) {
+                        JSONObject json = mJSONArray.getJSONObject(i);
+                        mList.add(new SpannableString(json.getString("stop_name") + "\n("
+                                + json.getString("service_id") + ")"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mAdapter.notifyDataSetChanged();
+
+                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        try {
+                            JSONObject json = mJSONArray.getJSONObject(position);
+                            stBusStop = json.getInt("stop_id");
+                            mEditText1.setHint(json.getString("stop_name") + "("
+                                    + json.getString("service_id") + ")");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        mEditText1.setText("");
+                    }
+                });
+            }
+        }
     }
 }
