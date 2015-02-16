@@ -88,7 +88,10 @@ public class MainActivity extends ActionBarActivity {
                 }
                 return true;
             case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
+                if (mSelectedItemId != R.id.action_settings) {
+                    mSelectedItemId = R.id.action_settings;
+                    startActivity(new Intent(this, SettingsActivity.class));
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -19,6 +19,7 @@ package kr.nogcha.sejongbus.main;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -36,27 +37,30 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import kr.nogcha.sejongbus.CommonAdapter;
+import kr.nogcha.sejongbus.CommonArrayAdapter;
 import kr.nogcha.sejongbus.CommonListItem;
-import kr.nogcha.sejongbus.HostActivity;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
+import kr.nogcha.sejongbus.HostActivity;
 
 public class SearchFragment extends Fragment {
     private EditText mEditText;
     private ListView mListView;
     private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
-    private CommonAdapter mAdapter;
+    private ArrayList<CommonListItem> mList;
+    private CommonArrayAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mBisClient = new SejongBisClient(getActivity());
-        mAdapter = new CommonAdapter(getActivity(), R.layout.common_list_item);
+        mList = new ArrayList<>();
+        mAdapter = new CommonArrayAdapter(getActivity(), R.layout.common_list_item, mList);
     }
 
     @Override
@@ -119,14 +123,10 @@ public class SearchFragment extends Fragment {
     private void searchBusRoute(String busRoute) {
         try {
             mJSONArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
-            mAdapter.clear();
+            mList.clear();
             for (int i = 0; i < mJSONArray.length(); i++) {
                 JSONObject json = mJSONArray.getJSONObject(i);
-                mAdapter.add(new CommonListItem(
-                        TextUtils.concat(mBisClient.getRouteType(json.getInt("route_type")),
-                                new SpannableString(" ")),
-                        json.getString("route_name"),
-                        json.getString("st_stop_name") + "~" + json.getString("ed_stop_name")));
+                mList.add(new CommonListItem((Spanned) TextUtils.concat(mBisClient.getRouteType(json.getInt("route_type")), new SpannableString(" " + json.getString("route_name"))), json.getString("st_stop_name") + "~" + json.getString("ed_stop_name")));
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -148,11 +148,10 @@ public class SearchFragment extends Fragment {
     private void searchBusStop(String busStop) {
         try {
             mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
-            mAdapter.clear();
+            mList.clear();
             for (int i = 0; i < mJSONArray.length(); i++) {
                 JSONObject json = mJSONArray.getJSONObject(i);
-                mAdapter.add(new CommonListItem(new SpannableString(json.getString("stop_name")),
-                        "[" + json.getString("service_id") + "]", ""));
+                mList.add(new CommonListItem(new SpannableString(json.getString("stop_name")), "[" + json.getString("service_id") + "]"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

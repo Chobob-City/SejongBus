@@ -21,5 +21,4 @@ import android.widget.TextView;
 public class CommonViewHolder {
     public TextView textView1;
     public TextView textView2;
-    public TextView textView3;
 }
