@@ -14,25 +14,51 @@
      limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
-    android:orientation="vertical"
-    tools:context="kr.nogcha.sejongbus.main.MainFragment3">
+    tools:context="kr.nogcha.sejongbus.main.ExploreFragment">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.MapFragment"
+    <RelativeLayout
+        android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="2" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/d_cardview_bg_blue"
+        android:padding="8dp">
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/d_rounded_white"
+            android:hint="도착할 정류소를 검색하세요."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="16dp"
+            android:singleLine="true"
+            android:textSize="14dp" />
+
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="검색"
+            android:padding="4dp"
+            android:src="@drawable/ic_action_search" />
+
+    </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="3">
+        android:layout_below="@id/mainsearchbar">
 
         <ListView
             android:id="@+id/listView"
@@ -50,4 +76,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

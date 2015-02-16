@@ -16,8 +16,6 @@
 
 package kr.nogcha.sejongbus.main;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -28,21 +26,19 @@ import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
 
 import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.SettingsActivity;
 import kr.nogcha.sejongbus.host.HostActivity;
 
 public class MainActivity extends ActionBarActivity {
-    private static Activity sInstance;
+    private static MainActivity sInstance;
     private FragmentManager mFragmentManager;
-    private Fragment mMainFragment1 = new SearchFragment();
-    private Fragment mMainFragment2;
-    private Fragment mMainFragment3;
-    private Fragment mSettingsFragment;
+    private int mSelectedItemId = R.id.action_search;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
                 (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
-        //noinspection ConstantConditions
-        inputMethodManager.hideSoftInputFromWindow(sInstance.getCurrentFocus().getWindowToken(), 0);
+        //TODO
+        inputMethodManager.toggleSoftInput(0, 0);
     }
 
     public static void startHostActivity(int... args) {
@@ -58,12 +54,7 @@ public class MainActivity extends ActionBarActivity {
 
         sInstance = this;
         mFragmentManager = getFragmentManager();
-        if (findViewById(R.id.frameLayout) != null) {
-            if (savedInstanceState != null) {return;}
-            mMainFragment1 = new SearchFragment();
-            mMainFragment1.setArguments(getIntent().getExtras());
-            mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1).commit();
-        }
+        mFragmentManager.beginTransaction().add(R.id.frameLayout, new SearchFragment()).commit();
     }
 
     @Override
@@ -75,24 +66,32 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_main_1:
-                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1)
-                        .commit();
+            case R.id.action_search:
+                if (mSelectedItemId != R.id.action_search) {
+                    mSelectedItemId = R.id.action_search;
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, new SearchFragment()).commit();
+                }
                 return true;
-            case R.id.action_main_2:
-                if (mMainFragment2 == null) mMainFragment2 = new MainFragment2();
-                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment2)
-                        .commit();
+            case R.id.action_explore:
+                if (mSelectedItemId != R.id.action_explore) {
+                    mSelectedItemId = R.id.action_explore;
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, new ExploreFragment()).commit();
+                }
                 return true;
-            case R.id.action_main_3:
-                if (mMainFragment3 == null) mMainFragment3 = new MainFragment3();
-                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment3)
-                        .commit();
+            case R.id.action_surround_stop:
+                if (mSelectedItemId != R.id.action_surround_stop) {
+                    mSelectedItemId = R.id.action_surround_stop;
+                    mFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, new SurroundStopFragment()).commit();
+                }
                 return true;
             case R.id.action_settings:
-                if (mSettingsFragment == null) mSettingsFragment = new SettingsFragment();
-                mFragmentManager.beginTransaction().replace(R.id.frameLayout, mSettingsFragment)
-                        .commit();
+                if (mSelectedItemId != R.id.action_settings) {
+                    mSelectedItemId = R.id.action_settings;
+                    startActivity(new Intent(this, SettingsActivity.class));
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

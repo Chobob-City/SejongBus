@@ -1,5 +1,4 @@
-<!--
-     Copyright (C) 2015 Chobob City
+<!-- Copyright (C) 2015 Chobob City
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,36 +12,35 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
-    tools:context="kr.nogcha.sejongbus.main.MainFragment2">
+    tools:context="kr.nogcha.sejongbus.main.ExploreFragment">
 
     <RelativeLayout
-        android:id="@+id/searchbar1"
+        android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mainblue"
+        android:background="@drawable/d_cardview_bg_blue"
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/editText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@drawable/d_rounded_white"
-            android:hint="출발지를 입력하세요."
+            android:hint="출발할 정류소를 검색하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:padding="8dp"
+            android:padding="16dp"
             android:singleLine="true"
             android:textSize="14dp" />
 
         <ImageButton
-            android:id="@+id/imageButton1"
+            android:id="@+id/imageButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -50,54 +48,15 @@
             android:layout_centerVertical="true"
             android:background="@android:color/transparent"
             android:contentDescription="검색"
+            android:padding="4dp"
             android:src="@drawable/ic_action_search" />
 
     </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/searchbar2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchbar1"
-        android:background="@drawable/d_cardview_bg_blue"
-        android:padding="8dp">
-
-        <EditText
-            android:id="@+id/editText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/d_rounded_white"
-            android:hint="도착지를 입력하세요."
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:padding="8dp"
-            android:singleLine="true"
-            android:textSize="14dp" />
-
-        <ImageButton
-            android:id="@+id/imageButton2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@android:color/transparent"
-            android:contentDescription="검색"
-            android:src="@drawable/ic_action_search" />
-
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/searchbar2"
-        android:text="탐색" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/button">
+        android:layout_below="@id/mainsearchbar">
 
         <ListView
             android:id="@+id/listView"

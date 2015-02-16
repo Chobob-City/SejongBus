@@ -18,6 +18,7 @@ package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,7 +45,7 @@ import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 import kr.nogcha.sejongbus.host.HostActivity;
 
-public class MainFragment3 extends Fragment implements OnMapReadyCallback {
+public class SurroundStopFragment extends Fragment implements OnMapReadyCallback {
     private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
     private ArrayList<String> mList = new ArrayList<>();
@@ -60,9 +61,17 @@ public class MainFragment3 extends Fragment implements OnMapReadyCallback {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_main_3, container, false);
+        View rootView = inflater.inflate(R.layout.f_surround_stop, container, false);
 
-        MapFragment map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        MainActivity.hideSoftInput();
+
+        FragmentManager fragmentManager;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            fragmentManager = getChildFragmentManager();
+        } else {
+            fragmentManager = getFragmentManager();
+        }
+        MapFragment map = (MapFragment) fragmentManager.findFragmentById(R.id.map);
         map.getMapAsync(this);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listView);

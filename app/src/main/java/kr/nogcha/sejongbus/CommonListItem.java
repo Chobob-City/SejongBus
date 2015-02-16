@@ -18,7 +18,12 @@ package kr.nogcha.sejongbus;
 
 import android.text.Spanned;
 
-class CommonListItem {
-    Spanned text1;
-    String text2;
+public class CommonListItem {
+    public Spanned text1;
+    public String text2;
+
+    public CommonListItem(Spanned text1, String text2) {
+        this.text1 = text1;
+        this.text2 = text2;
+    }
 }

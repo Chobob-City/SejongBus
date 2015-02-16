@@ -45,7 +45,7 @@ import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 import kr.nogcha.sejongbus.host.HostActivity;
 
-public class MainFragment2 extends Fragment {
+public class ExploreFragment extends Fragment {
     private EditText mEditText1;
     private EditText mEditText2;
     private SejongBisClient mBisClient;
@@ -67,7 +67,7 @@ public class MainFragment2 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_main_2, container, false);
+        View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
         mEditText1 = (EditText) rootView.findViewById(R.id.editText1);
         mEditText1.setOnTouchListener(new View.OnTouchListener() {

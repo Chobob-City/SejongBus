@@ -79,7 +79,7 @@ public class SejongBisClient {
     }
 
     public JSONObject searchBusRouteExpMap(int stRouteId, int edRouteId, int sstOrd, int sedOrd,
-                                    int estOrd, int eedOrd, int stStopId, int edStopId) {
+                                           int estOrd, int eedOrd, int stStopId, int edStopId) {
         String params = "stRouteId=" + stRouteId + "&edRouteId=" + edRouteId + "&sstOrd=" + sstOrd
                 + "&sedOrd=" + sedOrd + "&estOrd=" + estOrd + "&eedOrd=" + eedOrd + "&stStopId="
                 + stStopId + "&edStopId=" + edStopId;
@@ -87,7 +87,7 @@ public class SejongBisClient {
     }
 
     public JSONObject searchBusRouteExpMap1(int stRouteId, int sstOrd, int eedOrd, int stStopId,
-                                     int edStopId) {
+                                            int edStopId) {
         String params = "stRouteId=" + stRouteId + "&sstOrd=" + sstOrd + "&eedOrd=" + eedOrd
                 + "&stStopId=" + stStopId + "&edStopId=" + edStopId;
         return sendRequest("searchBusRouteExpMap1", params);
