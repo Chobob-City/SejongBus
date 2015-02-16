@@ -70,12 +70,12 @@ public class MainFragment2 extends Fragment {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    mEditText1.setText("");
+                    mEditText1.setHint("");
                     mList.clear();
                     mAdapter.notifyDataSetChanged();
 
-                    stBusStop = 0;
-                    mEditText1.setHint("");
-                    mEditText1.setText("");
+
                     return true;
                 }
                 return false;
@@ -123,7 +123,7 @@ public class MainFragment2 extends Fragment {
         mListView.setEmptyView(rootView.findViewById(R.id.textView));
         mListView.setAdapter(mAdapter);
 
-        ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.imageButton1);
+        /*ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.imageButton1);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,7 +137,7 @@ public class MainFragment2 extends Fragment {
             public void onClick(View v) {
                 onSearch2();
             }
-        });
+        });*/
 
         Button button = (Button) rootView.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {

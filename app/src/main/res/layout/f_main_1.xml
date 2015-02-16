@@ -33,7 +33,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/d_rounded_white"
             android:hint="정류소 및 노선번호를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
@@ -51,7 +50,7 @@
             android:background="@android:color/transparent"
             android:contentDescription="검색"
             android:padding="4dp"
-            android:src="@drawable/ic_action_search_light" />
+            android:src="@drawable/ic_action_search" />
 
     </RelativeLayout>
 

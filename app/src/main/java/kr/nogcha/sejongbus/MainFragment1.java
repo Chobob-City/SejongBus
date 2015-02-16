@@ -66,6 +66,7 @@ public class MainFragment1 extends Fragment {
         mEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mEditText.setText("");
                     return true;

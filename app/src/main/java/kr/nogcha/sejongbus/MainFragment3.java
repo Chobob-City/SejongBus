@@ -58,6 +58,7 @@ public class MainFragment3 extends Fragment implements OnMapReadyCallback {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_main_3, container, false);
 
+        //fragment 안에 fragment를 넣어놓으면 어쩌잔겨
         MapFragment map = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         map.getMapAsync(this);
 

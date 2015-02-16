@@ -21,13 +21,25 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener{
+
+    private Toolbar toolbar;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private Button btn1, btn2, btn3, btn4;
     private static Activity sInstance;
     private FragmentManager mFragmentManager;
     private Fragment mMainFragment1 = new MainFragment1();
@@ -53,6 +65,13 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
+        toolbar = (Toolbar) findViewById(R.id.main_toolBar);
+        setSupportActionBar(toolbar);
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawer_layout);
+        LinearLayout ll_drawer = (LinearLayout) findViewById(R.id.main_drawer);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name, R.string.app_name);
+        drawerLayout.setDrawerListener(toggle);
+
         sInstance = this;
         mFragmentManager = getFragmentManager();
         if (findViewById(R.id.frameLayout) != null) {
@@ -61,38 +80,47 @@ public class MainActivity extends ActionBarActivity {
             mMainFragment1.setArguments(getIntent().getExtras());
             mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1).commit();
         }
+        btn1 = (Button) ll_drawer.findViewById(R.id.btn1);
+        btn2 = (Button) ll_drawer.findViewById(R.id.btn2);
+        btn3 = (Button) ll_drawer.findViewById(R.id.btn3);
+        btn4 = (Button) ll_drawer.findViewById(R.id.btn4);
+        for(int i = 0; i < 4; i++){
+            findViewById(R.id.btn1 + i).setOnClickListener(this);
+        }
     }
-
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_main_1:
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.btn1:
                 mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment1)
                         .commit();
-                return true;
-            case R.id.action_main_2:
+                break;
+            case R.id.btn2:
                 if (mMainFragment2 == null) mMainFragment2 = new MainFragment2();
                 mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment2)
                         .commit();
-                return true;
-            case R.id.action_main_3:
+                break;
+            case R.id.btn3:
                 if (mMainFragment3 == null) mMainFragment3 = new MainFragment3();
                 mFragmentManager.beginTransaction().replace(R.id.frameLayout, mMainFragment3)
                         .commit();
-                return true;
-            case R.id.action_settings:
+                break;
+            case R.id.btn4:
                 if (mSettingsFragment == null) mSettingsFragment = new SettingsFragment();
                 mFragmentManager.beginTransaction().replace(R.id.frameLayout, mSettingsFragment)
                         .commit();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+                break;
         }
     }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
+    }
+    
 }
