@@ -17,7 +17,6 @@
 package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,12 +28,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,7 +41,6 @@ import java.util.ArrayList;
 
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.RouteExploreActivity;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment1 extends Fragment {
@@ -92,6 +88,7 @@ public class ExploreFragment1 extends Fragment {
                 return false;
             }
         });
+        mEditText.requestFocus();
 
         mListView = (ListView) rootView.findViewById(R.id.listView);
         mListView.setEmptyView(rootView.findViewById(R.id.textView));

@@ -92,9 +92,9 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-     @Override
-        public void onBackPressed() {
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager.getBackStackEntryCount() > 0) fragmentManager.popBackStack();
-        }
+    @Override
+    public void onBackPressed() {
+        FragmentManager fragmentManager = getFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() > 0) fragmentManager.popBackStack();
+    }
 }

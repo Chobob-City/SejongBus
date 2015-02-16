@@ -28,9 +28,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.SejongBisClient;
-
 public class RouteExploreActivity extends ActionBarActivity {
     private JSONArray mJSONArray;
 

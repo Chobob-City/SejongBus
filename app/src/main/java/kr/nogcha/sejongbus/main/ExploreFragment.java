@@ -19,35 +19,28 @@ package kr.nogcha.sejongbus.main;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.text.Spanned;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.RouteExploreActivity;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment extends Fragment {
+    public static int stBusStop = 0;
+    public static int edBusStop = 0;
     private EditText mEditText1;
     private EditText mEditText2;
     private SejongBisClient mBisClient;
@@ -55,8 +48,6 @@ public class ExploreFragment extends Fragment {
     private ArrayList<Spanned> mList = new ArrayList<>();
     private ArrayAdapter<Spanned> mAdapter;
     private ListView mListView;
-    public static int stBusStop = 0;
-    public static int edBusStop = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
