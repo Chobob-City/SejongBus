@@ -20,19 +20,34 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class CommonArrayAdapter extends ArrayAdapter<CommonListItem> {
+public class CommonAdapter extends BaseAdapter {
+    private ArrayList<CommonListItem> mList = new ArrayList<>();
     private LayoutInflater mInflater;
     private int mResource;
 
-    public CommonArrayAdapter(Context context, int resource, List<CommonListItem> objects) {
-        super(context, resource, objects);
+    public CommonAdapter(Context context, int resource) {
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mResource = resource;
+    }
+
+    @Override
+    public int getCount() {
+        return mList.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mList.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
@@ -44,16 +59,26 @@ public class CommonArrayAdapter extends ArrayAdapter<CommonListItem> {
             viewHolder = new CommonViewHolder();
             viewHolder.textView1 = (TextView) view.findViewById(R.id.text_view_1);
             viewHolder.textView2 = (TextView) view.findViewById(R.id.text_view_2);
+            viewHolder.textView3 = (TextView) view.findViewById(R.id.text_view_3);
             view.setTag(viewHolder);
         } else {
             view = convertView;
             viewHolder = (CommonViewHolder) view.getTag();
         }
 
-        CommonListItem item = getItem(position);
+        CommonListItem item = (CommonListItem) getItem(position);
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
+        viewHolder.textView3.setText(item.text3);
 
         return view;
+    }
+
+    public void add(CommonListItem item) {
+        mList.add(item);
+    }
+
+    public void clear() {
+        mList.clear();
     }
 }

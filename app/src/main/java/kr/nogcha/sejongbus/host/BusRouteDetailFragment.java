@@ -19,7 +19,6 @@ package kr.nogcha.sejongbus.host;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,36 +30,33 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
-import kr.nogcha.sejongbus.CommonArrayAdapter;
+import kr.nogcha.sejongbus.CommonAdapter;
 import kr.nogcha.sejongbus.CommonListItem;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class BusRouteDetailFragment extends Fragment {
     private JSONArray mJSONArray;
-    private CommonArrayAdapter mAdapter = null;
+    private CommonAdapter mAdapter = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SejongBisClient bisClient = new SejongBisClient(getActivity());
         if (bisClient.isNetworkConnected()) {
-            ArrayList<CommonListItem> list = new ArrayList<>();
+            mAdapter = new CommonAdapter(getActivity(), R.layout.common_list_item);
             try {
                 mJSONArray = bisClient.searchBusRouteDetail(getArguments().getInt("arg1"), true)
                         .getJSONArray("busRouteDetailList");
                 for (int i = 0; i < mJSONArray.length() - 1; i++) {
                     JSONObject json = mJSONArray.getJSONObject(i);
-                    list.add(new CommonListItem(
-                            new SpannableString(json.getString("stop_name")),
+                    mAdapter.add(new CommonListItem("", json.getString("stop_name"),
                             "[" + json.getString("service_id") + "]"));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            mAdapter = new CommonArrayAdapter(getActivity(), R.layout.common_list_item, list);
+            mAdapter.notifyDataSetChanged();
         }
     }
 
