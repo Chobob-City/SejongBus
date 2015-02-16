@@ -17,6 +17,7 @@
 package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -40,12 +41,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import kr.nogcha.sejongbus.BusRouteDetailActivity;
 import kr.nogcha.sejongbus.CommonArrayAdapter;
 import kr.nogcha.sejongbus.CommonListItem;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
-import kr.nogcha.sejongbus.HostActivity;
 
 public class SearchFragment extends Fragment {
     private EditText mEditText;
@@ -135,12 +136,15 @@ public class SearchFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), BusRouteDetailActivity.class);
+                Bundle bundle = new Bundle();
                 try {
-                    MainActivity.startHostActivity(HostActivity.BUS_ROUTE_DETAIL,
-                            mJSONArray.getJSONObject(position).getInt("route_id"));
+                    bundle.putInt("route_id", mJSONArray.getJSONObject(position).getInt("route_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }
@@ -160,12 +164,15 @@ public class SearchFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), BusRouteDetailActivity.class);
+                Bundle bundle = new Bundle();
                 try {
-                    MainActivity.startHostActivity(HostActivity.BUS_STOP_ROUTE,
-                            mJSONArray.getJSONObject(position).getInt("stop_id"));
+                    bundle.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
     }

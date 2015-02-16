@@ -54,7 +54,7 @@ public class RouteExploreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_traffic_3, container, false);
+        View rootView = inflater.inflate(R.layout.a_route_explore, container, false);
 
         ArrayList<String> list = new ArrayList<>();
         try {

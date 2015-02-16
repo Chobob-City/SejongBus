@@ -41,10 +41,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import kr.nogcha.sejongbus.HostActivity;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
-import kr.nogcha.sejongbus.HostActivity;
 
 public class ExploreFragment extends Fragment {
     private EditText mEditText1;

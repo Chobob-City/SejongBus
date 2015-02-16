@@ -18,6 +18,7 @@ package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -41,10 +42,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import kr.nogcha.sejongbus.BusStopRouteActivity;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
-import kr.nogcha.sejongbus.HostActivity;
 
 public class SurroundStopFragment extends Fragment implements OnMapReadyCallback {
     private SejongBisClient mBisClient;
@@ -81,12 +82,15 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), BusStopRouteActivity.class);
+                Bundle bundle = new Bundle();
                 try {
-                    MainActivity.startHostActivity(HostActivity.BUS_STOP_ROUTE,
-                            mJSONArray.getJSONObject(position).getInt("stop_id"));
+                    bundle.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 

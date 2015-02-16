@@ -14,15 +14,14 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus.host;
+package kr.nogcha.sejongbus;
 
-import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.SpannableString;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,23 +32,20 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import kr.nogcha.sejongbus.CommonArrayAdapter;
-import kr.nogcha.sejongbus.CommonListItem;
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.SejongBisClient;
-
-public class BusRouteDetailFragment extends Fragment {
+public class BusRouteDetailActivity extends ActionBarActivity {
     private JSONArray mJSONArray;
     private CommonArrayAdapter mAdapter = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SejongBisClient bisClient = new SejongBisClient(getActivity());
+        setContentView(R.layout.a_bus_route_detail);
+
+        SejongBisClient bisClient = new SejongBisClient(this);
         if (bisClient.isNetworkConnected()) {
             ArrayList<CommonListItem> list = new ArrayList<>();
             try {
-                mJSONArray = bisClient.searchBusRouteDetail(getArguments().getInt("arg1"), true)
+                mJSONArray = bisClient.searchBusRouteDetail(getIntent().getExtras().getInt("route_id"), true)
                         .getJSONArray("busRouteDetailList");
                 for (int i = 0; i < mJSONArray.length() - 1; i++) {
                     JSONObject json = mJSONArray.getJSONObject(i);
@@ -60,19 +56,13 @@ public class BusRouteDetailFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            mAdapter = new CommonArrayAdapter(getActivity(), R.layout.common_list_item, list);
+            mAdapter = new CommonArrayAdapter(this, R.layout.common_list_item, list);
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_bus_route_detail, container, false);
 
         if (mAdapter != null) {
-            TextView textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
-            TextView textView2 = (TextView) rootView.findViewById(R.id.text_view_2);
-            TextView textView3 = (TextView) rootView.findViewById(R.id.text_view_3);
+            TextView textView1 = (TextView) findViewById(R.id.text_view_1);
+            TextView textView2 = (TextView) findViewById(R.id.text_view_2);
+            TextView textView3 = (TextView) findViewById(R.id.text_view_3);
             try {
                 JSONObject json = mJSONArray.getJSONObject(mJSONArray.length() - 1);
                 textView1.setText(json.getString("route_name"));
@@ -83,28 +73,28 @@ public class BusRouteDetailFragment extends Fragment {
                 e.printStackTrace();
             }
 
-            ListView listView = (ListView) rootView.findViewById(R.id.listView);
+            ListView listView = (ListView) findViewById(R.id.listView);
             listView.setAdapter(mAdapter);
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Fragment fragment = new BusStopRouteFragment();
+                    Intent intent = new Intent(BusRouteDetailActivity.this, BusStopRouteActivity.class);
                     Bundle bundle = new Bundle();
                     try {
-                        bundle.putInt("arg1", mJSONArray.getJSONObject(position).getInt("stop_id"));
+                        bundle.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    fragment.setArguments(bundle);
-
-                    FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frameLayout, fragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             });
         }
+    }
 
-        return rootView;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_traffic, menu);
+        return true;
     }
 }
