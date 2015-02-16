@@ -17,6 +17,7 @@
 package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -41,9 +42,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import kr.nogcha.sejongbus.HostActivity;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
+import kr.nogcha.sejongbus.RouteExploreActivity;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment extends Fragment {
@@ -155,8 +156,12 @@ public class ExploreFragment extends Fragment {
                     Toast.makeText(getActivity(), "도착할 정류소를 검색하세요.", Toast.LENGTH_SHORT)
                             .show();
                 } else {
-                    MainActivity.startHostActivity(HostActivity.ROUTE_EXPLORE, stBusStop,
-                            edBusStop);
+                    Intent intent = new Intent(getActivity(), RouteExploreActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("stBusStop", stBusStop);
+                    bundle.putInt("edBusStop", edBusStop);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 }
             }
         });

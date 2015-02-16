@@ -41,12 +41,6 @@ public class MainActivity extends ActionBarActivity {
         inputMethodManager.toggleSoftInput(0, 0);
     }
 
-    public static void startHostActivity(int... args) {
-        Intent intent = new Intent(sInstance, HostActivity.class);
-        for (int i = 0; i < args.length; i++) intent.putExtra("arg" + i, args[i]);
-        sInstance.startActivity(intent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

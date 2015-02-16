@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus.host;
+package kr.nogcha.sejongbus;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.ActionBarActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,31 +31,27 @@ import java.util.ArrayList;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
-public class RouteExploreFragment extends Fragment {
+public class RouteExploreActivity extends ActionBarActivity {
     private JSONArray mJSONArray;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SejongBisClient bisClient = new SejongBisClient(getActivity());
-        Bundle arguments = getArguments();
+        setContentView(R.layout.a_route_explore);
+
+        SejongBisClient bisClient = new SejongBisClient(this);
+        Bundle extras = getIntent().getExtras();
         try {
             mJSONArray = bisClient
-                    .searchRouteExplore(arguments.getInt("arg1"), arguments.getInt("arg2"), true)
+                    .searchRouteExplore(extras.getInt("stBusStop"), extras.getInt("edBusStop"), true)
                     .getJSONArray("routeExplore");
         } catch (JSONException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.a_route_explore, container, false);
 
         ArrayList<String> list = new ArrayList<>();
         try {
-            TextView textView1 = (TextView) rootView.findViewById(R.id.text_view_1);
+            TextView textView1 = (TextView) findViewById(R.id.text_view_1);
             JSONObject json = mJSONArray.getJSONObject(0);
             textView1.setText("출발: " + json.getString("sstationname") + "("
                     + json.getString("sService_id") + ")\n도착: "
@@ -93,10 +86,7 @@ public class RouteExploreFragment extends Fragment {
             e.printStackTrace();
         }
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, list));
-
-        return rootView;
+        ListView listView = (ListView) findViewById(R.id.listView);
+        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list));
     }
 }

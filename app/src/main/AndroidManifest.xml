@@ -19,17 +19,13 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="adjustResize">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".HostActivity"
-            android:label="@string/app_name" />
         <activity
             android:name=".SettingsActivity"
             android:label="설정"/>
@@ -39,6 +35,9 @@
         <activity
             android:name=".BusStopRouteActivity"
             android:label="정류소검색"/>
+        <activity
+            android:name=".RouteExploreActivity"
+            android:label="경로탐색"/>
 
         <meta-data
             android:name="com.google.android.gms.version"
