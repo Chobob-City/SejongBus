@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
         final InputMethodManager inputMethodManager =
                 (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
         //TODO
-        inputMethodManager.toggleSoftInput(0, 0);
+//        inputMethodManager.toggleSoftInput(0, 0);
     }
 
     @Override
@@ -91,4 +91,10 @@ public class MainActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+     @Override
+        public void onBackPressed() {
+            FragmentManager fragmentManager = getFragmentManager();
+            if (fragmentManager.getBackStackEntryCount() > 0) fragmentManager.popBackStack();
+        }
 }

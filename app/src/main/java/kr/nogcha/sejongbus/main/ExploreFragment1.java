@@ -47,8 +47,8 @@ import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.RouteExploreActivity;
 import kr.nogcha.sejongbus.SejongBisClient;
 
-public class ExploreFragment extends Fragment {
-    private EditText mEditText1;
+public class ExploreFragment1 extends Fragment {
+    private EditText mEditText;
     private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
     private ArrayList<Spanned> mList = new ArrayList<>();
@@ -65,25 +65,24 @@ public class ExploreFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_explore, container, false);
+        View rootView = inflater.inflate(R.layout.f_explore_1, container, false);
 
-        mEditText1 = (EditText) rootView.findViewById(R.id.editText1);
-        mEditText1.setOnTouchListener(new View.OnTouchListener() {
+        mEditText = (EditText) rootView.findViewById(R.id.editText);
+        mEditText.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
                     mList.clear();
                     mAdapter.notifyDataSetChanged();
 
-                    stBusStop = 0;
-                    mEditText1.setHint("");
-                    mEditText1.setText("");
+                    mEditText.setHint("");
+                    mEditText.setText("");
                     return true;
                 }
                 return false;
             }
         });
-        mEditText1.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
@@ -98,8 +97,8 @@ public class ExploreFragment extends Fragment {
         mListView.setEmptyView(rootView.findViewById(R.id.textView));
         mListView.setAdapter(mAdapter);
 
-        ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.imageButton1);
-        imageButton1.setOnClickListener(new View.OnClickListener() {
+        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
+        imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearch1();
@@ -110,13 +109,13 @@ public class ExploreFragment extends Fragment {
     }
 
     private void onSearch1() {
-        String query = mEditText1.getText().toString();
+        String query = mEditText.getText().toString();
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
 
             if (mBisClient.isNetworkConnected()) {
                 try {
-                    mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
+                    mJSONArray = mBisClient.searchBusStop(query, true).getJSONArray("busStopList");
                     mList.clear();
                     for (int i = 0; i < mJSONArray.length(); i++) {
                         JSONObject json = mJSONArray.getJSONObject(i);
@@ -133,13 +132,14 @@ public class ExploreFragment extends Fragment {
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         try {
                             JSONObject json = mJSONArray.getJSONObject(position);
-                            stBusStop = json.getInt("stop_id");
-                            mEditText1.setHint(json.getString("stop_name") + "("
+                            ExploreFragment.stBusStop = json.getInt("stop_id");
+                            getFragmentManager().popBackStack();
+                            mEditText.setHint(json.getString("stop_name") + "("
                                     + json.getString("service_id") + ")");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        mEditText1.setText("");
+                        mEditText.setText("");
                     }
                 });
             }

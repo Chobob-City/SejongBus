@@ -38,7 +38,7 @@ public class BusStopRouteActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_bus_route_detail);
+        setContentView(R.layout.a_bus_stop_route);
 
         SejongBisClient bisClient = new SejongBisClient(this);
         if (!bisClient.isNetworkConnected()) return;

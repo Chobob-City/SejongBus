@@ -94,25 +94,4 @@
         android:layout_below="@+id/searchbar2"
         android:text="탐색" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/button">
-
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="검색 결과가 없습니다."
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:visibility="invisible" />
-
-    </RelativeLayout>
-
 </RelativeLayout>

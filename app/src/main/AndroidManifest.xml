@@ -19,7 +19,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,16 +29,16 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="설정"/>
+            android:label="설정" />
         <activity
             android:name=".BusRouteDetailActivity"
-            android:label="노선검색"/>
+            android:label="노선검색" />
         <activity
             android:name=".BusStopRouteActivity"
-            android:label="정류소검색"/>
+            android:label="정류소검색" />
         <activity
             android:name=".RouteExploreActivity"
-            android:label="경로탐색"/>
+            android:label="경로탐색" />
 
         <meta-data
             android:name="com.google.android.gms.version"

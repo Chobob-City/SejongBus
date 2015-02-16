@@ -55,9 +55,8 @@ public class ExploreFragment extends Fragment {
     private ArrayList<Spanned> mList = new ArrayList<>();
     private ArrayAdapter<Spanned> mAdapter;
     private ListView mListView;
-    // TODO
-    private int stBusStop = 293018070;
-    private int edBusStop = 293018069;
+    public static int stBusStop = 0;
+    public static int edBusStop = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,15 +70,11 @@ public class ExploreFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
-        mListView = (ListView) rootView.findViewById(R.id.listView);
-        mListView.setEmptyView(rootView.findViewById(R.id.textView));
-        mListView.setAdapter(mAdapter);
-
         ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.imageButton1);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//TODO start fragment
+                getFragmentManager().beginTransaction().replace(R.id.frameLayout, new ExploreFragment1()).commit();
             }
         });
 
@@ -87,7 +82,7 @@ public class ExploreFragment extends Fragment {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//TODO start fragment
+                getFragmentManager().beginTransaction().replace(R.id.frameLayout, new ExploreFragment2()).commit();
             }
         });
 
