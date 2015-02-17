@@ -19,21 +19,21 @@ package kr.nogcha.sejongbus.main;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.Intent;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -53,21 +53,17 @@ import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
-public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
+public class SurroundStopFragment extends Fragment implements LocationListener, OnMapReadyCallback {
     private ArrayList<CommonListItem> mList = new ArrayList<>();
-    private Location mLastLocation = null;
-    private GoogleApiClient mApiClient;
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
     private JSONArray mJSONArray;
+    private GoogleMap mMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = getActivity();
-        mApiClient = new GoogleApiClient.Builder(activity).addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         mBisClient = new SejongBisClient(activity);
         mAdapter = new CommonAdapter(activity, R.layout.common_list_item, mList);
     }
@@ -78,6 +74,13 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         View rootView = inflater.inflate(R.layout.f_surround_stop, container, false);
 
         MainActivity.hideSoftInput();
+
+        final LocationManager locationManager =
+                (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        String bestProvider = locationManager.getBestProvider(criteria, true);
+        if (bestProvider != null) locationManager.requestLocationUpdates(bestProvider, 0, 0, this);
 
         FragmentManager fragmentManager;
         if (Build.VERSION.SDK_INT >= 17) {
@@ -110,66 +113,24 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        mApiClient.connect();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Activity activity = getActivity();
-        int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-        if (errorCode != ConnectionResult.SUCCESS
-                && !GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
-            Toast.makeText(activity, "해당 기기는 지원되지 않습니다.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mApiClient.isConnected()) mApiClient.disconnect();
-    }
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
-        if (mLastLocation == null) {
-            Toast.makeText(getActivity(), "위치를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        mApiClient.connect();
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-    }
-
-    @Override
-    public void onMapReady(final GoogleMap googleMap) {
-        //noinspection StatementWithEmptyBody
-        while (mLastLocation == null) ;
+    public void onLocationChanged(Location location) {
         try {
             mJSONArray = mBisClient
-                    .searchSurroundStopList(mLastLocation.getLatitude(),
-                            mLastLocation.getLongitude())
+                    .searchSurroundStopList(location.getLatitude(), location.getLongitude())
                     .getJSONArray("busStopList");
-            googleMap.clear();
+            if (mMap != null) mMap.clear();
             mList.clear();
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-
+                item.text1 = new SpannableString("");
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");
-                googleMap.addMarker(new MarkerOptions()
-                        .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
-                        .title(item.text2 + " [" + item.text3 + "]"));
-
+                if (mMap != null) {
+                    mMap.addMarker(new MarkerOptions()
+                            .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
+                            .title(item.text2 + " [" + item.text3 + "]"));
+                }
                 item.text3 += "\n" + json.getString("distance") + "m";
                 mList.add(item);
             }
@@ -177,5 +138,22 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             e.printStackTrace();
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+    }
+
+    @Override
+    public void onMapReady(final GoogleMap googleMap) {
+        mMap = googleMap;
     }
 }
