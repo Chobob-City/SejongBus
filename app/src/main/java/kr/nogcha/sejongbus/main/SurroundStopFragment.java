@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,10 +32,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -51,8 +53,11 @@ import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
-public class SurroundStopFragment extends Fragment implements OnMapReadyCallback {
+public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, OnMapReadyCallback {
     private ArrayList<CommonListItem> mList = new ArrayList<>();
+    private Location mLastLocation = null;
+    private GoogleApiClient mApiClient;
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
     private JSONArray mJSONArray;
@@ -61,6 +66,8 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Activity activity = getActivity();
+        mApiClient = new GoogleApiClient.Builder(activity).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(LocationServices.API).build();
         mBisClient = new SejongBisClient(activity);
         mAdapter = new CommonAdapter(activity, R.layout.common_list_item, mList);
     }
@@ -103,50 +110,72 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        mApiClient.connect();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         Activity activity = getActivity();
         int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-        if (errorCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
-                GooglePlayServicesUtil.getErrorDialog(errorCode, activity, 0).show();
-            } else {
-                Toast.makeText(activity, "해당 기기는 지원되지 않습니다.", Toast.LENGTH_SHORT).show();
-            }
+        if (errorCode != ConnectionResult.SUCCESS
+                && !GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
+            Toast.makeText(activity, "해당 기기는 지원되지 않습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        if (mApiClient.isConnected()) mApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mApiClient);
+        if (mLastLocation == null) {
+            Toast.makeText(getActivity(), "위치를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mApiClient.connect();
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+    }
+
+    @Override
     public void onMapReady(final GoogleMap googleMap) {
-        googleMap.setMyLocationEnabled(true);
-        googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
-            @Override
-            public void onCameraChange(CameraPosition cameraPosition) {
-                LatLng target = cameraPosition.target;
-                try {
-                    mJSONArray = mBisClient
-                            .searchSurroundStopList(target.latitude, target.longitude)
-                            .getJSONArray("busStopList");
-                    googleMap.clear();
-                    mList.clear();
-                    for (int i = 0; i < mJSONArray.length(); i++) {
-                        CommonListItem item = new CommonListItem();
-                        JSONObject json = mJSONArray.getJSONObject(i);
+        //noinspection StatementWithEmptyBody
+        while (mLastLocation == null) ;
+        try {
+            mJSONArray = mBisClient
+                    .searchSurroundStopList(mLastLocation.getLatitude(),
+                            mLastLocation.getLongitude())
+                    .getJSONArray("busStopList");
+            googleMap.clear();
+            mList.clear();
+            for (int i = 0; i < mJSONArray.length(); i++) {
+                CommonListItem item = new CommonListItem();
+                JSONObject json = mJSONArray.getJSONObject(i);
 
-                        item.text2 = json.getString("stop_name");
-                        item.text3 = json.getString("service_id");
-                        googleMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
-                                .title(item.text2 + " [" + item.text3 + "]"));
+                item.text2 = json.getString("stop_name");
+                item.text3 = json.getString("service_id");
+                googleMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
+                        .title(item.text2 + " [" + item.text3 + "]"));
 
-                        item.text3 += "\n" + json.getString("distance") + "m";
-                        mList.add(item);
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                mAdapter.notifyDataSetChanged();
+                item.text3 += "\n" + json.getString("distance") + "m";
+                mList.add(item);
             }
-        });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        mAdapter.notifyDataSetChanged();
     }
 }
