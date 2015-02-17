@@ -17,63 +17,51 @@
 package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.Toast;
-
-import org.json.JSONArray;
-
-import java.util.ArrayList;
 
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.RouteExploreActivity;
-import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment extends Fragment {
     public static int stBusStop = 0;
     public static int edBusStop = 0;
-    private EditText mEditText1;
-    private EditText mEditText2;
-    private SejongBisClient mBisClient;
-    private JSONArray mJSONArray;
-    private ArrayList<Spanned> mList = new ArrayList<>();
-    private ArrayAdapter<Spanned> mAdapter;
-    private ListView mListView;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mBisClient = new SejongBisClient(getActivity());
-        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mList);
-    }
+    private FragmentManager mFragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
-        ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.imageButton1);
+        mFragmentManager = getFragmentManager();
+
+        ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.image_button_1);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.frameLayout, new ExploreFragment1()).commit();
+                FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                transaction.replace(R.id.frame_layout, new ExploreFragment1());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
-        ImageButton imageButton2 = (ImageButton) rootView.findViewById(R.id.imageButton2);
+        ImageButton imageButton2 = (ImageButton) rootView.findViewById(R.id.image_button_2);
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction().replace(R.id.frameLayout, new ExploreFragment2()).commit();
+                FragmentTransaction transaction = mFragmentManager.beginTransaction();
+                transaction.replace(R.id.frame_layout, new ExploreFragment2());
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 
@@ -82,10 +70,10 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (stBusStop == 0) {
-                    Toast.makeText(getActivity(), "출발할 정류소를 검색하세요.", Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), "출발지를 선택하세요.", Toast.LENGTH_SHORT)
                             .show();
                 } else if (edBusStop == 0) {
-                    Toast.makeText(getActivity(), "도착할 정류소를 검색하세요.", Toast.LENGTH_SHORT)
+                    Toast.makeText(getActivity(), "도착지를 선택하세요.", Toast.LENGTH_SHORT)
                             .show();
                 } else {
                     Intent intent = new Intent(getActivity(), RouteExploreActivity.class);

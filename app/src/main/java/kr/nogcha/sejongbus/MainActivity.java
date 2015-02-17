@@ -31,8 +31,8 @@ import kr.nogcha.sejongbus.main.SurroundStopFragment;
 
 public class MainActivity extends ActionBarActivity {
     private static MainActivity sInstance;
-    private FragmentManager mFragmentManager;
     private int mSelectedItemId = R.id.action_search;
+    private FragmentManager mFragmentManager;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
 
         sInstance = this;
         mFragmentManager = getFragmentManager();
-        mFragmentManager.beginTransaction().add(R.id.frameLayout, new SearchFragment()).commit();
+        mFragmentManager.beginTransaction().add(R.id.frame_layout, new SearchFragment()).commit();
     }
 
     @Override
@@ -63,28 +63,25 @@ public class MainActivity extends ActionBarActivity {
                 if (mSelectedItemId != R.id.action_search) {
                     mSelectedItemId = R.id.action_search;
                     mFragmentManager.beginTransaction()
-                            .replace(R.id.frameLayout, new SearchFragment()).commit();
+                            .replace(R.id.frame_layout, new SearchFragment()).commit();
                 }
                 return true;
             case R.id.action_explore:
                 if (mSelectedItemId != R.id.action_explore) {
                     mSelectedItemId = R.id.action_explore;
                     mFragmentManager.beginTransaction()
-                            .replace(R.id.frameLayout, new ExploreFragment()).commit();
+                            .replace(R.id.frame_layout, new ExploreFragment()).commit();
                 }
                 return true;
             case R.id.action_surround_stop:
                 if (mSelectedItemId != R.id.action_surround_stop) {
                     mSelectedItemId = R.id.action_surround_stop;
                     mFragmentManager.beginTransaction()
-                            .replace(R.id.frameLayout, new SurroundStopFragment()).commit();
+                            .replace(R.id.frame_layout, new SurroundStopFragment()).commit();
                 }
                 return true;
             case R.id.action_settings:
-                if (mSelectedItemId != R.id.action_settings) {
-                    mSelectedItemId = R.id.action_settings;
-                    startActivity(new Intent(this, SettingsActivity.class));
-                }
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -93,7 +90,10 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        FragmentManager fragmentManager = getFragmentManager();
-        if (fragmentManager.getBackStackEntryCount() > 0) fragmentManager.popBackStack();
+        if (mFragmentManager.getBackStackEntryCount() > 0) {
+            mFragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
+        }
     }
 }

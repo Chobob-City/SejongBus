@@ -16,6 +16,7 @@
 
 package kr.nogcha.sejongbus.main;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -25,10 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,21 +42,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import kr.nogcha.sejongbus.BusStopRouteActivity;
+import kr.nogcha.sejongbus.CommonAdapter;
+import kr.nogcha.sejongbus.CommonListItem;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class SurroundStopFragment extends Fragment implements OnMapReadyCallback {
+    private ArrayList<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
+    private CommonAdapter mAdapter;
     private JSONArray mJSONArray;
-    private ArrayList<String> mList = new ArrayList<>();
-    private ArrayAdapter<String> mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBisClient = new SejongBisClient(getActivity());
-        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mList);
+        Activity activity = getActivity();
+        mBisClient = new SejongBisClient(activity);
+        mAdapter = new CommonAdapter(activity, R.layout.common_list_item, mList);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
         MainActivity.hideSoftInput();
 
         FragmentManager fragmentManager;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= 17) {
             fragmentManager = getChildFragmentManager();
         } else {
             fragmentManager = getFragmentManager();
@@ -76,8 +78,8 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
         MapFragment map = (MapFragment) fragmentManager.findFragmentById(R.id.map);
         map.getMapAsync(this);
 
-        ListView listView = (ListView) rootView.findViewById(R.id.listView);
-        listView.setEmptyView(rootView.findViewById(R.id.textView));
+        ListView listView = (ListView) rootView.findViewById(R.id.list_view);
+        listView.setEmptyView(rootView.findViewById(R.id.text_view));
         listView.setAdapter(mAdapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -98,17 +100,7 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        final FragmentManager fragmentManager = getFragmentManager();
-        MapFragment mapFragment = (MapFragment) fragmentManager.findFragmentById(R.id.map);
-        if (mapFragment != null) fragmentManager.beginTransaction().remove(mapFragment).commit();
-    }
-
-    @Override
     public void onMapReady(final GoogleMap googleMap) {
-        // 조치원역
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(36.601031, 127.295882)));
         googleMap.setMyLocationEnabled(true);
         googleMap.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
@@ -121,13 +113,17 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
                     googleMap.clear();
                     mList.clear();
                     for (int i = 0; i < mJSONArray.length(); i++) {
+                        CommonListItem item = new CommonListItem();
                         JSONObject json = mJSONArray.getJSONObject(i);
-                        String stop = json.getString("stop_name") + " ["
-                                + json.getString("service_id") + "]";
+
+                        item.text2 = json.getString("stop_name");
+                        item.text3 = json.getString("service_id");
                         googleMap.addMarker(new MarkerOptions()
                                 .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
-                                .title(stop));
-                        mList.add(stop + "\n" + json.getString("distance") + "m");
+                                .title(item.text2 + " [" + item.text3 + "]"));
+
+                        item.text3 += "\n" + json.getString("distance") + "m";
+                        mList.add(item);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

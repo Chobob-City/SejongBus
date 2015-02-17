@@ -16,12 +16,13 @@
 
 package kr.nogcha.sejongbus.main;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.SpannableString;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -46,19 +47,19 @@ import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class SearchFragment extends Fragment {
+    private ArrayList<CommonListItem> mList = new ArrayList<>();
+    private SejongBisClient mBisClient;
+    private CommonAdapter mAdapter;
     private EditText mEditText;
     private ListView mListView;
-    private SejongBisClient mBisClient;
     private JSONArray mJSONArray;
-    private ArrayList<CommonListItem> mList;
-    private CommonAdapter mAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBisClient = new SejongBisClient(getActivity());
-        mList = new ArrayList<>();
-        mAdapter = new CommonAdapter(getActivity(), R.layout.common_list_item, mList);
+        Activity activity = getActivity();
+        mBisClient = new SejongBisClient(activity);
+        mAdapter = new CommonAdapter(activity, R.layout.common_list_item, mList);
     }
 
     @Override
@@ -66,15 +67,11 @@ public class SearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_search, container, false);
 
-        mEditText = (EditText) rootView.findViewById(R.id.editText);
-        mEditText.setOnTouchListener(new View.OnTouchListener() {
+        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mEditText.setText("");
-                    return true;
-                }
-                return false;
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) mEditText.setText("");
             }
         });
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -87,18 +84,19 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+        mEditText.requestFocus();
 
-        mListView = (ListView) rootView.findViewById(R.id.listView);
-        mListView.setEmptyView(rootView.findViewById(R.id.textView));
-        mListView.setAdapter(mAdapter);
-
-        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
+        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearch();
             }
         });
+
+        mListView = (ListView) rootView.findViewById(R.id.list_view);
+        mListView.setEmptyView(rootView.findViewById(R.id.text_view));
+        mListView.setAdapter(mAdapter);
 
         return rootView;
     }
@@ -123,15 +121,18 @@ public class SearchFragment extends Fragment {
             mJSONArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
             mList.clear();
             for (int i = 0; i < mJSONArray.length(); i++) {
+                CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                mList.add(new CommonListItem(mBisClient.getRouteType(json.getInt("route_type")),
-                        json.getString("route_name"),
-                        json.getString("st_stop_name") + "~" + json.getString("ed_stop_name")));
+                item.text1 = mBisClient.getRouteType(json.getInt("route_type"));
+                item.text2 = json.getString("route_name");
+                item.text3 = json.getString("st_stop_name") + "~" + json.getString("ed_stop_name");
+                mList.add(item);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         mAdapter.notifyDataSetChanged();
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -154,14 +155,18 @@ public class SearchFragment extends Fragment {
             mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
             mList.clear();
             for (int i = 0; i < mJSONArray.length(); i++) {
+                CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                mList.add(new CommonListItem("", json.getString("stop_name"),
-                        json.getString("service_id")));
+                item.text1 = new SpannableString("");
+                item.text2 = json.getString("stop_name");
+                item.text3 = json.getString("service_id");
+                mList.add(item);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         mAdapter.notifyDataSetChanged();
+
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

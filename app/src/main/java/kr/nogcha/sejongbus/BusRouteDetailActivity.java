@@ -48,29 +48,29 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             mJSONArray = bisClient
                     .searchBusRouteDetail(getIntent().getExtras().getInt("route_id"), true)
                     .getJSONArray("busRouteDetailList");
-            for (int i = 0; i < mJSONArray.length() - 1; i++) {
-                JSONObject json = mJSONArray.getJSONObject(i);
-                list.add(new CommonListItem(new SpannableString(""), json.getString("stop_name"),
-                        json.getString("service_id")));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-        TextView textView1 = (TextView) findViewById(R.id.text_view_1);
-        TextView textView2 = (TextView) findViewById(R.id.text_view_2);
-        TextView textView3 = (TextView) findViewById(R.id.text_view_3);
-        try {
+            TextView textView1 = (TextView) findViewById(R.id.text_view_1);
+            TextView textView2 = (TextView) findViewById(R.id.text_view_2);
+            TextView textView3 = (TextView) findViewById(R.id.text_view_3);
             JSONObject json = mJSONArray.getJSONObject(mJSONArray.length() - 1);
             textView1.setText(json.getString("route_name"));
             textView2.setText(json.getString("st_stop_name") + "~"
                     + json.getString("ed_stop_name"));
             textView3.setText(json.getString("alloc_time"));
+
+            for (int i = 0; i < mJSONArray.length() - 1; i++) {
+                CommonListItem item = new CommonListItem();
+                json = mJSONArray.getJSONObject(i);
+                item.text1 = new SpannableString("");
+                item.text2 = json.getString("stop_name");
+                item.text3 = json.getString("service_id");
+                list.add(item);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(new CommonAdapter(this, R.layout.common_list_item, list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

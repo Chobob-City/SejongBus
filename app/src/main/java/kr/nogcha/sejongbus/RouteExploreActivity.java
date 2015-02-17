@@ -18,7 +18,6 @@ package kr.nogcha.sejongbus;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -40,50 +39,50 @@ public class RouteExploreActivity extends ActionBarActivity {
         Bundle extras = getIntent().getExtras();
         try {
             mJSONArray = bisClient
-                    .searchRouteExplore(extras.getInt("stBusStop"), extras.getInt("edBusStop"), true)
+                    .searchRouteExplore(extras.getInt("stBusStop"), extras.getInt("edBusStop"),
+                            true)
                     .getJSONArray("routeExplore");
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ArrayList<String> list = new ArrayList<>();
+        ArrayList<CommonListItem> list = new ArrayList<>();
         try {
             TextView textView1 = (TextView) findViewById(R.id.text_view_1);
             JSONObject json = mJSONArray.getJSONObject(0);
-            textView1.setText("출발: " + json.getString("sstationname") + "("
-                    + json.getString("sService_id") + ")\n도착: "
-                    + json.getString("estationname") + "(" + json.getString("eService_id")
-                    + ")");
+            textView1.setText("출발: " + json.getString("sstationname") + " ["
+                    + json.getString("sService_id") + "]\n도착: " + json.getString("estationname")
+                    + " [" + json.getString("eService_id") + "]");
 
             for (int i = 0; i < mJSONArray.length(); i++) {
+                CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-                String route;
 
                 int xtype = json.getInt("xtype");
                 if (xtype == 1) {
-                    route = "무";
+                    item.text2 = "무";
                 } else {
-                    route = "";
+                    item.text2 = "";
                 }
-                route += "환승 경로\n" + json.getString("sstationname") + "(" +
-                        json.getString("sService_id") + ")에서 " + json.getString("srouteno")
-                        + "번 버스에 승차\n";
+                item.text2 += "환승 경로";
+                item.text3 = json.getString("sstationname") + "(" + json.getString("sService_id")
+                        + ")에서 " + json.getString("srouteno") + "번 버스에 승차\n";
                 if (xtype != 1) {
-                    route += json.getString("tstationname") + "("
-                            + json.getString("tService_id") + ")에서 "
-                            + json.getString("erouteno") + "번 버스로 환승\n";
+                    item.text3 += json.getString("tstationname") + "("
+                            + json.getString("tService_id") + ")에서 " + json.getString("erouteno")
+                            + "번 버스로 환승\n";
                 }
-                route += json.getString("estationname") + "(" + json.getString("eService_id")
+                item.text3 += json.getString("estationname") + "(" + json.getString("eService_id")
                         + ")에서 하차\n" + json.getString("seq") + "개 정류소, "
                         + json.getInt("distance") / 1000. + "km";
 
-                list.add(route);
+                list.add(item);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ListView listView = (ListView) findViewById(R.id.listView);
-        listView.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list));
+        ListView listView = (ListView) findViewById(R.id.list_view);
+        listView.setAdapter(new CommonAdapter(this, android.R.layout.simple_list_item_1, list));
     }
 }

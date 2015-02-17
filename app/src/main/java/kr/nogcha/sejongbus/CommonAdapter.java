@@ -37,18 +37,16 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
         CommonViewHolder viewHolder;
         if (convertView == null) {
-            view = mInflater.inflate(mResource, null);
+            convertView = mInflater.inflate(mResource, null);
             viewHolder = new CommonViewHolder();
-            viewHolder.textView1 = (TextView) view.findViewById(R.id.text_view_1);
-            viewHolder.textView2 = (TextView) view.findViewById(R.id.text_view_2);
-            viewHolder.textView3 = (TextView) view.findViewById(R.id.text_view_3);
-            view.setTag(viewHolder);
+            viewHolder.textView1 = (TextView) convertView.findViewById(R.id.text_view_1);
+            viewHolder.textView2 = (TextView) convertView.findViewById(R.id.text_view_2);
+            viewHolder.textView3 = (TextView) convertView.findViewById(R.id.text_view_3);
+            convertView.setTag(viewHolder);
         } else {
-            view = convertView;
-            viewHolder = (CommonViewHolder) view.getTag();
+            viewHolder = (CommonViewHolder) convertView.getTag();
         }
 
         CommonListItem item = getItem(position);
@@ -56,6 +54,6 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         viewHolder.textView2.setText(item.text2);
         viewHolder.textView3.setText(item.text3);
 
-        return view;
+        return convertView;
     }
 }

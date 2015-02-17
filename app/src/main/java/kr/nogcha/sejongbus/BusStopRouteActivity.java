@@ -19,7 +19,6 @@ package kr.nogcha.sejongbus;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.Spanned;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -59,7 +58,7 @@ public class BusStopRouteActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 json = mJSONArray.getJSONObject(i);
 
-                item.text1 = (Spanned) bisClient.getRouteType(json.getInt("route_type"));
+                item.text1 = bisClient.getRouteType(json.getInt("route_type"));
                 item.text2 = json.getString("route_name");
 
                 int provide_code = json.getInt("provide_code");
@@ -81,7 +80,7 @@ public class BusStopRouteActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(new CommonAdapter(this, R.layout.common_list_item, list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

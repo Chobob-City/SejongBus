@@ -16,18 +16,16 @@
 
 package kr.nogcha.sejongbus.main;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.text.SpannableString;
-import android.text.Spanned;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -39,23 +37,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import kr.nogcha.sejongbus.CommonAdapter;
+import kr.nogcha.sejongbus.CommonListItem;
 import kr.nogcha.sejongbus.MainActivity;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment1 extends Fragment {
-    private EditText mEditText;
+    private ArrayList<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
-    private JSONArray mJSONArray;
-    private ArrayList<Spanned> mList = new ArrayList<>();
-    private ArrayAdapter<Spanned> mAdapter;
+    private CommonAdapter mAdapter;
+    private EditText mEditText;
     private ListView mListView;
+    private JSONArray mJSONArray;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mBisClient = new SejongBisClient(getActivity());
-        mAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, mList);
+        Activity activity = getActivity();
+        mBisClient = new SejongBisClient(activity);
+        mAdapter = new CommonAdapter(activity, R.layout.common_list_item, mList);
     }
 
     @Override
@@ -63,26 +64,18 @@ public class ExploreFragment1 extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore_1, container, false);
 
-        mEditText = (EditText) rootView.findViewById(R.id.editText);
-        mEditText.setOnTouchListener(new View.OnTouchListener() {
+        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    mList.clear();
-                    mAdapter.notifyDataSetChanged();
-
-                    mEditText.setHint("");
-                    mEditText.setText("");
-                    return true;
-                }
-                return false;
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) mEditText.setText("");
             }
         });
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    onSearch1();
+                    onSearch();
                     return true;
                 }
                 return false;
@@ -90,56 +83,55 @@ public class ExploreFragment1 extends Fragment {
         });
         mEditText.requestFocus();
 
-        mListView = (ListView) rootView.findViewById(R.id.listView);
-        mListView.setEmptyView(rootView.findViewById(R.id.textView));
+        mListView = (ListView) rootView.findViewById(R.id.list_view);
+        mListView.setEmptyView(rootView.findViewById(R.id.text_view));
         mListView.setAdapter(mAdapter);
 
-        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.imageButton);
+        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch1();
+                onSearch();
             }
         });
 
         return rootView;
     }
 
-    private void onSearch1() {
+    private void onSearch() {
         String query = mEditText.getText().toString();
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
+            if (!mBisClient.isNetworkConnected()) return;
 
-            if (mBisClient.isNetworkConnected()) {
-                try {
-                    mJSONArray = mBisClient.searchBusStop(query, true).getJSONArray("busStopList");
-                    mList.clear();
-                    for (int i = 0; i < mJSONArray.length(); i++) {
-                        JSONObject json = mJSONArray.getJSONObject(i);
-                        mList.add(new SpannableString(json.getString("stop_name") + "\n("
-                                + json.getString("service_id") + ")"));
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            try {
+                mJSONArray = mBisClient.searchBusStop(query, true).getJSONArray("busStopList");
+                mList.clear();
+                for (int i = 0; i < mJSONArray.length(); i++) {
+                    CommonListItem item = new CommonListItem();
+                    JSONObject json = mJSONArray.getJSONObject(i);
+                    item.text1 = new SpannableString("");
+                    item.text2 = json.getString("stop_name");
+                    item.text3 = json.getString("service_id");
+                    mList.add(item);
                 }
-                mAdapter.notifyDataSetChanged();
-
-                mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        try {
-                            JSONObject json = mJSONArray.getJSONObject(position);
-                            ExploreFragment.stBusStop = json.getInt("stop_id");
-                            getFragmentManager().popBackStack();
-                            mEditText.setHint(json.getString("stop_name") + "("
-                                    + json.getString("service_id") + ")");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        mEditText.setText("");
-                    }
-                });
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
+            mAdapter.notifyDataSetChanged();
+
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        ExploreFragment.stBusStop = mJSONArray.getJSONObject(position)
+                                .getInt("stop_id");
+                        getFragmentManager().popBackStack();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
         }
     }
 }
