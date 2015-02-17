@@ -22,9 +22,11 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -43,14 +45,35 @@ public class ExploreFragment extends Fragment {
 
         mFragmentManager = getFragmentManager();
 
+        final EditText editText1 = (EditText) rootView.findViewById(R.id.edit_text_1);
+        editText1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    onSearch(false);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         ImageButton imageButton1 = (ImageButton) rootView.findViewById(R.id.image_button_1);
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                transaction.replace(R.id.frame_layout, new ExploreFragment1());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                onSearch(false);
+            }
+        });
+
+        final EditText editText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
+        editText2.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    onSearch(true);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -58,10 +81,7 @@ public class ExploreFragment extends Fragment {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction transaction = mFragmentManager.beginTransaction();
-                transaction.replace(R.id.frame_layout, new ExploreFragment2());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                onSearch(true);
             }
         });
 
@@ -87,5 +107,13 @@ public class ExploreFragment extends Fragment {
         });
 
         return rootView;
+    }
+
+    private void onSearch(boolean isSecond) {
+        FragmentTransaction transaction = mFragmentManager.beginTransaction();
+        transaction.replace(R.id.frame_layout,
+                !isSecond ? new ExploreFragment1() : new ExploreFragment2());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 }

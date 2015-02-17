@@ -14,16 +14,15 @@
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/editText1"
+            android:id="@+id/edit_text_1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@drawable/d_rounded_white"
+            android:enabled="false"
             android:hint="출발지를 선택하세요."
-            android:imeOptions="actionSearch"
-            android:inputType="none"
             android:padding="8dp"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/image_button_1"
@@ -47,16 +46,15 @@
         android:padding="8dp">
 
         <EditText
-            android:id="@+id/editText2"
+            android:id="@+id/edit_text_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@drawable/d_rounded_white"
+            android:enabled="false"
             android:hint="도착지를 선택하세요."
-            android:imeOptions="actionSearch"
-            android:inputType="none"
             android:padding="8dp"
-            android:textSize="14sp" />
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/image_button_2"

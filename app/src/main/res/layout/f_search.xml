@@ -23,8 +23,7 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:padding="16dp"
-            android:singleLine="true"
-            android:textSize="14sp" />
+            android:singleLine="true" />
 
         <ImageButton
             android:id="@+id/image_button"
