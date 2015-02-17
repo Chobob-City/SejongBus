@@ -37,8 +37,7 @@ public class MainActivity extends ActionBarActivity {
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
                 (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
-        //TODO
-//        inputMethodManager.toggleSoftInput(0, 0);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
