@@ -29,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -106,10 +107,12 @@ public class SurroundStopFragment extends Fragment implements OnMapReadyCallback
         super.onResume();
         Activity activity = getActivity();
         int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
-        if (GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
-            GooglePlayServicesUtil.getErrorDialog(errorCode, activity, 0).show();
-        } else {
-            Toast.makeText(activity, "해당 기기는 지원되지 않습니다.", Toast.LENGTH_SHORT).show();
+        if (errorCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
+                GooglePlayServicesUtil.getErrorDialog(errorCode, activity, 0).show();
+            } else {
+                Toast.makeText(activity, "해당 기기는 지원되지 않습니다.", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
