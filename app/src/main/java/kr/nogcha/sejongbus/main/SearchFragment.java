@@ -37,6 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import kr.nogcha.sejongbus.BusRouteDetailActivity;
@@ -47,7 +48,7 @@ import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class SearchFragment extends Fragment {
-    private ArrayList<CommonListItem> mList = new ArrayList<>();
+    private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
     private EditText mEditText;

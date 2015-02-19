@@ -49,6 +49,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import kr.nogcha.sejongbus.BusStopRouteActivity;
 import kr.nogcha.sejongbus.CommonAdapter;
@@ -59,8 +62,8 @@ import kr.nogcha.sejongbus.SejongBisClient;
 
 public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         LocationListener {
+    private GoogleMap mMap = null;
     private GoogleApiClient mApiClient;
-    private GoogleMap mMap;
     private ListView mListView;
     private JSONArray mJSONArray;
 
@@ -151,13 +154,27 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         try {
             mJSONArray = bisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
-            mMap.clear();
+            List<JSONObject> jsonList = new ArrayList<>();
+            for (int i = 0; i < mJSONArray.length(); i++) jsonList.add(mJSONArray.getJSONObject(i));
+            Collections.sort(jsonList, new Comparator<JSONObject>() {
+                @Override
+                public int compare(JSONObject lhs, JSONObject rhs) {
+                    int result = 0;
+                    try {
+                        result = lhs.getInt("distance") - rhs.getInt("distance");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    return result;
+                }
+            });
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(latitude, longitude), (float) 14.5));
-            ArrayList<CommonListItem> list = new ArrayList<>();
-            for (int i = 0; i < mJSONArray.length(); i++) {
+            List<CommonListItem> list = new ArrayList<>();
+            for (int i = 0; i < jsonList.size(); i++) {
                 CommonListItem item = new CommonListItem();
-                JSONObject json = mJSONArray.getJSONObject(i);
+                JSONObject json = jsonList.get(i);
                 item.text1 = new SpannableString("");
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");

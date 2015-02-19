@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RouteExploreActivity extends ActionBarActivity {
 
@@ -37,7 +38,7 @@ public class RouteExploreActivity extends ActionBarActivity {
 
         SejongBisClient bisClient = new SejongBisClient(this);
         Bundle extras = getIntent().getExtras();
-        ArrayList<CommonListItem> list = new ArrayList<>();
+        List<CommonListItem> list = new ArrayList<>();
         try {
             JSONArray jsonArray = bisClient
                     .searchRouteExplore(extras.getInt("stBusStop"), extras.getInt("edBusStop"),

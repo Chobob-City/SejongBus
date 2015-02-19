@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import kr.nogcha.sejongbus.CommonAdapter;
 import kr.nogcha.sejongbus.CommonListItem;
@@ -44,7 +45,7 @@ import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.SejongBisClient;
 
 public class ExploreFragment1 extends Fragment {
-    private ArrayList<CommonListItem> mList = new ArrayList<>();
+    private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
     private EditText mEditText;
