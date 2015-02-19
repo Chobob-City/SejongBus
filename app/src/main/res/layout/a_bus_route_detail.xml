@@ -6,6 +6,12 @@
     android:background="@color/whitegray"
     android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.BusRouteDetailActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/mainblue"/>
 
     <RelativeLayout
         android:id="@+id/rl_common_txt"

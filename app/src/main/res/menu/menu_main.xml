@@ -5,18 +5,6 @@
     tools:context="kr.nogcha.sejongbus.MainActivity"
     tools:ignore="AlwaysShowAction">
     <item
-        android:id="@+id/action_search"
-        android:title="@string/action_search"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_explore"
-        android:title="@string/action_explore"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_surround_stop"
-        android:title="@string/action_surround_stop"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_settings"
         android:icon="@drawable/ic_action_settings"
         android:title="@string/action_settings"

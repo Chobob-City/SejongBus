@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
     tools:context="kr.nogcha.sejongbus.BusStopRouteActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/mainblue"/>
 
     <RelativeLayout
         android:id="@+id/rl_common_txt"
@@ -46,8 +53,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/rl_common_txt">
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/list_view"
@@ -56,4 +62,4 @@
 
     </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>

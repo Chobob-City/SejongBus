@@ -19,6 +19,7 @@ package kr.nogcha.sejongbus;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -38,6 +39,9 @@ public class BusStopRouteActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_bus_stop_route);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
 
         SejongBisClient bisClient = new SejongBisClient(this);
         if (!bisClient.isNetworkConnected()) return;

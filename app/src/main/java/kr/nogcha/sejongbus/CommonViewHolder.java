@@ -16,10 +16,12 @@
 
 package kr.nogcha.sejongbus;
 
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CommonViewHolder {
     public TextView textView1;
     public TextView textView2;
     public TextView textView3;
+    //public Button button1;
 }

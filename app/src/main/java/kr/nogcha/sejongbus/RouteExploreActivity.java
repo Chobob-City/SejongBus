@@ -18,6 +18,7 @@ package kr.nogcha.sejongbus;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -35,6 +36,9 @@ public class RouteExploreActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_route_explore);
+
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolBar);
+        setSupportActionBar(toolbar);
 
         SejongBisClient bisClient = new SejongBisClient(this);
         Bundle extras = getIntent().getExtras();
