@@ -39,7 +39,7 @@ import kr.nogcha.sejongbus.main.SurroundStopFragment;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener{
     private static MainActivity sInstance;
     private FragmentManager mFragmentManager;
-    private LinearLayout tbtn1,tbtn2,tbtn3;
+    private RelativeLayout tbtn1,tbtn2,tbtn3;
     private ActionBarDrawerToggle toggle;
     DrawerLayout drawerLayout;
 
@@ -61,11 +61,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         drawerLayout = (DrawerLayout)findViewById(R.id.main_drawerLayout);
         toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name, R.string.app_name);
         drawerLayout.setDrawerListener(toggle);
-        tbtn1 = (LinearLayout)rl_drawer.findViewById(R.id.btn1);
+        tbtn1 = (RelativeLayout)rl_drawer.findViewById(R.id.btn1);
         tbtn1.setOnClickListener(this);
-        tbtn2 = (LinearLayout)rl_drawer.findViewById(R.id.btn2);
+        tbtn2 = (RelativeLayout)rl_drawer.findViewById(R.id.btn2);
         tbtn2.setOnClickListener(this);
-        tbtn3 = (LinearLayout)rl_drawer.findViewById(R.id.btn3);
+        tbtn3 = (RelativeLayout)rl_drawer.findViewById(R.id.btn3);
         tbtn3.setOnClickListener(this);
 
         mFragmentManager = getFragmentManager();
