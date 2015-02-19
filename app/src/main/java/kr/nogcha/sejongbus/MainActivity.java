@@ -118,13 +118,4 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        if (mFragmentManager.getBackStackEntryCount() > 0) {
-            mFragmentManager.popBackStack();
-        } else {
-            super.onBackPressed();
-        }
-    }
 }

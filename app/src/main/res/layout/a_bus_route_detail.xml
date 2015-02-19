@@ -13,29 +13,29 @@
         android:minHeight="?attr/actionBarSize"
         android:background="@color/mainblue"/>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/rl_common_txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/d_cardview_bg_blue">
+        android:background="@drawable/d_cardview_bg_blue"
+        android:orientation="horizontal">
 
         <TextView
             android:id="@+id/text_view_1"
             style="@style/lsize_textview_white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:id="@+id/linear_layout"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:layout_toEndOf="@id/text_view_1"
-            android:layout_toRightOf="@id/text_view_1"
+            android:layout_weight="1"
             android:background="@drawable/d_rounded_white"
             android:orientation="vertical"
             android:padding="8dp">
@@ -60,7 +60,16 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="운행시간표" />
+
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_view"

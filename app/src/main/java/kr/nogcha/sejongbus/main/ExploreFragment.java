@@ -17,12 +17,9 @@
 package kr.nogcha.sejongbus.main;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -30,30 +27,25 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import kr.nogcha.sejongbus.ExploreActivity1;
+import kr.nogcha.sejongbus.ExploreActivity2;
 import kr.nogcha.sejongbus.R;
 import kr.nogcha.sejongbus.RouteExploreActivity;
 
 public class ExploreFragment extends Fragment {
     public static int stBusStop = 0;
     public static int edBusStop = 0;
-    private FragmentManager mFragmentManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
-        mFragmentManager = getFragmentManager();
-
         final EditText editText1 = (EditText) rootView.findViewById(R.id.edit_text_1);
-        editText1.setOnTouchListener(new View.OnTouchListener() {
+        editText1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    onSearch(false);
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                onSearch(false);
             }
         });
 
@@ -66,14 +58,10 @@ public class ExploreFragment extends Fragment {
         });
 
         final EditText editText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
-        editText2.setOnTouchListener(new View.OnTouchListener() {
+        editText1.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    onSearch(true);
-                    return true;
-                }
-                return false;
+            public void onClick(View v) {
+                onSearch(true);
             }
         });
 
@@ -110,10 +98,10 @@ public class ExploreFragment extends Fragment {
     }
 
     private void onSearch(boolean isSecond) {
-        FragmentTransaction transaction = mFragmentManager.beginTransaction();
-        transaction.replace(R.id.frame_layout,
-                !isSecond ? new ExploreFragment1() : new ExploreFragment2());
-        transaction.addToBackStack(null);
-        transaction.commit();
+        if (!isSecond) {
+            startActivity(new Intent(getActivity(), ExploreActivity1.class));
+        } else {
+            startActivity(new Intent(getActivity(), ExploreActivity2.class));
+        }
     }
 }

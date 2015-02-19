@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
-    tools:context="kr.nogcha.sejongbus.main.ExploreFragment1">
+    tools:context="kr.nogcha.sejongbus.ExploreActivity2">
 
     <RelativeLayout
         android:id="@+id/mainsearchbar"
@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@drawable/d_rounded_white"
-            android:hint="출발지를 검색하세요."
+            android:hint="도착지를 검색하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:padding="16dp"

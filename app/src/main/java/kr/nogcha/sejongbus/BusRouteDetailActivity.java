@@ -23,6 +23,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.SpannableString;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -73,6 +74,14 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Button button = (Button) findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(BusRouteDetailActivity.this, BusTimeListActivity.class));
+            }
+        });
 
         ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(new CommonAdapter(this, R.layout.common_list_item, list));
