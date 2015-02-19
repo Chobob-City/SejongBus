@@ -21,7 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -45,6 +45,7 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
             viewHolder.textView1 = (TextView) convertView.findViewById(R.id.text_view_1);
             viewHolder.textView2 = (TextView) convertView.findViewById(R.id.text_view_2);
             viewHolder.textView3 = (TextView) convertView.findViewById(R.id.text_view_3);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
             //viewHolder.button1 = (Button) convertView.findViewById(R.id.add_favorite);
             convertView.setTag(viewHolder);
         } else {
@@ -60,6 +61,14 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
         viewHolder.textView3.setText(item.text3);
+        switch (item.turn_flag) {
+            case 1:
+                viewHolder.imageView.setImageResource(R.drawable.ic_action_search);
+                break;
+            case 2:
+                viewHolder.imageView.setImageResource(R.drawable.ic_action_search);
+                break;
+        }
 
         return convertView;
     }

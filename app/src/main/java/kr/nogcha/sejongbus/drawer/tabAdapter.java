@@ -2,7 +2,6 @@ package kr.nogcha.sejongbus.drawer;
 
 
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,8 +36,9 @@ public class tabAdapter extends RecyclerView.Adapter<tabAdapter.DrawerViewHolder
         return items.size();
     }
 
-    public final static class DrawerViewHolder extends RecyclerView.ViewHolder{
+    public final static class DrawerViewHolder extends RecyclerView.ViewHolder {
         TextView menutext;
+
         public DrawerViewHolder(View itemView) {
             super(itemView);
             menutext = (TextView) itemView.findViewById(R.id.main_drawer_text);

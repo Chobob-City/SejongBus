@@ -58,7 +58,7 @@ public class ExploreFragment extends Fragment {
         });
 
         final EditText editText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
-        editText1.setOnClickListener(new View.OnClickListener() {
+        editText2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearch(true);

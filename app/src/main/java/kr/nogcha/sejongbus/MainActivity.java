@@ -36,12 +36,12 @@ import kr.nogcha.sejongbus.main.ExploreFragment;
 import kr.nogcha.sejongbus.main.SearchFragment;
 import kr.nogcha.sejongbus.main.SurroundStopFragment;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener{
+public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private static MainActivity sInstance;
-    private FragmentManager mFragmentManager;
-    private LinearLayout tbtn1,tbtn2,tbtn3;
-    private ActionBarDrawerToggle toggle;
     DrawerLayout drawerLayout;
+    private FragmentManager mFragmentManager;
+    private LinearLayout tbtn1, tbtn2, tbtn3;
+    private ActionBarDrawerToggle toggle;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
@@ -54,18 +54,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolBar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
         RelativeLayout rl_drawer = (RelativeLayout) findViewById(R.id.drawer);
-        drawerLayout = (DrawerLayout)findViewById(R.id.main_drawerLayout);
-        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name, R.string.app_name);
+        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawerLayout);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.setDrawerListener(toggle);
-        tbtn1 = (LinearLayout)rl_drawer.findViewById(R.id.btn1);
+        tbtn1 = (LinearLayout) rl_drawer.findViewById(R.id.btn1);
         tbtn1.setOnClickListener(this);
-        tbtn2 = (LinearLayout)rl_drawer.findViewById(R.id.btn2);
+        tbtn2 = (LinearLayout) rl_drawer.findViewById(R.id.btn2);
         tbtn2.setOnClickListener(this);
-        tbtn3 = (LinearLayout)rl_drawer.findViewById(R.id.btn3);
+        tbtn3 = (LinearLayout) rl_drawer.findViewById(R.id.btn3);
         tbtn3.setOnClickListener(this);
 
         mFragmentManager = getFragmentManager();
@@ -75,8 +75,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view){
-        switch(view.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.btn1:
                 mFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, new SearchFragment()).commit();
@@ -92,16 +92,19 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         drawerLayout.closeDrawers();
     }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
     }
+
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);

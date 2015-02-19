@@ -19,7 +19,6 @@ package kr.nogcha.sejongbus.main;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.KeyEvent;
