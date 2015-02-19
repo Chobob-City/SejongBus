@@ -58,8 +58,8 @@ public class BusStopRouteActivity extends ActionBarActivity {
             textView1.setText(json.getString("stop_name"));
             textView2.setText(json.getString("service_id"));
 
-            CommonListItem item = new CommonListItem();
             for (int i = 0; i < mJSONArray.length(); i++) {
+                CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
 
                 item.text1 = bisClient.getRouteType(json.getInt("route_type"));
