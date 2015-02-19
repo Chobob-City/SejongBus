@@ -90,6 +90,8 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                        new LatLng(36.601031, 127.295882), (float) 14.5));
                 mMap.setMyLocationEnabled(true);
             }
         });
@@ -169,8 +171,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                 }
             });
 
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(latitude, longitude), (float) 14.5));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
             List<CommonListItem> list = new ArrayList<>();
             for (int i = 0; i < jsonList.size(); i++) {
                 CommonListItem item = new CommonListItem();
