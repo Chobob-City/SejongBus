@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
      Copyright (C) 2015 Chobob City
 
      Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,26 +34,30 @@
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
         android:contentDescription="검색" />
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolBar"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:minHeight="?attr/actionBarSize"
-            android:background="@color/mainblue"/>
+            android:layout_height="wrap_content"
+            android:background="@color/mainblue"
+            android:minHeight="?attr/actionBarSize" />
+
         <FrameLayout
             android:id="@+id/frameLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
+
     <include
-        layout="@layout/a_main_drawer"
         android:id="@+id/drawer"
+        layout="@layout/a_main_drawer"
         android:layout_width="280dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"/>
+        android:layout_gravity="start" />
 
 </android.support.v4.widget.DrawerLayout>

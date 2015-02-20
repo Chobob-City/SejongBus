@@ -61,7 +61,7 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
         viewHolder.textView3.setText(item.text3);
-        switch (item.turn_flag) {
+        switch (item.busType) {
             case 1:
                 viewHolder.imageView.setImageResource(R.drawable.ic_action_search);
                 break;

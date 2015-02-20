@@ -22,6 +22,6 @@ public class CommonListItem {
     public Spanned text1;
     public String text2;
     public String text3;
-    public int turn_flag;
+    public int busType;
     //public Button plus_btn;
 }

@@ -53,9 +53,9 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         mBisClient = new SejongBisClient(this);
         if (!mBisClient.isNetworkConnected()) return;
 
+        final int routeId = getIntent().getExtras().getInt("route_id");
         try {
-            mJSONArray = mBisClient
-                    .searchBusRouteDetail(getIntent().getExtras().getInt("route_id"), true)
+            mJSONArray = mBisClient.searchBusRouteDetail(routeId, true)
                     .getJSONArray("busRouteDetailList");
 
             TextView textView1 = (TextView) findViewById(R.id.text_view_1);
@@ -73,7 +73,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
                 item.text1 = new SpannableString("");
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");
-                item.turn_flag = 0;
+                item.busType = 0;
                 mList.add(item);
                 mStopIdList.add(json.getInt("stop_id"));
             }
@@ -87,7 +87,11 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(BusRouteDetailActivity.this, BusTimeListActivity.class));
+                Intent intent = new Intent(BusRouteDetailActivity.this, BusTimeListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putInt("route_id", routeId);
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
@@ -114,7 +118,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
 
         for (int i = 0; i < mList.size(); i++) {
             CommonListItem item = mList.get(i);
-            item.turn_flag = 0;
+            item.busType = 0;
             mList.set(i, item);
         }
 
@@ -128,9 +132,9 @@ public class BusRouteDetailActivity extends ActionBarActivity {
                 Log.d("asdf", json.getString("stop_id") + " " + location);
                 CommonListItem item = mList.get(location);
                 if (json.getString("turn_flag").equals("DW")) {
-                    item.turn_flag = 2;
+                    item.busType = 2;
                 } else {
-                    item.turn_flag = 1;
+                    item.busType = 1;
                 }
                 mList.set(location, item);
             }
