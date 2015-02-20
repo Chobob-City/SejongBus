@@ -35,8 +35,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.nogcha.sejongbus.main.ExploreFragment;
-
 public class ExploreActivity1 extends ActionBarActivity {
     private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;

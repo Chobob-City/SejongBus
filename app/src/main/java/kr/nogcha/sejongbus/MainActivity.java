@@ -32,10 +32,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-import kr.nogcha.sejongbus.main.ExploreFragment;
-import kr.nogcha.sejongbus.main.SearchFragment;
-import kr.nogcha.sejongbus.main.SurroundStopFragment;
-
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private static MainActivity sInstance;
     DrawerLayout drawerLayout;
