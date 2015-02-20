@@ -6,6 +6,7 @@
     android:background="@color/whitegray"
 <<<<<<< HEAD
     tools:context="kr.nogcha.sejongbus.main.ExploreFragment">
+<<<<<<< HEAD
     <RelativeLayout
 =======
     android:orientation="vertical"
@@ -13,11 +14,16 @@
 
     <LinearLayout
 >>>>>>> origin/master
+=======
+    <LinearLayout
+        android:orientation="vertical"
+>>>>>>> parent of 01a9832... MF2change
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainblue"
         android:orientation="vertical"
         android:padding="8dp">
+<<<<<<< HEAD
 <<<<<<< HEAD
         <Button
             android:id="@+id/button"
@@ -30,9 +36,10 @@
 =======
 
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 01a9832... MF2change
         <RelativeLayout
             android:id="@+id/searchbar1"
-            android:layout_toLeftOf="@id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp">
@@ -65,8 +72,6 @@
 
         <RelativeLayout
             android:id="@+id/searchbar2"
-            android:layout_toLeftOf="@id/button"
-            android:layout_below="@id/searchbar1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -96,9 +101,12 @@
 
         </RelativeLayout>
 <<<<<<< HEAD
+<<<<<<< HEAD
     </RelativeLayout>
 =======
 
+=======
+>>>>>>> parent of 01a9832... MF2change
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
@@ -106,7 +114,10 @@
             android:background="#00000000"
             android:text="탐색" />
     </LinearLayout>
+<<<<<<< HEAD
 >>>>>>> origin/master
+=======
+>>>>>>> parent of 01a9832... MF2change
 
 
 </LinearLayout>
