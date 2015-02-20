@@ -14,17 +14,12 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.main;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-<<<<<<< HEAD:app/src/main/java/kr/nogcha/sejongbus/main/SearchFragment.java
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-=======
->>>>>>> origin/master:app/src/main/java/kr/nogcha/sejongbus/SearchFragment.java
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.KeyEvent;
@@ -131,17 +126,6 @@ public class SearchFragment extends Fragment {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
                 item.text1 = mBisClient.getRouteType(json.getInt("route_type"));
-                switch (mBisClient.getRouteType(json.getInt("route_type"))){
-                    case "마을":
-                        item.view.setImageResource(R.drawable.d_cardview_bg_blue);
-                        break;
-                    case "청주광역":
-                        item.view.setImageResource(R.drawable.d_cardview_bg_blue);
-                        break;
-                    default:
-                        item.view.setImageResource(R.drawable.d_cardview_bg_blue);
-
-                }
                 item.text2 = json.getString("route_name");
                 item.text3 = json.getString("st_stop_name") + "~" + json.getString("ed_stop_name");
                 mList.add(item);
@@ -175,7 +159,7 @@ public class SearchFragment extends Fragment {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                item.text1 = "";
+                item.text1 = new SpannableString("");
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");
                 mList.add(item);

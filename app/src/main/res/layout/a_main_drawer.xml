@@ -3,129 +3,83 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#eeeeee">
-        <RelativeLayout
+    <RelativeLayout
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mainblue">
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-<<<<<<< HEAD
-            android:background="#eeeeee"
-            android:padding="16dp">
+            android:adjustViewBounds="true"
+            android:src="@drawable/pattern"/>
+        </RelativeLayout>
     <RelativeLayout
+        android:layout_below="@id/image"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp">
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/btn1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#eeeeee"
             android:padding="16dp">
-
             <TextView
                 android:layout_width="wrap_content"
-=======
-            android:layout_marginBottom="48dp">
-            <LinearLayout
-                android:id="@+id/btn1"
-                android:layout_width="match_parent"
->>>>>>> parent of 01a9832... MF2change
                 android:layout_height="wrap_content"
-                android:padding="16dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="버스검색"
-                    android:textSize="16sp"
-                    android:textColor="#000000"/>
-                </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btn2"
-                android:layout_below="@id/btn1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="경로검색"
-                    android:textSize="16sp"
-                    android:textColor="#000000"/>
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/btn3"
-                android:layout_below="@id/btn2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="16dp">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="주변정류장"
-                    android:textSize="16sp"
-                    android:textColor="#000000"/>
-            </LinearLayout>
-        </RelativeLayout>
-<<<<<<< HEAD
-    </RelativeLayout>
-                android:textColor="#000000"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
+                android:text="버스검색"
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/go"/>
+        </RelativeLayout>t>
+        <RelativeLayout
             android:id="@+id/btn2"
+            android:layout_below="@id/btn1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn1"
+            android:background="#eeeeee"
             android:padding="16dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="경로검색"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-        </LinearLayout>
-
-        <LinearLayout
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/go"/>
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/btn3"
+            android:layout_below="@id/btn2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/btn2"
+            android:background="#eeeeee"
             android:padding="16dp">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="주변정류장"
-                android:textColor="#000000"
-                android:textSize="16sp" />
-        </LinearLayout>
+                android:textSize="16sp"
+                android:textColor="#000000"/>
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/go"/>
+        </RelativeLayout>
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/btn_setting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:padding="16dp">
-
-=======
-    <LinearLayout
-        android:id="@+id/btn_setting"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp">
->>>>>>> parent of 01a9832... MF2change
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="설정"
-<<<<<<< HEAD
-            android:textColor="#000000"
-            android:textSize="16sp" />
-=======
-            android:textSize="16sp"
-            android:textColor="#000000"/>
->>>>>>> parent of 01a9832... MF2change
-    </LinearLayout>
 </RelativeLayout>

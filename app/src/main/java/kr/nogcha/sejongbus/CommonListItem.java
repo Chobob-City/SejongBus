@@ -16,22 +16,12 @@
 
 package kr.nogcha.sejongbus;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
-import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 public class CommonListItem {
-    public ImageView view;
-    public String text1;
+    public Spanned text1;
     public String text2;
     public String text3;
-    public int busType;
     //public Button plus_btn;
 }

@@ -16,19 +16,13 @@
 
 package kr.nogcha.sejongbus;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.Button;
 import android.widget.TextView;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.List;
 
@@ -51,15 +45,11 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
             viewHolder.textView1 = (TextView) convertView.findViewById(R.id.text_view_1);
             viewHolder.textView2 = (TextView) convertView.findViewById(R.id.text_view_2);
             viewHolder.textView3 = (TextView) convertView.findViewById(R.id.text_view_3);
-            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
             //viewHolder.button1 = (Button) convertView.findViewById(R.id.add_favorite);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (CommonViewHolder) convertView.getTag();
         }
-
-
-
         /*viewHolder.button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,27 +60,7 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
         viewHolder.textView3.setText(item.text3);
-        int resId;
-        switch (item.busType) {
-            case 1:
-            case 2:
-                resId = R.drawable.ic_action_search;
-                break;
-            default:
-                resId = 0;
-        }
-        viewHolder.imageView.setImageResource(resId);
 
         return convertView;
-    }
-
-
-
-    public class CommonViewHolder {
-        public ImageView view;
-        public TextView textView1;
-        public TextView textView2;
-        public TextView textView3;
-        //public Button button1;
     }
 }

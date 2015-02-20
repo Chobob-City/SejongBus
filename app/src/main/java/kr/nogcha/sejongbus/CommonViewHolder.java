@@ -16,25 +16,12 @@
 
 package kr.nogcha.sejongbus;
 
-<<<<<<< HEAD:app/src/main/java/kr/nogcha/sejongbus/BusTimeListActivity.java
-import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
-
-public class BusTimeListActivity extends ActionBarActivity {
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_bus_time_list);
-    }
-=======
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class CommonViewHolder {
     public TextView textView1;
     public TextView textView2;
     public TextView textView3;
-    public ImageView imageView;
     //public Button button1;
->>>>>>> origin/master:app/src/main/java/kr/nogcha/sejongbus/CommonViewHolder.java
 }

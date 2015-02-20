@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus;
+package kr.nogcha.sejongbus.main;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -176,7 +176,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             for (int i = 0; i < jsonList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = jsonList.get(i);
-                item.text1 = "";
+                item.text1 = new SpannableString("");
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");
                 mMap.addMarker(new MarkerOptions()

@@ -32,20 +32,16 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+import kr.nogcha.sejongbus.main.ExploreFragment;
+import kr.nogcha.sejongbus.main.SearchFragment;
+import kr.nogcha.sejongbus.main.SurroundStopFragment;
+
+public class MainActivity extends ActionBarActivity implements View.OnClickListener{
     private static MainActivity sInstance;
-    DrawerLayout drawerLayout;
     private FragmentManager mFragmentManager;
-<<<<<<< HEAD
-<<<<<<< HEAD
     private RelativeLayout tbtn1,tbtn2,tbtn3;
-=======
-    private LinearLayout tbtn1, tbtn2, tbtn3;
->>>>>>> origin/master
-=======
-    private LinearLayout tbtn1,tbtn2,tbtn3;
->>>>>>> parent of 01a9832... MF2change
     private ActionBarDrawerToggle toggle;
+    DrawerLayout drawerLayout;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
@@ -58,34 +54,18 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
         RelativeLayout rl_drawer = (RelativeLayout) findViewById(R.id.drawer);
-        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawerLayout);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        drawerLayout = (DrawerLayout)findViewById(R.id.main_drawerLayout);
+        toggle = new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.app_name, R.string.app_name);
         drawerLayout.setDrawerListener(toggle);
-<<<<<<< HEAD
-<<<<<<< HEAD
         tbtn1 = (RelativeLayout)rl_drawer.findViewById(R.id.btn1);
-=======
-        tbtn1 = (LinearLayout)rl_drawer.findViewById(R.id.btn1);
->>>>>>> parent of 01a9832... MF2change
         tbtn1.setOnClickListener(this);
-        tbtn2 = (LinearLayout)rl_drawer.findViewById(R.id.btn2);
+        tbtn2 = (RelativeLayout)rl_drawer.findViewById(R.id.btn2);
         tbtn2.setOnClickListener(this);
-<<<<<<< HEAD
         tbtn3 = (RelativeLayout)rl_drawer.findViewById(R.id.btn3);
-=======
-        tbtn1 = (LinearLayout) rl_drawer.findViewById(R.id.btn1);
-        tbtn1.setOnClickListener(this);
-        tbtn2 = (LinearLayout) rl_drawer.findViewById(R.id.btn2);
-        tbtn2.setOnClickListener(this);
-        tbtn3 = (LinearLayout) rl_drawer.findViewById(R.id.btn3);
->>>>>>> origin/master
-=======
-        tbtn3 = (LinearLayout)rl_drawer.findViewById(R.id.btn3);
->>>>>>> parent of 01a9832... MF2change
         tbtn3.setOnClickListener(this);
 
         mFragmentManager = getFragmentManager();
@@ -95,8 +75,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     }
 
     @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
+    public void onClick(View view){
+        switch(view.getId()) {
             case R.id.btn1:
                 mFragmentManager.beginTransaction()
                         .replace(R.id.frameLayout, new SearchFragment()).commit();
@@ -112,19 +92,16 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         }
         drawerLayout.closeDrawers();
     }
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
     }
-
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         toggle.onConfigurationChanged(newConfig);
     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -139,6 +116,15 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mFragmentManager.getBackStackEntryCount() > 0) {
+            mFragmentManager.popBackStack();
+        } else {
+            super.onBackPressed();
         }
     }
 }

@@ -37,7 +37,7 @@ public class RouteExploreActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_route_explore);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
         SejongBisClient bisClient = new SejongBisClient(this);
@@ -58,7 +58,7 @@ public class RouteExploreActivity extends ActionBarActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = jsonArray.getJSONObject(i);
-                item.text1 = "";
+                item.text1 = new SpannableString("");
 
                 int xtype = json.getInt("xtype");
                 if (xtype == 1) {

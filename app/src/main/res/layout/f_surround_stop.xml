@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/whitegray"
     android:orientation="vertical"
-    tools:context="kr.nogcha.sejongbus.SurroundStopFragment">
+    tools:context="kr.nogcha.sejongbus.main.SurroundStopFragment">
 
     <fragment
         android:id="@+id/map"
@@ -29,6 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:textColor="#4d000000"
             android:text="검색 결과가 없습니다."
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:visibility="invisible" />

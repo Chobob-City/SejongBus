@@ -32,17 +32,8 @@
             android:name=".BusRouteDetailActivity"
             android:label="노선검색" />
         <activity
-            android:name=".BusTimeListActivity"
-            android:label="운행시간표" />
-        <activity
             android:name=".BusStopRouteActivity"
             android:label="정류소검색" />
-        <activity
-            android:name=".ExploreActivity1"
-            android:label="경로탐색" />
-        <activity
-            android:name=".ExploreActivity2"
-            android:label="경로탐색" />
         <activity
             android:name=".RouteExploreActivity"
             android:label="경로탐색" />
