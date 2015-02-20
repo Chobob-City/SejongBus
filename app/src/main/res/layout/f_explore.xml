@@ -1,16 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
+<<<<<<< HEAD
     tools:context="kr.nogcha.sejongbus.main.ExploreFragment">
     <RelativeLayout
+=======
+    android:orientation="vertical"
+    tools:context="kr.nogcha.sejongbus.ExploreFragment">
+
+    <LinearLayout
+>>>>>>> origin/master
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainblue"
+        android:orientation="vertical"
         android:padding="8dp">
+<<<<<<< HEAD
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
@@ -19,6 +27,9 @@
             android:layout_alignParentRight="true"
             android:background="#00000000"
             android:text="탐색" />
+=======
+
+>>>>>>> origin/master
         <RelativeLayout
             android:id="@+id/searchbar1"
             android:layout_toLeftOf="@id/button"
@@ -33,21 +44,21 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/d_rounded_white"
                 android:enabled="false"
-                android:textColorHint="#4d000000"
-                android:textColor="#000000"
                 android:hint="출발지를 선택하세요."
                 android:padding="16dp"
+                android:textColor="#000000"
+                android:textColorHint="#4d000000"
                 android:textSize="16sp" />
 
             <ImageButton
                 android:id="@+id/image_button_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
+                android:padding="4dp"
                 android:src="@drawable/ic_action_search" />
 
         </RelativeLayout>
@@ -66,25 +77,36 @@
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/d_rounded_white"
                 android:enabled="false"
-                android:textColorHint="#4d000000"
-                android:textColor="#000000"
                 android:hint="도착지를 선택하세요."
                 android:padding="16dp"
+                android:textColor="#000000"
+                android:textColorHint="#4d000000"
                 android:textSize="16sp" />
 
             <ImageButton
                 android:id="@+id/image_button_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="4dp"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:background="@android:color/transparent"
+                android:padding="4dp"
                 android:src="@drawable/ic_action_search" />
 
         </RelativeLayout>
+<<<<<<< HEAD
     </RelativeLayout>
+=======
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:text="탐색" />
+    </LinearLayout>
+>>>>>>> origin/master
 
 
 </LinearLayout>

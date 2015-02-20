@@ -133,34 +133,30 @@ public class SejongBisClient {
         return sendRequest("selectBusStop", params, true);
     }
 
-    public Spanned getRouteType(int route_type) {
-        Spannable routeType;
+    public String getRouteType(int route_type) {
+        String routeType;
         int backgroundColor;
         switch (route_type) {
             case 30:
-                routeType = new SpannableString("마을");
+                routeType = new String("마을");
                 backgroundColor = Color.GREEN;
                 break;
             case 43:
-                routeType = new SpannableString("세종광역");
+                routeType = new String("세종광역");
                 backgroundColor = Color.RED;
                 break;
             case 50:
-                routeType = new SpannableString("대전광역");
+                routeType = new String("대전광역");
                 backgroundColor = Color.RED;
                 break;
             case 51:
-                routeType = new SpannableString("청주광역");
+                routeType = new String("청주광역");
                 backgroundColor = Color.RED;
                 break;
             default:
-                routeType = new SpannableString("일반");
+                routeType = new String("일반");
                 backgroundColor = Color.BLUE;
         }
-        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return routeType;
     }
 

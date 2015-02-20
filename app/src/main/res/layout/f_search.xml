@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
-    tools:context="kr.nogcha.sejongbus.main.SearchFragment">
+    tools:context="kr.nogcha.sejongbus.SearchFragment">
 
     <RelativeLayout
         android:id="@+id/mainsearchbar"
@@ -22,11 +22,11 @@
             android:hint="노선번호 및 정류소를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:textColorHint="#4d000000"
-            android:textColor="#000000"
-            android:textSize="16sp"
             android:padding="16dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#4d000000"
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/image_button"
