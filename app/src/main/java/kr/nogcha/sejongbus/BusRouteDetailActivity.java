@@ -39,6 +39,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
     List<CommonListItem> mList = new ArrayList<>();
     private List<Integer> mStopIdList = new ArrayList<>();
     private SejongBisClient mBisClient;
+    private int mRouteId;
     private JSONArray mJSONArray;
     private CommonAdapter mAdapter;
 
@@ -53,9 +54,9 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         mBisClient = new SejongBisClient(this);
         if (!mBisClient.isNetworkConnected()) return;
 
-        final int routeId = getIntent().getExtras().getInt("route_id");
+        mRouteId = getIntent().getExtras().getInt("route_id");
         try {
-            mJSONArray = mBisClient.searchBusRouteDetail(routeId, true)
+            mJSONArray = mBisClient.searchBusRouteDetail(mRouteId, true)
                     .getJSONArray("busRouteDetailList");
 
             TextView textView1 = (TextView) findViewById(R.id.text_view_1);
@@ -73,7 +74,6 @@ public class BusRouteDetailActivity extends ActionBarActivity {
                 item.text1 = new SpannableString("");
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");
-                item.busType = 0;
                 mList.add(item);
                 mStopIdList.add(json.getInt("stop_id"));
             }
@@ -89,7 +89,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(BusRouteDetailActivity.this, BusTimeListActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("route_id", routeId);
+                bundle.putInt("route_id", mRouteId);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -123,13 +123,11 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         }
 
         try {
-            JSONArray jsonArray = mBisClient
-                    .searchBusRealLocationDetail(getIntent().getExtras().getInt("route_id"))
+            JSONArray jsonArray = mBisClient.searchBusRealLocationDetail(mRouteId)
                     .getJSONArray("busRealLocList");
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
                 int location = mStopIdList.indexOf(json.getInt("stop_id"));
-                Log.d("asdf", json.getString("stop_id") + " " + location);
                 CommonListItem item = mList.get(location);
                 if (json.getString("turn_flag").equals("DW")) {
                     item.busType = 2;
