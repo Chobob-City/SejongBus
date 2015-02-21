@@ -10,7 +10,8 @@
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/d_cardview_bg_blue"
+        android:elevation="8dp"
+        android:background="@color/mainblue"
         android:padding="8dp">
 
         <EditText

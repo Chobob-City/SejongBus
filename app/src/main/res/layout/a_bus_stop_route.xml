@@ -38,14 +38,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
-                android:textColor="#000000"
+                android:textColor="#e6000000"
                 android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/text_view_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#4d000000"
+                android:textColor="#b3000000"
                 android:textSize="14sp" />
 
         </LinearLayout>

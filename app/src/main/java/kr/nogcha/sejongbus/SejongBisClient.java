@@ -142,25 +142,24 @@ public class SejongBisClient {
                 backgroundColor = Color.GREEN;
                 break;
             case 43:
-                routeType = new SpannableString("세종광역");
+                routeType = new SpannableString("세종\n광역");
                 backgroundColor = Color.RED;
                 break;
             case 50:
-                routeType = new SpannableString("대전광역");
+                routeType = new SpannableString("대전\n광역");
                 backgroundColor = Color.RED;
                 break;
             case 51:
-                routeType = new SpannableString("청주광역");
+                routeType = new SpannableString("청주\n광역");
                 backgroundColor = Color.RED;
                 break;
             default:
                 routeType = new SpannableString("일반");
                 backgroundColor = Color.BLUE;
         }
-        routeType.setSpan(new ForegroundColorSpan(Color.WHITE), 0, routeType.length(),
+        routeType.setSpan(new ForegroundColorSpan(backgroundColor), 0, routeType.length(),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        //routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return routeType;
     }
 

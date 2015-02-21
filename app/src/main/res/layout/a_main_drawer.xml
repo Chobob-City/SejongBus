@@ -38,7 +38,7 @@
                 android:adjustViewBounds="true"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/go"/>
-        </RelativeLayout>t>
+        </RelativeLayout>
         <RelativeLayout
             android:id="@+id/btn2"
             android:layout_below="@id/btn1"
