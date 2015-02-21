@@ -23,6 +23,5 @@ public class CommonViewHolder {
     public TextView textView1;
     public TextView textView2;
     public TextView textView3;
-    public ImageView imageView;
     //public Button button1;
 }

@@ -17,6 +17,7 @@
 package kr.nogcha.sejongbus;
 
 import android.text.Spanned;
+import android.text.SpannedString;
 
 public class CommonListItem {
     public Spanned text1;

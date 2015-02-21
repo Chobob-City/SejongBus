@@ -36,11 +36,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private static MainActivity sInstance;
     DrawerLayout drawerLayout;
     private FragmentManager mFragmentManager;
-<<<<<<< HEAD
     private RelativeLayout tbtn1,tbtn2,tbtn3;
-=======
-    private LinearLayout tbtn1, tbtn2, tbtn3;
->>>>>>> origin/master
     private ActionBarDrawerToggle toggle;
 
     public static void hideSoftInput() {
@@ -61,19 +57,11 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         drawerLayout = (DrawerLayout) findViewById(R.id.main_drawerLayout);
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
         drawerLayout.setDrawerListener(toggle);
-<<<<<<< HEAD
         tbtn1 = (RelativeLayout)rl_drawer.findViewById(R.id.btn1);
         tbtn1.setOnClickListener(this);
         tbtn2 = (RelativeLayout)rl_drawer.findViewById(R.id.btn2);
         tbtn2.setOnClickListener(this);
         tbtn3 = (RelativeLayout)rl_drawer.findViewById(R.id.btn3);
-=======
-        tbtn1 = (LinearLayout) rl_drawer.findViewById(R.id.btn1);
-        tbtn1.setOnClickListener(this);
-        tbtn2 = (LinearLayout) rl_drawer.findViewById(R.id.btn2);
-        tbtn2.setOnClickListener(this);
-        tbtn3 = (LinearLayout) rl_drawer.findViewById(R.id.btn3);
->>>>>>> origin/master
         tbtn3.setOnClickListener(this);
 
         mFragmentManager = getFragmentManager();
