@@ -73,7 +73,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         View rootView = inflater.inflate(R.layout.f_surround_stop, container, false);
 
         FragmentManager fragmentManager;
-        if (Build.VERSION.SDK_INT >= 17) {
+        if (Build.VERSION.SDK_INT >= 21) {
             fragmentManager = getChildFragmentManager();
         } else {
             fragmentManager = getFragmentManager();
@@ -83,8 +83,10 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
+
+                // 조치원역
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(36.601031, 127.295882), (float) 14.5));
+                        new LatLng(36.601031, 127.295882), (float) 14.7));
                 mMap.setMyLocationEnabled(true);
             }
         });
