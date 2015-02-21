@@ -16,7 +16,6 @@
 
 package kr.nogcha.sejongbus;
 
-import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CommonViewHolder {

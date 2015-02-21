@@ -26,7 +26,6 @@ import android.os.AsyncTask;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.Toast;

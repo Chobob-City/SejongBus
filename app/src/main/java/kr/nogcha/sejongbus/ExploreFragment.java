@@ -27,11 +27,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import kr.nogcha.sejongbus.ExploreActivity1;
-import kr.nogcha.sejongbus.ExploreActivity2;
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.RouteExploreActivity;
-
 public class ExploreFragment extends Fragment {
     public static int stBusStop = 0;
     public static int edBusStop = 0;

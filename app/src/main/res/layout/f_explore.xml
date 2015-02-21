@@ -5,34 +5,37 @@
     android:layout_height="match_parent"
     android:background="@color/whitegray"
     tools:context="kr.nogcha.sejongbus.main.ExploreFragment">
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainblue"
         android:elevation="8dp">
+
         <Button
             android:id="@+id/button"
             android:layout_width="wrap_content"
             android:layout_height="108dp"
-            android:layout_gravity="center_vertical"
             android:layout_alignParentRight="true"
+            android:layout_gravity="center_vertical"
             android:background="#00000000"
-            android:textSize="18sp"
-            android:text="탐색" />
+            android:text="탐색"
+            android:textSize="18sp" />
+
         <LinearLayout
-            android:layout_toLeftOf="@id/button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/button"
             android:background="@color/mainblue"
             android:orientation="vertical"
             android:padding="8dp">
 
             <RelativeLayout
                 android:id="@+id/searchbar1"
-                android:layout_toLeftOf="@id/button"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp">
+                android:layout_marginBottom="8dp"
+                android:layout_toLeftOf="@id/button">
 
                 <EditText
                     android:id="@+id/edit_text_1"
@@ -61,10 +64,10 @@
 
             <RelativeLayout
                 android:id="@+id/searchbar2"
-                android:layout_toLeftOf="@id/button"
-                android:layout_below="@id/searchbar1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_below="@id/searchbar1"
+                android:layout_toLeftOf="@id/button">
 
                 <EditText
                     android:id="@+id/edit_text_2"
