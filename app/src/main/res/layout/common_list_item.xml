@@ -21,6 +21,7 @@
         android:layout_alignTop="@+id/text_view_1"
         android:layout_toEndOf="@+id/text_view_1"
         android:layout_toRightOf="@+id/text_view_1"
+<<<<<<< HEAD
         android:background="#eeeeee"
         android:padding="16dp">
         <TextView
@@ -31,6 +32,28 @@
             android:layout_marginStart="4dp"
             android:textColor="#e6000000"
             android:textSize="18sp"/>
+=======
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/text_view_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text_view_1"
+        android:layout_marginBottom="8dp"
+        android:textColor="#000000"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:contentDescription="버스" />
+>>>>>>> origin/master
 
         <TextView
             android:id="@+id/text_view_3"

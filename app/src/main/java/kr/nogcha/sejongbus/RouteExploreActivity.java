@@ -37,7 +37,7 @@ public class RouteExploreActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_route_explore);
 
-        Toolbar toolbar = (Toolbar)findViewById(R.id.toolBar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
 
         SejongBisClient bisClient = new SejongBisClient(this);

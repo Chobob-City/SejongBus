@@ -14,16 +14,13 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus.main;
+package kr.nogcha.sejongbus;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.SpannableString;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -38,13 +35,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import kr.nogcha.sejongbus.CommonAdapter;
-import kr.nogcha.sejongbus.CommonListItem;
-import kr.nogcha.sejongbus.MainActivity;
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.SejongBisClient;
-
-public class ExploreFragment1 extends Fragment {
+public class ExploreActivity2 extends ActionBarActivity {
     private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
@@ -55,17 +46,12 @@ public class ExploreFragment1 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity activity = getActivity();
-        mBisClient = new SejongBisClient(activity);
-        mAdapter = new CommonAdapter(activity, R.layout.common_list_item, mList);
-    }
+        setContentView(R.layout.a_explore_2);
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.f_explore_1, container, false);
+        mBisClient = new SejongBisClient(this);
+        mAdapter = new CommonAdapter(this, R.layout.common_list_item, mList);
 
-        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
+        mEditText = (EditText) findViewById(R.id.edit_text);
         mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -84,19 +70,17 @@ public class ExploreFragment1 extends Fragment {
         });
         mEditText.requestFocus();
 
-        mListView = (ListView) rootView.findViewById(R.id.list_view);
-        mListView.setEmptyView(rootView.findViewById(R.id.text_view));
+        mListView = (ListView) findViewById(R.id.list_view);
+        mListView.setEmptyView(findViewById(R.id.text_view));
         mListView.setAdapter(mAdapter);
 
-        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
+        ImageButton imageButton = (ImageButton) findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearch();
             }
         });
-
-        return rootView;
     }
 
     private void onSearch() {
@@ -125,12 +109,12 @@ public class ExploreFragment1 extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        ExploreFragment.stBusStop = mJSONArray.getJSONObject(position)
+                        ExploreFragment.edBusStop = mJSONArray.getJSONObject(position)
                                 .getInt("stop_id");
-                        getFragmentManager().popBackStack();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+                    finish();
                 }
             });
         }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package kr.nogcha.sejongbus.main;
+package kr.nogcha.sejongbus;
 
 import android.app.Activity;
 import android.app.Fragment;

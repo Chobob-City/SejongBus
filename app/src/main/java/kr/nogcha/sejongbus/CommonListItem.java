@@ -17,11 +17,11 @@
 package kr.nogcha.sejongbus;
 
 import android.text.Spanned;
-import android.widget.Button;
 
 public class CommonListItem {
     public Spanned text1;
     public String text2;
     public String text3;
+    public int busType;
     //public Button plus_btn;
 }
