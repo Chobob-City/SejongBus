@@ -82,4 +82,7 @@
         <item name="android:padding">16dp</item>
     </style>
 
+    <style name="edittext">
+        <item name="android:background">@drawable/d_rounded_white</item>
+    </style>
 </resources>

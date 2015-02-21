@@ -18,16 +18,13 @@
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/d_rounded_white"
+            style="@style/edittext"
             android:hint="노선번호 및 정류소를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:padding="16dp"
-            android:singleLine="true"
             android:textColor="#000000"
             android:textColorHint="#4d000000"
-            android:textSize="16sp" />
+            android:textSize="16sp"/>
 
         <ImageButton
             android:id="@+id/image_button"
