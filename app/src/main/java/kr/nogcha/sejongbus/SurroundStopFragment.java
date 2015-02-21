@@ -90,7 +90,6 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                 mMap.setMyLocationEnabled(true);
             }
         });
-
         MainActivity.hideSoftInput();
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
@@ -127,12 +126,12 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
 
     @Override
     public void onConnected(Bundle bundle) {
-        LocationRequest request = new LocationRequest();
-        request.setInterval(10000);
-        request.setFastestInterval(5000);
-        request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        request.setNumUpdates(1);
-        LocationServices.FusedLocationApi.requestLocationUpdates(mApiClient, request, this);
+        LocationRequest locationRequest = new LocationRequest();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setNumUpdates(1);
+        LocationServices.FusedLocationApi.requestLocationUpdates(mApiClient, locationRequest, this);
     }
 
     @Override
@@ -151,6 +150,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         try {
             mJSONArray = bisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
+
             List<JSONObject> jsonList = new ArrayList<>();
             for (int i = 0; i < mJSONArray.length(); i++) jsonList.add(mJSONArray.getJSONObject(i));
             Collections.sort(jsonList, new Comparator<JSONObject>() {
@@ -186,14 +186,14 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent = new Intent(getActivity(), BusStopRouteActivity.class);
-                    Bundle bundle = new Bundle();
+                    Bundle extras = new Bundle();
                     try {
-                        bundle.putInt("stop_id",
+                        extras.putInt("stop_id",
                                 mJSONArray.getJSONObject(position).getInt("stop_id"));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    intent.putExtras(bundle);
+                    intent.putExtras(extras);
                     startActivity(intent);
                 }
             });
