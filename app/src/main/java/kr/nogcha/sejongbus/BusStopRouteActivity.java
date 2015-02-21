@@ -61,8 +61,7 @@ public class BusStopRouteActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-
-                item.text1 = bisClient.getRouteType(json.getInt("route_type"));
+                item.image = getResources().getDrawable(R.drawable.busstopicon);
                 item.text2 = json.getString("route_name");
 
                 int provide_code = json.getInt("provide_code");
