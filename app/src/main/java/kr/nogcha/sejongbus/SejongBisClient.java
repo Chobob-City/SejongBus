@@ -18,6 +18,8 @@ package kr.nogcha.sejongbus;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -161,6 +163,32 @@ public class SejongBisClient {
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         //routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return routeType;
+    }
+
+    public Drawable getRouteType2(int route_type){
+        Drawable drawable;
+        switch (route_type) {
+            case 30:
+                routeType = new SpannableString("마을");
+                backgroundColor = Color.GREEN;
+                break;
+            case 43:
+                routeType = new SpannableString("세종\n광역");
+                backgroundColor = Color.RED;
+                break;
+            case 50:
+                routeType = new SpannableString("대전\n광역");
+                backgroundColor = Color.RED;
+                break;
+            case 51:
+                routeType = new SpannableString("청주\n광역");
+                backgroundColor = Color.RED;
+                break;
+            default:
+                routeType = new SpannableString("일반");
+                backgroundColor = Color.BLUE;
+        }
+        return drawable;
     }
 
     private JSONObject sendRequest(String url, String params) {
