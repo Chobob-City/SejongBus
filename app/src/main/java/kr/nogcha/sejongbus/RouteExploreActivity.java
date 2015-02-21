@@ -58,8 +58,7 @@ public class RouteExploreActivity extends ActionBarActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = jsonArray.getJSONObject(i);
-                item.text1 = new SpannableString("");
-
+                item.image = getResources().getDrawable(R.drawable.busstopicon);
                 int xtype = json.getInt("xtype");
                 if (xtype == 1) {
                     item.text2 = "무";

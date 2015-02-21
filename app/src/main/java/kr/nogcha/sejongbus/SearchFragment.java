@@ -19,6 +19,7 @@ package kr.nogcha.sejongbus;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.view.KeyEvent;
@@ -115,9 +116,25 @@ public class SearchFragment extends Fragment {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                item.text1 = mBisClient.getRouteType(json.getInt("route_type"));
                 item.text2 = json.getString("route_name");
                 item.text3 = json.getString("st_stop_name") + "~" + json.getString("ed_stop_name");
+                switch (json.getInt("route_type")){
+                    case 30:
+                        item.image = getResources().getDrawable(R.drawable.town);
+                        break;
+                    case 43:
+                        item.image = getResources().getDrawable(R.drawable.sejongbus);
+                        break;
+                    case 50:
+                        item.image = getResources().getDrawable(R.drawable.daejeonbus);
+                        break;
+                    case 51:
+                        item.image = getResources().getDrawable(R.drawable.cheongjubus);
+                        break;
+                    default:
+                        item.image = getResources().getDrawable(R.drawable.general);
+                        break;
+                }
                 mList.add(item);
             }
         } catch (JSONException e) {
@@ -149,7 +166,7 @@ public class SearchFragment extends Fragment {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                item.text1 = new SpannableString("");
+                item.image = getResources().getDrawable(R.drawable.busstopicon);
                 item.text2 = json.getString("stop_name");
                 item.text3 = json.getString("service_id");
                 mList.add(item);

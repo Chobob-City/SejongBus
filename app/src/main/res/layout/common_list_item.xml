@@ -2,34 +2,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1a000000"
+    android:background="#eeeeee"
     android:minHeight="?android:attr/listPreferredItemHeight">
 
-    <TextView
-        android:id="@+id/text_view_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginTop="2dp"
-        android:gravity="center"
-        android:padding="10dp"
-        android:textSize="14sp" />
+    <ImageView
+        android:id="@+id/image_view"
+        android:layout_marginTop="4dp"
+        android:padding="8dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/text_view_1"
-        android:layout_toRightOf="@+id/text_view_1"
-        android:background="#eeeeee"
+        android:layout_toEndOf="@+id/image_view"
+        android:layout_toRightOf="@+id/image_view"
         android:padding="12dp">
 
         <TextView
             android:id="@+id/text_view_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
             android:textColor="#e6000000"
             android:textSize="16sp" />
 
@@ -38,8 +32,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/text_view_2"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
             android:textColor="#b3000000"
             android:textSize="14sp" />
 

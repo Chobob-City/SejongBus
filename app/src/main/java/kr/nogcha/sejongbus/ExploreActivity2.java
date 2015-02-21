@@ -94,7 +94,7 @@ public class ExploreActivity2 extends ActionBarActivity {
                 for (int i = 0; i < mJSONArray.length(); i++) {
                     CommonListItem item = new CommonListItem();
                     JSONObject json = mJSONArray.getJSONObject(i);
-                    item.text1 = new SpannableString("");
+                    item.image = getResources().getDrawable(R.drawable.busstopicon);
                     item.text2 = json.getString("stop_name");
                     item.text3 = json.getString("service_id");
                     mList.add(item);
