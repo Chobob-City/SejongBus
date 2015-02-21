@@ -68,7 +68,6 @@ public class ExploreActivity2 extends ActionBarActivity {
                 return false;
             }
         });
-        mEditText.requestFocus();
 
         mListView = (ListView) findViewById(R.id.list_view);
         mListView.setEmptyView(findViewById(R.id.text_view));

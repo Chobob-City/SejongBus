@@ -78,7 +78,6 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
-        mEditText.requestFocus();
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {

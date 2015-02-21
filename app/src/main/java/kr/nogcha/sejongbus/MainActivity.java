@@ -33,8 +33,8 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private static MainActivity sInstance;
-    DrawerLayout drawerLayout;
     private FragmentManager mFragmentManager;
+    private DrawerLayout drawerLayout;
     private RelativeLayout tbtn1, tbtn2, tbtn3;
     private ActionBarDrawerToggle toggle;
 
@@ -49,7 +49,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolBar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         RelativeLayout rl_drawer = (RelativeLayout) findViewById(R.id.drawer);
