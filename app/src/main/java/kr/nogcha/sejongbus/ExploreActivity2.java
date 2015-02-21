@@ -108,8 +108,10 @@ public class ExploreActivity2 extends ActionBarActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
-                        ExploreFragment.edBusStop = mJSONArray.getJSONObject(position)
-                                .getInt("stop_id");
+                        JSONObject json = mJSONArray.getJSONObject(position);
+                        ExploreFragment.setEdBusStop(json.getInt("stop_id"),
+                                json.getString("stop_name") + " [" + json.getString("service_id")
+                                        + "]");
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
