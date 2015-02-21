@@ -164,7 +164,7 @@ public class SejongBisClient {
         return routeType;
     }
 
-    public Drawable getRouteType2(int route_type){
+    /*public Drawable getRouteType2(int route_type){
         Drawable drawable;
         switch (route_type) {
             case 30:
@@ -188,7 +188,7 @@ public class SejongBisClient {
                 backgroundColor = Color.BLUE;
         }
         return drawable;
-    }
+    }*/
 
     private JSONObject sendRequest(String url, String params) {
         return sendRequest(url, params, false);
