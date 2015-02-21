@@ -28,16 +28,28 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class ExploreFragment extends Fragment {
-    public static int stBusStop = 0;
-    public static int edBusStop = 0;
+    private static int stBusStop = 0;
+    private static int edBusStop = 0;
+    private static EditText mEditText1;
+    private static EditText mEditText2;
+
+    public static void setStBusStop(int stBusStop, String text) {
+        ExploreFragment.stBusStop = stBusStop;
+        mEditText1.setText(text);
+    }
+
+    public static void setEdBusStop(int edBusStop, String text) {
+        ExploreFragment.edBusStop = edBusStop;
+        mEditText2.setText(text);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
-        final EditText editText1 = (EditText) rootView.findViewById(R.id.edit_text_1);
-        editText1.setOnClickListener(new View.OnClickListener() {
+        mEditText1 = (EditText) rootView.findViewById(R.id.edit_text_1);
+        mEditText1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearch(false);
@@ -52,8 +64,8 @@ public class ExploreFragment extends Fragment {
             }
         });
 
-        final EditText editText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
-        editText2.setOnClickListener(new View.OnClickListener() {
+        mEditText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
+        mEditText2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onSearch(true);
@@ -73,17 +85,15 @@ public class ExploreFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (stBusStop == 0) {
-                    Toast.makeText(getActivity(), "출발지를 선택하세요.", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getActivity(), "출발지를 선택하세요.", Toast.LENGTH_SHORT).show();
                 } else if (edBusStop == 0) {
-                    Toast.makeText(getActivity(), "도착지를 선택하세요.", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(getActivity(), "도착지를 선택하세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getActivity(), RouteExploreActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("stBusStop", stBusStop);
-                    bundle.putInt("edBusStop", edBusStop);
-                    intent.putExtras(bundle);
+                    Bundle extras = new Bundle();
+                    extras.putInt("stBusStop", stBusStop);
+                    extras.putInt("edBusStop", edBusStop);
+                    intent.putExtras(extras);
                     startActivity(intent);
                 }
             }
@@ -93,10 +103,7 @@ public class ExploreFragment extends Fragment {
     }
 
     private void onSearch(boolean isSecond) {
-        if (!isSecond) {
-            startActivity(new Intent(getActivity(), ExploreActivity1.class));
-        } else {
-            startActivity(new Intent(getActivity(), ExploreActivity2.class));
-        }
+        startActivity(new Intent(getActivity(),
+                !isSecond ? ExploreActivity1.class : ExploreActivity1.class));
     }
 }

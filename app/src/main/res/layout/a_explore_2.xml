@@ -26,7 +26,10 @@
             android:inputType="text"
             android:singleLine="true"
             android:textColor="#000000"
-            android:textColorHint="#4d000000" />
+            android:textColorHint="#4d000000">
+
+            <requestFocus />
+        </EditText>
 
         <ImageButton
             android:id="@+id/image_button"

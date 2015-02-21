@@ -73,19 +73,18 @@ public class SearchFragment extends Fragment {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    onSearch();
+                    search();
                     return true;
                 }
                 return false;
             }
         });
-        mEditText.requestFocus();
 
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch();
+                search();
             }
         });
 
@@ -96,11 +95,10 @@ public class SearchFragment extends Fragment {
         return rootView;
     }
 
-    private void onSearch() {
+    private void search() {
         String query = mEditText.getText().toString();
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
-
             if (mBisClient.isNetworkConnected()) {
                 if (Pattern.matches("^[0-9-]+$", query)) {
                     searchBusRoute(query);
@@ -148,14 +146,14 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), BusRouteDetailActivity.class);
-                Bundle bundle = new Bundle();
+                Bundle extras = new Bundle();
                 try {
-                    bundle.putInt("route_id",
+                    extras.putInt("route_id",
                             mJSONArray.getJSONObject(position).getInt("route_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                intent.putExtras(bundle);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
@@ -182,13 +180,13 @@ public class SearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(), BusRouteDetailActivity.class);
-                Bundle bundle = new Bundle();
+                Bundle extras = new Bundle();
                 try {
-                    bundle.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
+                    extras.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                intent.putExtras(bundle);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
