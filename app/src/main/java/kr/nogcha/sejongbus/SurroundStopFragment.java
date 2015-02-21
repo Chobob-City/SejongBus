@@ -53,13 +53,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import kr.nogcha.sejongbus.BusStopRouteActivity;
-import kr.nogcha.sejongbus.CommonAdapter;
-import kr.nogcha.sejongbus.CommonListItem;
-import kr.nogcha.sejongbus.MainActivity;
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.SejongBisClient;
-
 public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         LocationListener {
     private GoogleMap mMap = null;

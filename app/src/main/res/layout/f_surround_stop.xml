@@ -11,12 +11,12 @@
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.MapFragment"
         android:layout_width="match_parent"
-        android:layout_height="150dp"/>
+        android:layout_height="150dp" />
 
     <RelativeLayout
-        android:layout_below="@id/map"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/map"
         android:elevation="4dp">
 
         <ListView
@@ -29,9 +29,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="#4d000000"
             android:text="검색 결과가 없습니다."
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#4d000000"
             android:visibility="invisible" />
 
     </RelativeLayout>

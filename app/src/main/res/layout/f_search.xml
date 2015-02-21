@@ -10,21 +10,21 @@
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
         android:background="@color/mainblue"
+        android:elevation="8dp"
         android:padding="8dp">
 
         <EditText
             android:id="@+id/edit_text"
+            style="@style/edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/edittext"
             android:hint="노선번호 및 정류소를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:textColor="#000000"
             android:textColorHint="#4d000000"
-            android:textSize="16sp"/>
+            android:textSize="16sp" />
 
         <ImageButton
             android:id="@+id/image_button"
@@ -55,9 +55,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="#4d000000"
             android:text="검색 결과가 없습니다."
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#4d000000"
             android:visibility="invisible" />
 
     </RelativeLayout>

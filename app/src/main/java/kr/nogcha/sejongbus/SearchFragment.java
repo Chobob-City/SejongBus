@@ -40,13 +40,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-import kr.nogcha.sejongbus.BusRouteDetailActivity;
-import kr.nogcha.sejongbus.CommonAdapter;
-import kr.nogcha.sejongbus.CommonListItem;
-import kr.nogcha.sejongbus.MainActivity;
-import kr.nogcha.sejongbus.R;
-import kr.nogcha.sejongbus.SejongBisClient;
-
 public class SearchFragment extends Fragment {
     private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;

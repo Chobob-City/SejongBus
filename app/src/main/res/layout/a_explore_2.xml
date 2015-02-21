@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
+    android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.ExploreActivity2">
 
     <RelativeLayout
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="8dp"
         android:background="@color/mainblue"
+        android:elevation="8dp"
         android:padding="8dp">
 
         <EditText
@@ -22,11 +22,11 @@
             android:layout_gravity="center_vertical"
             android:background="@drawable/d_rounded_white"
             android:hint="도착지를 검색하세요."
-            android:textColor="#000000"
-            android:textColorHint="#4d000000"
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:textColor="#000000"
+            android:textColorHint="#4d000000" />
 
         <ImageButton
             android:id="@+id/image_button"
@@ -58,8 +58,8 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="검색 결과가 없습니다."
-            android:textColor="#4d000000"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#4d000000"
             android:visibility="invisible" />
 
     </RelativeLayout>
