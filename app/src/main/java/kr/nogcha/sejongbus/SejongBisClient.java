@@ -102,7 +102,7 @@ public class SejongBisClient {
         return post("selectBusStop", params, true);
     }
 
-    public Spanned getRouteType(int route_type) {
+    /*public Spanned getRouteType(int route_type) {
         Spannable routeType;
         int backgroundColor;
         switch (route_type) {
@@ -131,7 +131,7 @@ public class SejongBisClient {
 //        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
 //                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return routeType;
-    }
+    }*/
 
     private JSONObject post(String url, String params, boolean isMobile) {
         JSONObject json = null;

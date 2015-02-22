@@ -104,6 +104,6 @@ public class ExploreFragment extends Fragment {
 
     private void onSearch(boolean isSecond) {
         startActivity(new Intent(getActivity(),
-                !isSecond ? ExploreActivity1.class : ExploreActivity1.class));
+                !isSecond ? ExploreActivity1.class : ExploreActivity2.class));
     }
 }

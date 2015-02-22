@@ -61,7 +61,23 @@ public class BusStopRouteActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-                item.image = getResources().getDrawable(R.drawable.busstopicon);
+                switch (json.getInt("route_type")){
+                    case 30:
+                        item.image = getResources().getDrawable(R.drawable.town);
+                        break;
+                    case 43:
+                        item.image = getResources().getDrawable(R.drawable.sejongbus);
+                        break;
+                    case 50:
+                        item.image = getResources().getDrawable(R.drawable.daejeonbus);
+                        break;
+                    case 51:
+                        item.image = getResources().getDrawable(R.drawable.cheongbus);
+                        break;
+                    default:
+                        item.image = getResources().getDrawable(R.drawable.general);
+                        break;
+                }
                 item.text2 = json.getString("route_name");
 
                 int provide_code = json.getInt("provide_code");
