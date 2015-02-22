@@ -31,6 +31,8 @@ public class AboutActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         TextView textView = (TextView) findViewById(R.id.text_view);
-        textView.setText("Copyright (C) 2015 Chobob City\n\n이 앱은 Apache License, Version 2.0을 따르는 자유 소프트웨어입니다.\nhttps://github.com/kanglib/SejongBus");
+        textView.setText("Copyright (C) 2015 Chobob City\n\n"
+                + "이 앱은 Apache License, Version 2.0을 따르는 자유 소프트웨어입니다.\n\n"
+                + "https://github.com/kanglib/SejongBus");
     }
 }
