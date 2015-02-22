@@ -53,6 +53,7 @@ import java.util.List;
 public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         LocationListener {
     private GoogleMap mMap = null;
+    private SejongBisClient mBisClient;
     private GoogleApiClient mApiClient;
     private ListView mListView;
     private JSONArray mJSONArray;
@@ -60,7 +61,11 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApiClient = new GoogleApiClient.Builder(getActivity()).addConnectionCallbacks(this)
+        Activity activity = getActivity();
+        mBisClient = new SejongBisClient(activity);
+        if (!mBisClient.isNetworkConnected()) return;
+
+        mApiClient = new GoogleApiClient.Builder(activity).addConnectionCallbacks(this)
                 .addApi(LocationServices.API).build();
     }
 
@@ -139,13 +144,11 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     public void onLocationChanged(Location location) {
         if (mMap == null) return;
 
-        Activity activity = getActivity();
-        SejongBisClient bisClient = new SejongBisClient(activity);
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
         List<CommonListItem> list = new ArrayList<>();
         try {
-            mJSONArray = bisClient.searchSurroundStopList(latitude, longitude)
+            mJSONArray = mBisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
 
             List<JSONObject> jsonList = new ArrayList<>();
@@ -179,7 +182,6 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        mListView.setAdapter(new CommonAdapter(activity, R.layout.common_list_item, list));
+        mListView.setAdapter(new CommonAdapter(getActivity(), R.layout.common_list_item, list));
     }
 }
