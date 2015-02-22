@@ -169,7 +169,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             for (int i = 0; i < jsonList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = jsonList.get(i);
-                item.resId = 0;
+                item.resId = R.drawable.busstopicon;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mMap.addMarker(new MarkerOptions()

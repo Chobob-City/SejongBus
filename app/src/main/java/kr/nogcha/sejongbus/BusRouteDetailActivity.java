@@ -69,24 +69,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length() - 1; i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-
-                switch (json.getInt("route_type")) {
-                    case 30:
-                        item.resId = R.drawable.town;
-                        break;
-                    case 43:
-                        item.resId = R.drawable.sejongbus;
-                        break;
-                    case 50:
-                        item.resId = R.drawable.daejeonbus;
-                        break;
-                    case 51:
-                        item.resId = R.drawable.cheongjubus;
-                        break;
-                    default:
-                        item.resId = R.drawable.general;
-                }
-
+                item.resId = R.drawable.busstopicon;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mList.add(item);

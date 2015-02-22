@@ -92,8 +92,8 @@ public class ExploreActivity1 extends ActionBarActivity {
             if (!mBisClient.isNetworkConnected()) return;
 
             try {
-                mJSONArray = mBisClient.searchBusStop(query, true).getJSONArray("busStopList");
                 mList.clear();
+                mJSONArray = mBisClient.searchBusStop(query, true).getJSONArray("busStopList");
                 for (int i = 0; i < mJSONArray.length(); i++) {
                     CommonListItem item = new CommonListItem();
                     JSONObject json = mJSONArray.getJSONObject(i);

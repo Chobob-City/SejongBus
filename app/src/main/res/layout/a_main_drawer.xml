@@ -4,78 +4,100 @@
     android:layout_height="match_parent"
     android:background="#eeeeee">
 
-    <RelativeLayout
-        android:id="@+id/button_1"
+    <ImageView
+        android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:adjustViewBounds="true"
+        android:src="@drawable/background" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="버스검색"
-            android:textColor="#e6000000"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:adjustViewBounds="true"
-            android:contentDescription="가기"
-            android:src="@drawable/go" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/button_2"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button_1"
-        android:padding="16dp">
+        android:layout_alignBottom="@id/image_view"
+        android:background="#4d000000"
+        android:padding="16dp"
+        android:text="SejongBus"
+        android:textColor="#eeeeee"
+        android:textSize="16sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="경로검색"
-            android:textColor="#e6000000"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:layout_width="16dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:adjustViewBounds="true"
-            android:contentDescription="가기"
-            android:src="@drawable/go" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/button_3"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/button_2"
-        android:padding="16dp">
+        android:layout_below="@id/image_view"
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/button_1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="주변정류장"
-            android:textColor="#e6000000"
-            android:textSize="16sp" />
+            android:layout_weight="1"
+            android:padding="16dp">
 
-        <ImageView
-            android:layout_width="16dp"
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="버스검색"
+                android:textColor="#e6000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:src="@drawable/go" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/button_2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_gravity="center_vertical"
-            android:adjustViewBounds="true"
-            android:contentDescription="가기"
-            android:src="@drawable/go" />
-    </RelativeLayout>
+            android:layout_weight="1"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="경로검색"
+                android:textColor="#e6000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:src="@drawable/go" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/button_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="주변정류장"
+                android:textColor="#e6000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="center_vertical"
+                android:adjustViewBounds="true"
+                android:src="@drawable/go" />
+        </RelativeLayout>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -19,6 +19,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
             android:background="#00000000"
+            android:padding="4dp"
             android:text="탐색"
             android:textSize="18sp" />
 
@@ -29,7 +30,9 @@
             android:layout_toStartOf="@id/button"
             android:background="@color/mainblue"
             android:orientation="vertical"
-            android:padding="8dp">
+            android:paddingBottom="8dp"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp">
 
             <RelativeLayout
                 android:id="@+id/searchbar1"
@@ -76,7 +79,6 @@
                     android:background="@drawable/d_rounded_white"
                     android:enabled="false"
                     android:hint="도착지를 선택하세요."
-                    android:padding="16dp"
                     android:textColor="#000000"
                     android:textColorHint="#4d000000"
                     android:textSize="16sp" />

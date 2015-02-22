@@ -111,8 +111,8 @@ public class SearchFragment extends Fragment {
 
     private void searchBusRoute(String busRoute) {
         try {
-            mJSONArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
             mList.clear();
+            mJSONArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
@@ -128,7 +128,7 @@ public class SearchFragment extends Fragment {
                         item.resId = R.drawable.daejeonbus;
                         break;
                     case 51:
-                        item.resId = R.drawable.cheongjubus;
+                        item.resId = R.drawable.cheongbus;
                         break;
                     default:
                         item.resId = R.drawable.general;
@@ -162,8 +162,8 @@ public class SearchFragment extends Fragment {
 
     private void searchBusStop(String busStop) {
         try {
-            mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
             mList.clear();
+            mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
@@ -180,7 +180,7 @@ public class SearchFragment extends Fragment {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), BusRouteDetailActivity.class);
+                Intent intent = new Intent(getActivity(), BusStopRouteActivity.class);
                 Bundle extras = new Bundle();
                 try {
                     extras.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
