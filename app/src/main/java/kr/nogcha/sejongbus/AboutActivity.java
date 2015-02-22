@@ -19,14 +19,18 @@ package kr.nogcha.sejongbus;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 
-public class SettingsActivity extends ActionBarActivity {
+public class AboutActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_settings);
+        setContentView(R.layout.a_about);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        TextView textView = (TextView) findViewById(R.id.text_view);
+        textView.setText("Copyright (C) 2015 Chobob City\n\n이 앱은 Apache License, Version 2.0을 따르는 자유 소프트웨어입니다.\nhttps://github.com/kanglib/SejongBus");
     }
 }

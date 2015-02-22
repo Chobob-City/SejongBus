@@ -19,6 +19,9 @@ package kr.nogcha.sejongbus;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -41,7 +44,9 @@ public class BusTimeListActivity extends ActionBarActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        List<String> list = new ArrayList<>();
+        List<Spanned> list = new ArrayList<>();
+        list.add(Html.fromHtml("<b>출발</b>"));
+        list.add(Html.fromHtml("<b>종료</b>"));
         try {
             JSONArray jsonArray = bisClient
                     .searchBusTimeList(getIntent().getExtras().getInt("route_id"))
@@ -49,8 +54,8 @@ public class BusTimeListActivity extends ActionBarActivity {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject json = jsonArray.getJSONObject(i);
-                list.add(formatTime(json.getString("departure_time").trim()));
-                list.add(formatTime(json.getString("arrival_time").trim()));
+                list.add(new SpannableString(formatTime(json.getString("departure_time").trim())));
+                list.add(new SpannableString(formatTime(json.getString("arrival_time").trim())));
             }
         } catch (JSONException e) {
             e.printStackTrace();

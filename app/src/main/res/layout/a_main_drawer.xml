@@ -37,7 +37,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="버스검색"
+                android:text="@string/action_search"
                 android:textColor="#e6000000"
                 android:textSize="16sp" />
 
@@ -61,7 +61,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="경로검색"
+                android:text="@string/action_explore"
                 android:textColor="#e6000000"
                 android:textSize="16sp" />
 
@@ -85,7 +85,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="주변정류장"
+                android:text="@string/action_surround_stop"
                 android:textColor="#e6000000"
                 android:textSize="16sp" />
 

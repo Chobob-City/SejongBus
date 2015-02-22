@@ -37,6 +37,7 @@
             android:layout_below="@id/text_view_1"
             android:textColor="#b3000000"
             android:textSize="14sp" />
+
     </RelativeLayout>
 
     <ImageView
