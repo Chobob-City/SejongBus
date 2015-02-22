@@ -2,9 +2,9 @@
 <resources>
 
     <string name="app_name">세종버스</string>
+    <string name="action_settings">설정</string>
     <string name="action_search">통합검색</string>
     <string name="action_explore">경로탐색</string>
     <string name="action_surround_stop">주변정류장</string>
-    <string name="action_settings">설정</string>
 
 </resources>

@@ -28,19 +28,19 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 public class ExploreFragment extends Fragment {
-    private static int stBusStop = 0;
-    private static int edBusStop = 0;
-    private static EditText mEditText1;
-    private static EditText mEditText2;
+    private static int sStBusStop = 0;
+    private static int sEdBusStop = 0;
+    private static EditText sEditText1;
+    private static EditText sEditText2;
 
     public static void setStBusStop(int stBusStop, String text) {
-        ExploreFragment.stBusStop = stBusStop;
-        mEditText1.setText(text);
+        sStBusStop = stBusStop;
+        sEditText1.setText(text);
     }
 
     public static void setEdBusStop(int edBusStop, String text) {
-        ExploreFragment.edBusStop = edBusStop;
-        mEditText2.setText(text);
+        sEdBusStop = edBusStop;
+        sEditText2.setText(text);
     }
 
     @Override
@@ -48,11 +48,11 @@ public class ExploreFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_explore, container, false);
 
-        mEditText1 = (EditText) rootView.findViewById(R.id.edit_text_1);
-        mEditText1.setOnClickListener(new View.OnClickListener() {
+        sEditText1 = (EditText) rootView.findViewById(R.id.edit_text_1);
+        sEditText1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch(false);
+                search(false);
             }
         });
 
@@ -60,15 +60,15 @@ public class ExploreFragment extends Fragment {
         imageButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch(false);
+                search(false);
             }
         });
 
-        mEditText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
-        mEditText2.setOnClickListener(new View.OnClickListener() {
+        sEditText2 = (EditText) rootView.findViewById(R.id.edit_text_2);
+        sEditText2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch(true);
+                search(true);
             }
         });
 
@@ -76,7 +76,7 @@ public class ExploreFragment extends Fragment {
         imageButton2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch(true);
+                search(true);
             }
         });
 
@@ -84,15 +84,15 @@ public class ExploreFragment extends Fragment {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (stBusStop == 0) {
+                if (sStBusStop == 0) {
                     Toast.makeText(getActivity(), "출발지를 선택하세요.", Toast.LENGTH_SHORT).show();
-                } else if (edBusStop == 0) {
+                } else if (sEdBusStop == 0) {
                     Toast.makeText(getActivity(), "도착지를 선택하세요.", Toast.LENGTH_SHORT).show();
                 } else {
                     Intent intent = new Intent(getActivity(), RouteExploreActivity.class);
                     Bundle extras = new Bundle();
-                    extras.putInt("stBusStop", stBusStop);
-                    extras.putInt("edBusStop", edBusStop);
+                    extras.putInt("stBusStop", sStBusStop);
+                    extras.putInt("edBusStop", sEdBusStop);
                     intent.putExtras(extras);
                     startActivity(intent);
                 }
@@ -102,8 +102,8 @@ public class ExploreFragment extends Fragment {
         return rootView;
     }
 
-    private void onSearch(boolean isSecond) {
+    private void search(boolean isSecond) {
         startActivity(new Intent(getActivity(),
-                !isSecond ? ExploreActivity1.class : ExploreActivity1.class));
+                !isSecond ? ExploreActivity1.class : ExploreActivity2.class));
     }
 }

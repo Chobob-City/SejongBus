@@ -27,7 +27,7 @@
         </activity>
         <activity
             android:name=".SettingsActivity"
-            android:label="설정" />
+            android:label="@string/action_settings" />
         <activity
             android:name=".BusRouteDetailActivity"
             android:label="노선검색" />
@@ -39,13 +39,13 @@
             android:label="정류소검색" />
         <activity
             android:name=".ExploreActivity1"
-            android:label="경로탐색" />
+            android:label="@string/action_explore" />
         <activity
             android:name=".ExploreActivity2"
-            android:label="경로탐색" />
+            android:label="@string/action_explore" />
         <activity
             android:name=".RouteExploreActivity"
-            android:label="경로탐색" />
+            android:label="@string/action_explore" />
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -7,12 +7,18 @@
     android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.ExploreActivity2">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/mainblue"
+        android:minHeight="?attr/actionBarSize" />
+
     <RelativeLayout
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainblue"
-        android:elevation="8dp"
         android:padding="8dp">
 
         <EditText
@@ -47,8 +53,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/mainsearchbar">
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/list_view"

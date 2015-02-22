@@ -18,6 +18,7 @@ package kr.nogcha.sejongbus;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -36,6 +37,9 @@ public class BusTimeListActivity extends ActionBarActivity {
 
         SejongBisClient bisClient = new SejongBisClient(this);
         if (!bisClient.isNetworkConnected()) return;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         List<String> list = new ArrayList<>();
         try {
