@@ -5,7 +5,7 @@
     android:background="#eeeeee">
 
     <RelativeLayout
-        android:id="@+id/btn1"
+        android:id="@+id/button_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
@@ -24,14 +24,15 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
+            android:contentDescription="가기"
             android:src="@drawable/go" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/btn2"
+        android:id="@+id/button_2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn1"
+        android:layout_below="@id/button_1"
         android:padding="16dp">
 
         <TextView
@@ -48,14 +49,15 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
+            android:contentDescription="가기"
             android:src="@drawable/go" />
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/btn3"
+        android:id="@+id/button_3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn2"
+        android:layout_below="@id/button_2"
         android:padding="16dp">
 
         <TextView
@@ -72,6 +74,7 @@
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
             android:adjustViewBounds="true"
+            android:contentDescription="가기"
             android:src="@drawable/go" />
     </RelativeLayout>
 

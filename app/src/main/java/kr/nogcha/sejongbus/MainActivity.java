@@ -34,9 +34,8 @@ import android.widget.RelativeLayout;
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private static MainActivity sInstance;
     private FragmentManager mFragmentManager;
-    private DrawerLayout drawerLayout;
-    private RelativeLayout tbtn1, tbtn2, tbtn3;
-    private ActionBarDrawerToggle toggle;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
@@ -49,55 +48,33 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
+        sInstance = this;
+        mFragmentManager = getFragmentManager();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        RelativeLayout rl_drawer = (RelativeLayout) findViewById(R.id.drawer);
-        drawerLayout = (DrawerLayout) findViewById(R.id.main_drawerLayout);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        drawerLayout.setDrawerListener(toggle);
-        tbtn1 = (RelativeLayout) rl_drawer.findViewById(R.id.btn1);
-        tbtn1.setOnClickListener(this);
-        tbtn2 = (RelativeLayout) rl_drawer.findViewById(R.id.btn2);
-        tbtn2.setOnClickListener(this);
-        tbtn3 = (RelativeLayout) rl_drawer.findViewById(R.id.btn3);
-        tbtn3.setOnClickListener(this);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
+                R.string.app_name);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
 
-        mFragmentManager = getFragmentManager();
-        sInstance = this;
-        mFragmentManager.beginTransaction().add(R.id.frameLayout, new SearchFragment()).commit();
+        RelativeLayout drawer = (RelativeLayout) findViewById(R.id.drawer);
+        RelativeLayout button1 = (RelativeLayout) drawer.findViewById(R.id.button_1);
+        button1.setOnClickListener(this);
+        RelativeLayout button2 = (RelativeLayout) drawer.findViewById(R.id.button_2);
+        button2.setOnClickListener(this);
+        RelativeLayout button3 = (RelativeLayout) drawer.findViewById(R.id.button_3);
+        button3.setOnClickListener(this);
 
-    }
+        mFragmentManager.beginTransaction().add(R.id.frame_layout, new SearchFragment()).commit();
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.btn1:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, new SearchFragment()).commit();
-                break;
-            case R.id.btn2:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, new ExploreFragment()).commit();
-                break;
-            case R.id.btn3:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frameLayout, new SurroundStopFragment()).commit();
-                break;
-        }
-        drawerLayout.closeDrawers();
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        toggle.onConfigurationChanged(newConfig);
+        mDrawerToggle.syncState();
     }
 
     @Override
@@ -108,12 +85,35 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                startActivity(new Intent(this, SettingsActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_settings) {
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.button_1:
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, new SearchFragment()).commit();
+                break;
+            case R.id.button_2:
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, new ExploreFragment()).commit();
+                break;
+            case R.id.button_3:
+                mFragmentManager.beginTransaction()
+                        .replace(R.id.frame_layout, new SurroundStopFragment()).commit();
+                break;
+        }
+        mDrawerLayout.closeDrawers();
     }
 }

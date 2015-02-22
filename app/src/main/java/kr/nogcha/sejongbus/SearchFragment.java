@@ -19,9 +19,7 @@ package kr.nogcha.sejongbus;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,12 +61,6 @@ public class SearchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.f_search, container, false);
 
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
-        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) mEditText.setText("");
-            }
-        });
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -77,6 +69,12 @@ public class SearchFragment extends Fragment {
                     return true;
                 }
                 return false;
+            }
+        });
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) mEditText.setText("");
             }
         });
 
@@ -100,7 +98,9 @@ public class SearchFragment extends Fragment {
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
             if (mBisClient.isNetworkConnected()) {
-                if (Pattern.matches("^[0-9-]+$", query)) {
+                if (Pattern.matches("^\\d{5}$", query)) {
+                    searchBusStop(query);
+                } else if (Pattern.matches("^[0-9-]+$", query)) {
                     searchBusRoute(query);
                 } else {
                     searchBusStop(query);
@@ -116,25 +116,26 @@ public class SearchFragment extends Fragment {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                item.text2 = json.getString("route_name");
-                item.text3 = json.getString("st_stop_name") + "~" + json.getString("ed_stop_name");
-                switch (json.getInt("route_type")){
+
+                switch (json.getInt("route_type")) {
                     case 30:
-                        item.image = getResources().getDrawable(R.drawable.town);
+                        item.resId = R.drawable.town;
                         break;
                     case 43:
-                        item.image = getResources().getDrawable(R.drawable.sejongbus);
+                        item.resId = R.drawable.sejongbus;
                         break;
                     case 50:
-                        item.image = getResources().getDrawable(R.drawable.daejeonbus);
+                        item.resId = R.drawable.daejeonbus;
                         break;
                     case 51:
-                        item.image = getResources().getDrawable(R.drawable.cheongjubus);
+                        item.resId = R.drawable.cheongjubus;
                         break;
                     default:
-                        item.image = getResources().getDrawable(R.drawable.general);
-                        break;
+                        item.resId = R.drawable.general;
                 }
+
+                item.text1 = json.getString("route_name");
+                item.text2 = json.getString("st_stop_name") + "~" + json.getString("ed_stop_name");
                 mList.add(item);
             }
         } catch (JSONException e) {
@@ -166,9 +167,9 @@ public class SearchFragment extends Fragment {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                item.image = getResources().getDrawable(R.drawable.busstopicon);
-                item.text2 = json.getString("stop_name");
-                item.text3 = json.getString("service_id");
+                item.resId = R.drawable.busstopicon;
+                item.text1 = json.getString("stop_name");
+                item.text2 = json.getString("service_id");
                 mList.add(item);
             }
         } catch (JSONException e) {

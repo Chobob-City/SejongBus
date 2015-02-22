@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,7 +89,6 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                 mMap.setMyLocationEnabled(true);
             }
         });
-        MainActivity.hideSoftInput();
 
         mListView = (ListView) rootView.findViewById(R.id.list_view);
         mListView.setEmptyView(rootView.findViewById(R.id.text_view));
@@ -171,12 +169,13 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             for (int i = 0; i < jsonList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = jsonList.get(i);
-                item.text2 = json.getString("stop_name");
-                item.text3 = json.getString("service_id");
+                item.resId = 0;
+                item.text1 = json.getString("stop_name");
+                item.text2 = json.getString("service_id");
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(json.getDouble("lat"), json.getDouble("lng")))
-                        .title(item.text2 + " [" + item.text3 + "]"));
-                item.text3 += "\n" + json.getString("distance") + "m";
+                        .title(item.text1 + " [" + item.text2 + "]"));
+                item.text2 += "\n" + json.getString("distance") + "m";
                 list.add(item);
             }
 

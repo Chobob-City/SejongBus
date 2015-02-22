@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -35,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BusRouteDetailActivity extends ActionBarActivity {
-    List<CommonListItem> mList = new ArrayList<>();
+    private List<CommonListItem> mList = new ArrayList<>();
     private List<Integer> mStopIdList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private int mRouteId;
@@ -47,11 +46,11 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_bus_route_detail);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         mBisClient = new SejongBisClient(this);
         if (!mBisClient.isNetworkConnected()) return;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mRouteId = getIntent().getExtras().getInt("route_id");
         try {
@@ -70,25 +69,26 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length() - 1; i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-                switch (json.getInt("route_type")){
+
+                switch (json.getInt("route_type")) {
                     case 30:
-                        item.image = getResources().getDrawable(R.drawable.town);
+                        item.resId = R.drawable.town;
                         break;
                     case 43:
-                        item.image = getResources().getDrawable(R.drawable.sejongbus);
+                        item.resId = R.drawable.sejongbus;
                         break;
                     case 50:
-                        item.image = getResources().getDrawable(R.drawable.daejeonbus);
+                        item.resId = R.drawable.daejeonbus;
                         break;
                     case 51:
-                        item.image = getResources().getDrawable(R.drawable.cheongjubus);
+                        item.resId = R.drawable.cheongjubus;
                         break;
                     default:
-                        item.image = getResources().getDrawable(R.drawable.general);
-                        break;
+                        item.resId = R.drawable.general;
                 }
-                item.text2 = json.getString("stop_name");
-                item.text3 = json.getString("service_id");
+
+                item.text1 = json.getString("stop_name");
+                item.text2 = json.getString("service_id");
                 mList.add(item);
                 mStopIdList.add(json.getInt("stop_id"));
             }
@@ -103,9 +103,9 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(BusRouteDetailActivity.this, BusTimeListActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putInt("route_id", mRouteId);
-                intent.putExtras(bundle);
+                Bundle extras = new Bundle();
+                extras.putInt("route_id", mRouteId);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
@@ -116,13 +116,13 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BusRouteDetailActivity.this, BusStopRouteActivity.class);
-                Bundle bundle = new Bundle();
+                Bundle extras = new Bundle();
                 try {
-                    bundle.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
+                    extras.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                intent.putExtras(bundle);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });
@@ -133,7 +133,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
 
         for (int i = 0; i < mList.size(); i++) {
             CommonListItem item = mList.get(i);
-            item.busType = 0;
+            item.resId = 0;
             mList.set(i, item);
         }
 
@@ -145,9 +145,9 @@ public class BusRouteDetailActivity extends ActionBarActivity {
                 int location = mStopIdList.indexOf(json.getInt("stop_id"));
                 CommonListItem item = mList.get(location);
                 if (json.getString("turn_flag").equals("DW")) {
-                    item.busType = 2;
+                    ;
                 } else {
-                    item.busType = 1;
+                    ;
                 }
                 mList.set(location, item);
             }

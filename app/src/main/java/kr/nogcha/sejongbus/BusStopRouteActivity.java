@@ -40,11 +40,11 @@ public class BusStopRouteActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_bus_stop_route);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         SejongBisClient bisClient = new SejongBisClient(this);
         if (!bisClient.isNetworkConnected()) return;
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         List<CommonListItem> list = new ArrayList<>();
         try {
@@ -61,19 +61,19 @@ public class BusStopRouteActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-                item.image = getResources().getDrawable(R.drawable.busstopicon);
-                item.text2 = json.getString("route_name");
+                item.resId = R.drawable.busstopicon;
+                item.text1 = json.getString("route_name");
 
                 int provide_code = json.getInt("provide_code");
                 switch (provide_code) {
                     case 1:
-                        item.text3 = "도착: " + json.getString("provide_type") + "\n현위치: 기점";
+                        item.text2 = "도착: " + json.getString("provide_type") + "\n현위치: 기점";
                         break;
                     case 2:
-                        item.text3 = "회차지 대기 중";
+                        item.text2 = "회차지 대기 중";
                         break;
                     default:
-                        item.text3 = "도착: " + json.getString("provide_type") + "\n현위치: "
+                        item.text2 = "도착: " + json.getString("provide_type") + "\n현위치: "
                                 + json.getString("rstop");
                 }
 
@@ -89,14 +89,14 @@ public class BusStopRouteActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(BusStopRouteActivity.this, BusRouteDetailActivity.class);
-                Bundle bundle = new Bundle();
+                Bundle extras = new Bundle();
                 try {
-                    bundle.putInt("route_id",
+                    extras.putInt("route_id",
                             mJSONArray.getJSONObject(position).getInt("route_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                intent.putExtras(bundle);
+                intent.putExtras(extras);
                 startActivity(intent);
             }
         });

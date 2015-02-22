@@ -16,13 +16,8 @@
 
 package kr.nogcha.sejongbus;
 
-import android.graphics.drawable.Drawable;
-import android.text.Spanned;
-
 public class CommonListItem {
+    public int resId;
+    public String text1;
     public String text2;
-    public String text3;
-    public Drawable image;
-    public int busType;
-    //public Button plus_btn;
 }

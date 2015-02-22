@@ -19,7 +19,6 @@ package kr.nogcha.sejongbus;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -37,12 +36,13 @@ public class RouteExploreActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_route_explore);
 
+        SejongBisClient bisClient = new SejongBisClient(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        SejongBisClient bisClient = new SejongBisClient(this);
-        Bundle extras = getIntent().getExtras();
         List<CommonListItem> list = new ArrayList<>();
+        Bundle extras = getIntent().getExtras();
         try {
             JSONArray jsonArray = bisClient
                     .searchRouteExplore(extras.getInt("stBusStop"), extras.getInt("edBusStop"),
@@ -58,22 +58,23 @@ public class RouteExploreActivity extends ActionBarActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = jsonArray.getJSONObject(i);
-                item.image = getResources().getDrawable(R.drawable.busstopicon);
+                item.resId = R.drawable.busstopicon;
+
                 int xtype = json.getInt("xtype");
                 if (xtype == 1) {
-                    item.text2 = "무";
+                    item.text1 = "무";
                 } else {
-                    item.text2 = "";
+                    item.text1 = "";
                 }
-                item.text2 += "환승 경로";
-                item.text3 = json.getString("sstationname") + " [" + json.getString("sService_id")
+                item.text1 += "환승 경로";
+                item.text2 = json.getString("sstationname") + " [" + json.getString("sService_id")
                         + "]에서 " + json.getString("srouteno") + "번 버스에 승차\n";
                 if (xtype != 1) {
-                    item.text3 += json.getString("tstationname") + " ["
+                    item.text2 += json.getString("tstationname") + " ["
                             + json.getString("tService_id") + "]에서 " + json.getString("erouteno")
                             + "번 버스로 환승\n";
                 }
-                item.text3 += json.getString("estationname") + " [" + json.getString("eService_id")
+                item.text2 += json.getString("estationname") + " [" + json.getString("eService_id")
                         + "]에서 하차\n" + json.getString("seq") + "개 정류소, "
                         + json.getInt("distance") / 1000.0 + "km";
 

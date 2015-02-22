@@ -18,7 +18,7 @@ package kr.nogcha.sejongbus;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.SpannableString;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -51,21 +51,24 @@ public class ExploreActivity1 extends ActionBarActivity {
         mBisClient = new SejongBisClient(this);
         mAdapter = new CommonAdapter(this, R.layout.common_list_item, mList);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         mEditText = (EditText) findViewById(R.id.edit_text);
-        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) mEditText.setText("");
-            }
-        });
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    onSearch();
+                    search();
                     return true;
                 }
                 return false;
+            }
+        });
+        mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) mEditText.setText("");
             }
         });
 
@@ -77,12 +80,12 @@ public class ExploreActivity1 extends ActionBarActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch();
+                search();
             }
         });
     }
 
-    private void onSearch() {
+    private void search() {
         String query = mEditText.getText().toString();
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
@@ -94,9 +97,9 @@ public class ExploreActivity1 extends ActionBarActivity {
                 for (int i = 0; i < mJSONArray.length(); i++) {
                     CommonListItem item = new CommonListItem();
                     JSONObject json = mJSONArray.getJSONObject(i);
-                    item.image = getResources().getDrawable(R.drawable.busstopicon);
-                    item.text2 = json.getString("stop_name");
-                    item.text3 = json.getString("service_id");
+                    item.resId = R.drawable.busstopicon;
+                    item.text1 = json.getString("stop_name");
+                    item.text2 = json.getString("service_id");
                     mList.add(item);
                 }
             } catch (JSONException e) {

@@ -18,7 +18,7 @@ package kr.nogcha.sejongbus;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.text.SpannableString;
+import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -50,6 +50,9 @@ public class ExploreActivity2 extends ActionBarActivity {
 
         mBisClient = new SejongBisClient(this);
         mAdapter = new CommonAdapter(this, R.layout.common_list_item, mList);
+
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         mEditText = (EditText) findViewById(R.id.edit_text);
         mEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -94,9 +97,9 @@ public class ExploreActivity2 extends ActionBarActivity {
                 for (int i = 0; i < mJSONArray.length(); i++) {
                     CommonListItem item = new CommonListItem();
                     JSONObject json = mJSONArray.getJSONObject(i);
-                    item.image = getResources().getDrawable(R.drawable.busstopicon);
-                    item.text2 = json.getString("stop_name");
-                    item.text3 = json.getString("service_id");
+                    item.resId = R.drawable.busstopicon;
+                    item.text1 = json.getString("stop_name");
+                    item.text2 = json.getString("service_id");
                     mList.add(item);
                 }
             } catch (JSONException e) {

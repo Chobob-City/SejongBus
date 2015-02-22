@@ -17,14 +17,9 @@
 package kr.nogcha.sejongbus;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -100,37 +95,6 @@ public class SejongBisClient {
     public JSONObject selectBusStop(int busStopId) {
         String params = "busStopId=" + busStopId;
         return post("selectBusStop", params, true);
-    }
-
-    public Spanned getRouteType(int route_type) {
-        Spannable routeType;
-        int backgroundColor;
-        switch (route_type) {
-            case 30:
-                routeType = new SpannableString("마을");
-                backgroundColor = Color.GREEN;
-                break;
-            case 43:
-                routeType = new SpannableString("세종\n광역");
-                backgroundColor = Color.RED;
-                break;
-            case 50:
-                routeType = new SpannableString("대전\n광역");
-                backgroundColor = Color.RED;
-                break;
-            case 51:
-                routeType = new SpannableString("청주\n광역");
-                backgroundColor = Color.RED;
-                break;
-            default:
-                routeType = new SpannableString("일반");
-                backgroundColor = Color.BLUE;
-        }
-        routeType.setSpan(new ForegroundColorSpan(backgroundColor), 0, routeType.length(),
-                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        routeType.setSpan(new BackgroundColorSpan(backgroundColor), 0, routeType.length(),
-//                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        return routeType;
     }
 
     private JSONObject post(String url, String params, boolean isMobile) {
