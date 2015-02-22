@@ -20,4 +20,5 @@ public class CommonListItem {
     public int resId;
     public String text1;
     public String text2;
+    public boolean isBusHere;
 }

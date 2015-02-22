@@ -42,18 +42,24 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         if (convertView == null) {
             convertView = mInflater.inflate(mResource, null);
             viewHolder = new CommonViewHolder();
-            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_view);
-            viewHolder.textView1 = (TextView) convertView.findViewById(R.id.text_view_2);
-            viewHolder.textView2 = (TextView) convertView.findViewById(R.id.text_view_3);
+            viewHolder.imageView1 = (ImageView) convertView.findViewById(R.id.image_view_1);
+            viewHolder.textView1 = (TextView) convertView.findViewById(R.id.text_view_1);
+            viewHolder.textView2 = (TextView) convertView.findViewById(R.id.text_view_2);
+            viewHolder.imageView2 = (ImageView) convertView.findViewById(R.id.image_view_2);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (CommonViewHolder) convertView.getTag();
         }
 
         CommonListItem item = getItem(position);
-        viewHolder.imageView.setImageResource(item.resId);
+        viewHolder.imageView1.setImageResource(item.resId);
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
+        if (item.isBusHere) {
+            viewHolder.imageView2.setImageResource(R.drawable.bus_beside);
+        } else {
+            viewHolder.imageView2.setImageResource(0);
+        }
 
         return convertView;
     }

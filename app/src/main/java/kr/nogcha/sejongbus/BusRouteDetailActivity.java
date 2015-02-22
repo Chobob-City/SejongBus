@@ -116,7 +116,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
 
         for (int i = 0; i < mList.size(); i++) {
             CommonListItem item = mList.get(i);
-            item.resId = 0;
+            item.isBusHere = false;
             mList.set(i, item);
         }
 
@@ -127,11 +127,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
                 JSONObject json = jsonArray.getJSONObject(i);
                 int location = mStopIdList.indexOf(json.getInt("stop_id"));
                 CommonListItem item = mList.get(location);
-                if (json.getString("turn_flag").equals("DW")) {
-                    ;
-                } else {
-                    ;
-                }
+                item.isBusHere = true;
                 mList.set(location, item);
             }
         } catch (JSONException e) {

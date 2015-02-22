@@ -19,14 +19,12 @@ package kr.nogcha.sejongbus;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -145,6 +143,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         SejongBisClient bisClient = new SejongBisClient(activity);
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
+        List<CommonListItem> list = new ArrayList<>();
         try {
             mJSONArray = bisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
@@ -165,7 +164,6 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             });
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
-            List<CommonListItem> list = new ArrayList<>();
             for (int i = 0; i < jsonList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = jsonList.get(i);
@@ -178,25 +176,10 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                 item.text2 += "\n" + json.getString("distance") + "m";
                 list.add(item);
             }
-
-            mListView.setAdapter(new CommonAdapter(activity, R.layout.common_list_item, list));
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), BusStopRouteActivity.class);
-                    Bundle extras = new Bundle();
-                    try {
-                        extras.putInt("stop_id",
-                                mJSONArray.getJSONObject(position).getInt("stop_id"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    intent.putExtras(extras);
-                    startActivity(intent);
-                }
-            });
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        mListView.setAdapter(new CommonAdapter(activity, R.layout.common_list_item, list));
     }
 }

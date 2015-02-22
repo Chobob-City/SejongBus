@@ -6,46 +6,46 @@
     android:minHeight="?android:attr/listPreferredItemHeight">
 
     <ImageView
-        android:id="@+id/image_view"
+        android:id="@+id/image_view_1"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
-        android:contentDescription="버스"
+        android:contentDescription="지역"
         android:padding="8dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/image_view"
-        android:layout_toRightOf="@+id/image_view"
+        android:layout_toEndOf="@+id/image_view_1"
+        android:layout_toRightOf="@+id/image_view_1"
         android:padding="12dp">
 
         <TextView
-            android:id="@+id/text_view_2"
+            android:id="@+id/text_view_1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#e6000000"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/text_view_3"
+            android:id="@+id/text_view_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_2"
-            android:textColor="#b3000000"
-            android:textSize="14sp" />
-
-        <TextView
-            android:id="@+id/text_view_4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/text_view_2"
-            android:layout_marginLeft="4dp"
-            android:layout_marginStart="4dp"
+            android:layout_below="@id/text_view_1"
             android:textColor="#b3000000"
             android:textSize="14sp" />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/image_view_2"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="운행중" />
+
 </RelativeLayout>

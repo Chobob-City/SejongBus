@@ -20,7 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CommonViewHolder {
+    public ImageView imageView1;
     public TextView textView1;
     public TextView textView2;
-    public ImageView imageView;
+    public ImageView imageView2;
 }
