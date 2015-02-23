@@ -19,12 +19,14 @@ package kr.nogcha.sejongbus;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -53,10 +55,11 @@ import java.util.List;
 public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         LocationListener {
     private GoogleMap mMap = null;
+    private List<JSONObject> mJSONList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private GoogleApiClient mApiClient;
     private ListView mListView;
-    private JSONArray mJSONArray;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,12 +151,11 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         double longitude = location.getLongitude();
         List<CommonListItem> list = new ArrayList<>();
         try {
-            mJSONArray = mBisClient.searchSurroundStopList(latitude, longitude)
+            JSONArray jsonArray = mBisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
 
-            List<JSONObject> jsonList = new ArrayList<>();
-            for (int i = 0; i < mJSONArray.length(); i++) jsonList.add(mJSONArray.getJSONObject(i));
-            Collections.sort(jsonList, new Comparator<JSONObject>() {
+            for (int i = 0; i < jsonArray.length(); i++) mJSONList.add(jsonArray.getJSONObject(i));
+            Collections.sort(mJSONList, new Comparator<JSONObject>() {
                 @Override
                 public int compare(JSONObject lhs, JSONObject rhs) {
                     int result = 0;
@@ -167,9 +169,9 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             });
 
             mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
-            for (int i = 0; i < jsonList.size(); i++) {
+            for (int i = 0; i < mJSONList.size(); i++) {
                 CommonListItem item = new CommonListItem();
-                JSONObject json = jsonList.get(i);
+                JSONObject json = mJSONList.get(i);
                 item.resId = R.drawable.busstopicon;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
@@ -182,6 +184,21 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         mListView.setAdapter(new CommonAdapter(getActivity(), R.layout.common_list_item, list));
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), BusStopRouteActivity.class);
+                Bundle extras = new Bundle();
+                try {
+                    extras.putInt("stop_id", mJSONList.get(position).getInt("stop_id"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                intent.putExtras(extras);
+                startActivity(intent);
+            }
+        });
     }
 }
