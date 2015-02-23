@@ -2,11 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="kr.nogcha.sejongbus.MainActivity"
-    tools:ignore="AlwaysShowAction">
+    tools:context="kr.nogcha.sejongbus.MainActivity">
     <item
         android:id="@+id/action_about"
-        android:icon="@drawable/ic_action_settings"
+        android:icon="@drawable/ic_action_about"
         android:title="@string/action_about"
         app:showAsAction="ifRoom" />
 </menu>
