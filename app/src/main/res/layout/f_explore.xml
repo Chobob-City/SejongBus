@@ -9,6 +9,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:elevation="8dp"
         android:background="@color/mainblue">
 
         <Button
@@ -18,7 +19,7 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_gravity="center_vertical"
-            android:background="#00000000"
+            android:background="@color/mainblue"
             android:padding="4dp"
             android:text="탐색"
             android:textSize="18sp" />
