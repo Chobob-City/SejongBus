@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -62,16 +61,6 @@ public class SearchFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.f_search, container, false);
 
         mEditText = (EditText) rootView.findViewById(R.id.edit_text);
-        mEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    mEditText.setText("");
-                    return true;
-                }
-                return false;
-            }
-        });
         mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
