@@ -89,11 +89,15 @@
     <orderEntry type="library" exported="" name="appcompat-v7-22.0.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.3.1" level="project" />
     <orderEntry type="library" exported="" name="play-services-base-6.5.87" level="project" />
-    <orderEntry type="library" exported="" name="support-v13-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-urlconnection-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="support-v4-22.0.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-maps-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="retrofit-1.9.0" level="project" />
-    <orderEntry type="library" exported="" name="play-services-location-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="droidparts-2.7.5" level="project" />
+    <orderEntry type="library" exported="" name="support-v13-22.0.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-maps-6.5.87" level="project" />
+    <orderEntry type="library" exported="" name="okio-1.4.0" level="project" />
+    <orderEntry type="library" exported="" name="play-services-location-6.5.87" level="project" />
   </component>
 </module>
