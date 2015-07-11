@@ -6,6 +6,5 @@ android:
      - extra
 
 jdk: oraclejdk8
-env:
-  global:
-    - TERM=dumb
+before_script:
+  - chmod +x gradlew
