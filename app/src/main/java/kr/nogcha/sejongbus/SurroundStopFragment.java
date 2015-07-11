@@ -79,7 +79,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         View rootView = inflater.inflate(R.layout.f_surround_stop, container, false);
 
         Toast.makeText(mActivity, "위치를 켜면 자동으로 검색됩니다.\n"
-                + "더미 정류장이 존재할 수 있습니다.", Toast.LENGTH_SHORT).show();
+                + "더미 데이터가 나타날 수 있습니다.", Toast.LENGTH_SHORT).show();
 
         mMapView = (MapView) rootView.findViewById(R.id.map_view);
         mMapView.onCreate(savedInstanceState);
@@ -118,8 +118,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             if (GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
                 GooglePlayServicesUtil.getErrorDialog(errorCode, mActivity, 0).show();
             } else {
-                Toast.makeText(mActivity, "해당 기기는 지원하지 않습니다.", Toast.LENGTH_SHORT)
-                        .show();
+                Toast.makeText(mActivity, "지원하지 않는 기기입니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }
