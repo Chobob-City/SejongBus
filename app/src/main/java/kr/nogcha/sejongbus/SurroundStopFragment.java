@@ -18,10 +18,8 @@ package kr.nogcha.sejongbus;
 
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +36,8 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -56,19 +55,21 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         LocationListener {
     private GoogleMap mMap = null;
     private List<JSONObject> mJSONList = new ArrayList<>();
+    private Activity mActivity;
     private SejongBisClient mBisClient;
     private GoogleApiClient mApiClient;
+    private MapView mMapView;
     private ListView mListView;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Activity activity = getActivity();
-        mBisClient = new SejongBisClient(activity);
+        mActivity = getActivity();
+        mBisClient = new SejongBisClient(mActivity);
         if (!mBisClient.isNetworkConnected()) return;
 
-        mApiClient = new GoogleApiClient.Builder(activity).addConnectionCallbacks(this)
+        mApiClient = new GoogleApiClient.Builder(mActivity).addConnectionCallbacks(this)
                 .addApi(LocationServices.API).build();
     }
 
@@ -77,22 +78,21 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_surround_stop, container, false);
 
-        FragmentManager fragmentManager;
-        if (Build.VERSION.SDK_INT >= 21) {
-            fragmentManager = getChildFragmentManager();
-        } else {
-            fragmentManager = getFragmentManager();
-        }
-        MapFragment map = (MapFragment) fragmentManager.findFragmentById(R.id.map);
-        map.getMapAsync(new OnMapReadyCallback() {
+        Toast.makeText(mActivity, "위치를 켜면 자동으로 검색됩니다.\n"
+                + "더미 정류장이 존재할 수 있습니다.", Toast.LENGTH_SHORT).show();
+
+        mMapView = (MapView) rootView.findViewById(R.id.map_view);
+        mMapView.onCreate(savedInstanceState);
+        mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
-
-                // 조치원역
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                        new LatLng(36.601031, 127.295882), (float) 14.7));
                 mMap.setMyLocationEnabled(true);
+
+                if (MapsInitializer.initialize(mActivity) != ConnectionResult.SUCCESS) {
+                    Toast.makeText(mActivity, "지도 초기화에 실패하였습니다.", Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 
@@ -111,21 +111,35 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     @Override
     public void onResume() {
         super.onResume();
-        Activity activity = getActivity();
-        int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(activity);
+        mMapView.onResume();
+
+        int errorCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(mActivity);
         if (errorCode != ConnectionResult.SUCCESS) {
             if (GooglePlayServicesUtil.isUserRecoverableError(errorCode)) {
-                GooglePlayServicesUtil.getErrorDialog(errorCode, activity, 0).show();
+                GooglePlayServicesUtil.getErrorDialog(errorCode, mActivity, 0).show();
             } else {
-                Toast.makeText(activity, "해당 기기는 지원되지 않습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, "해당 기기는 지원하지 않습니다.", Toast.LENGTH_SHORT)
+                        .show();
             }
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMapView.onPause();
     }
 
     @Override
     public void onStop() {
         super.onStop();
         if (mApiClient.isConnected()) mApiClient.disconnect();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mMapView.onDestroy();
     }
 
     @Override
@@ -147,9 +161,10 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     public void onLocationChanged(Location location) {
         if (mMap == null) return;
 
+        mJSONList.clear();
+        List<CommonListItem> list = new ArrayList<>();
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        List<CommonListItem> list = new ArrayList<>();
         try {
             JSONArray jsonArray = mBisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
@@ -167,8 +182,8 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                     return result;
                 }
             });
-
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(latitude, longitude)));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(latitude, longitude), (float) 14.7));
             for (int i = 0; i < mJSONList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONList.get(i);
