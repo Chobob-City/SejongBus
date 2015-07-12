@@ -79,7 +79,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         View rootView = inflater.inflate(R.layout.f_surround_stop, container, false);
 
         Toast.makeText(mActivity, "위치를 켜면 자동으로 검색됩니다.\n"
-                + "더미 데이터가 나타날 수 있습니다.", Toast.LENGTH_SHORT).show();
+                + "더미 데이터가 표시될 수 있습니다.", Toast.LENGTH_SHORT).show();
 
         mMapView = (MapView) rootView.findViewById(R.id.map_view);
         mMapView.onCreate(savedInstanceState);
@@ -88,10 +88,8 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             public void onMapReady(GoogleMap googleMap) {
                 mMap = googleMap;
                 mMap.setMyLocationEnabled(true);
-
                 if (MapsInitializer.initialize(mActivity) != ConnectionResult.SUCCESS) {
-                    Toast.makeText(mActivity, "지도 초기화에 실패하였습니다.", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(mActivity, "지도 초기화 실패", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -167,7 +165,6 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
         try {
             JSONArray jsonArray = mBisClient.searchSurroundStopList(latitude, longitude)
                     .getJSONArray("busStopList");
-
             for (int i = 0; i < jsonArray.length(); i++) mJSONList.add(jsonArray.getJSONObject(i));
             Collections.sort(mJSONList, new Comparator<JSONObject>() {
                 @Override
@@ -181,6 +178,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
                     return result;
                 }
             });
+
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
                     new LatLng(latitude, longitude), (float) 14.7));
             for (int i = 0; i < mJSONList.size(); i++) {
