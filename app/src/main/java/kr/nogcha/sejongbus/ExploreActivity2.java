@@ -59,7 +59,7 @@ public class ExploreActivity2 extends ActionBarActivity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    onSearch();
+                    search();
                     return true;
                 }
                 return false;
@@ -74,12 +74,12 @@ public class ExploreActivity2 extends ActionBarActivity {
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onSearch();
+                search();
             }
         });
     }
 
-    private void onSearch() {
+    private void search() {
         String query = mEditText.getText().toString();
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
