@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'Chobob City'
-            keyPassword 'chobob_city_00000000'
-            storeFile file('ChobobCity.jks')
-            storePassword 'chobob_city_00000000'
+            keyAlias 'release'
+            keyPassword 'nPfdest&421'
+            storeFile file('keystore.jks')
+            storePassword 'nPfdest&421`'
         }
     }
     compileSdkVersion 22
