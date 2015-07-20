@@ -1,14 +1,6 @@
 apply plugin: 'com.android.application'
 
 android {
-    signingConfigs {
-        config {
-            keyAlias 'release'
-            keyPassword 'nPfdest&421'
-            storeFile file('keystore.jks')
-            storePassword 'nPfdest&421`'
-        }
-    }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
@@ -17,7 +9,6 @@ android {
         targetSdkVersion 22
         versionCode 3
         versionName "2.0"
-        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
