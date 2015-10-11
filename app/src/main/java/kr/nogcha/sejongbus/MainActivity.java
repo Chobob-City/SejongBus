@@ -16,104 +16,146 @@
 
 package kr.nogcha.sejongbus;
 
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.RelativeLayout;
+import android.widget.ImageButton;
 
 public class MainActivity extends ActionBarActivity implements View.OnClickListener {
     private static MainActivity sInstance;
-    private FragmentManager mFragmentManager;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private ImageButton tab_btn_1,tab_btn_2,tab_btn_3,tab_btn_4,tab_btn_5,prevView;
+    private Animation fadeinAnim, fadeoutAnim;
+    private ViewPager pager;
+    private Toolbar toolbar;
 
-    public static void hideSoftInput() {
-        final InputMethodManager inputMethodManager =
-                (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-    }
+    private int prevViewNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
 
-        sInstance = this;
-        mFragmentManager = getFragmentManager();
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar)findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
-                R.string.app_name);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        pager = (ViewPager)findViewById(R.id.main_viewpager);
+        pager.setAdapter(new MainSlideAdapter(getSupportFragmentManager()));
 
-        RelativeLayout drawer = (RelativeLayout) findViewById(R.id.drawer);
-        RelativeLayout button1 = (RelativeLayout) drawer.findViewById(R.id.button_1);
-        button1.setOnClickListener(this);
-        RelativeLayout button2 = (RelativeLayout) drawer.findViewById(R.id.button_2);
-        button2.setOnClickListener(this);
-        RelativeLayout button3 = (RelativeLayout) drawer.findViewById(R.id.button_3);
-        button3.setOnClickListener(this);
+        tab_btn_1=(ImageButton)findViewById(R.id.main_tab_btn1);
+        tab_btn_2=(ImageButton)findViewById(R.id.main_tab_btn2);
+        tab_btn_3=(ImageButton)findViewById(R.id.main_tab_btn3);
+        tab_btn_4=(ImageButton)findViewById(R.id.main_tab_btn4);
+        tab_btn_5=(ImageButton)findViewById(R.id.main_tab_btn5);
+        tab_btn_1.setOnClickListener(this);
+        tab_btn_2.setOnClickListener(this);
+        tab_btn_3.setOnClickListener(this);
+        tab_btn_4.setOnClickListener(this);
+        tab_btn_5.setOnClickListener(this);
+        prevView = tab_btn_1;
+        tab_btn_1.setImageResource(R.drawable.main_tab_btn_drawable_brightblue_1);
+        prevViewNum = 1;
 
-        mFragmentManager.beginTransaction().add(R.id.frame_layout, new SearchFragment()).commit();
-
+        fadeinAnim = AnimationUtils.loadAnimation(this,R.anim.fade_in_anim);
+        fadeoutAnim = AnimationUtils.loadAnimation(this,R.anim.fade_out_anim);
+        pager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                if(position==0){
+                    TabChange(tab_btn_1,1);
+                }else if(position==1){
+                    TabChange(tab_btn_2,2);
+                }else if(position==2){
+                    TabChange(tab_btn_3,3);
+                }else if(position==3){
+                    TabChange(tab_btn_4,4);
+                }else if(position==4){
+                    TabChange(tab_btn_5,5);
+                }
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_about) {
-            startActivity(new Intent(this, AboutActivity.class));
-            return true;
+    private void TabChange(ImageButton initView, int initViewNum){
+        if(prevViewNum!=initViewNum){
+            pager.setCurrentItem(initViewNum-1);
+            prevView.setImageResource(R.drawable.main_tab_btn_drawable_gray_1 + (prevViewNum - 1));
+            initView.setImageResource(R.drawable.main_tab_btn_drawable_brightblue_1+(initViewNum-1));
+            prevView=initView;
+            prevViewNum=initViewNum;
         }
-        return super.onOptionsItemSelected(item);
     }
+    public static class MainSlideAdapter extends FragmentPagerAdapter {
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_1:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, new SearchFragment()).commit();
-                break;
-            case R.id.button_2:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, new ExploreFragment()).commit();
-                break;
-            case R.id.button_3:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, new SurroundStopFragment()).commit();
-                break;
+        public MainSlideAdapter(FragmentManager fm) {
+            super(fm);
         }
-        mDrawerLayout.closeDrawers();
+
+        @Override
+        public Parcelable saveState() {
+            return super.saveState();
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
+        }
+
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return FavoriteFramgent.newInstance(position);
+                case 1:
+                    return BusRouteFragment.newInstance(position);
+                case 2:
+                    return BusStopFragment.newInstance(position);
+                case 3:
+                    return ExploreFragment.newInstance(position);
+                case 4:
+                    return SurroundStopFragment.newInstance(position);
+                default:
+                    return null;
+            }
+        }
+    }
+    @Override
+    public void onClick(View view){
+        switch(view.getId()){
+            case R.id.main_tab_btn1:
+                TabChange(tab_btn_1, 1);
+                break;
+            case R.id.main_tab_btn2:
+                TabChange(tab_btn_2, 2);
+                break;
+            case R.id.main_tab_btn3:
+                TabChange(tab_btn_3, 3);
+                break;
+            case R.id.main_tab_btn4:
+                TabChange(tab_btn_4, 4);
+                break;
+            case R.id.main_tab_btn5:
+                TabChange(tab_btn_5, 5);
+                break;
+
+        }
+    }
+    public static void hideSoftInput() {
+        final InputMethodManager inputMethodManager =
+                (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }

@@ -44,7 +44,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_bus_route_detail);
+        setContentView(R.layout.a_busroute_detail);
 
         mBisClient = new SejongBisClient(this);
         if (!mBisClient.isNetworkConnected()) return;
@@ -69,7 +69,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length() - 1; i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.l_busstopicon;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mList.add(item);
@@ -78,7 +78,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        mAdapter = new CommonAdapter(this, R.layout.common_list_item, mList);
+        mAdapter = new CommonAdapter(this, R.layout.s_common_list_item, mList);
         onRefresh();
 
         Button button = (Button) findViewById(R.id.button);

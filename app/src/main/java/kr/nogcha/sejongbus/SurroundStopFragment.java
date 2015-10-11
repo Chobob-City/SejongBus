@@ -17,10 +17,10 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,6 +61,13 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     private MapView mMapView;
     private ListView mListView;
 
+    public static SurroundStopFragment newInstance(int num) {
+        SurroundStopFragment f = new SurroundStopFragment();
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        f.setArguments(args);
+        return f;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -184,7 +191,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             for (int i = 0; i < mJSONList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONList.get(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.l_busstopicon;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mMap.addMarker(new MarkerOptions()
@@ -197,7 +204,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             e.printStackTrace();
         }
 
-        mListView.setAdapter(new CommonAdapter(getActivity(), R.layout.common_list_item, list));
+        mListView.setAdapter(new CommonAdapter(getActivity(), R.layout.s_common_list_item, list));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

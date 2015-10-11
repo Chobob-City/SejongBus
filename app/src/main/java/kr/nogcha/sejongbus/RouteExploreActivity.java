@@ -58,7 +58,7 @@ public class RouteExploreActivity extends ActionBarActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = jsonArray.getJSONObject(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.l_busstopicon;
 
                 int xtype = json.getInt("xtype");
                 if (xtype == 1) {
@@ -85,6 +85,6 @@ public class RouteExploreActivity extends ActionBarActivity {
         }
 
         ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(new CommonAdapter(this, R.layout.common_list_item, list));
+        listView.setAdapter(new CommonAdapter(this, R.layout.s_common_list_item, list));
     }
 }
