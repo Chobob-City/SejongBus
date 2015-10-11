@@ -38,7 +38,7 @@ public class BusStopRouteActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_busstop_detail);
+        setContentView(R.layout.a_bus_stop_route);
 
         SejongBisClient bisClient = new SejongBisClient(this);
         if (!bisClient.isNetworkConnected()) return;
@@ -64,19 +64,19 @@ public class BusStopRouteActivity extends ActionBarActivity {
 
                 switch (json.getInt("route_type")) {
                     case 30:
-                        item.resId = R.drawable.l_town;
+                        item.resId = R.drawable.town;
                         break;
                     case 43:
                         item.resId = R.drawable.sejongbus;
                         break;
                     case 50:
-                        item.resId = R.drawable.l_daejeonbus;
+                        item.resId = R.drawable.daejeonbus;
                         break;
                     case 51:
-                        item.resId = R.drawable.l_cheongbus;
+                        item.resId = R.drawable.cheongbus;
                         break;
                     default:
-                        item.resId = R.drawable.l_general;
+                        item.resId = R.drawable.general;
                 }
 
                 item.text1 = json.getString("route_name");
@@ -101,7 +101,7 @@ public class BusStopRouteActivity extends ActionBarActivity {
         }
 
         ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(new CommonAdapter(this, R.layout.s_common_list_item, list));
+        listView.setAdapter(new CommonAdapter(this, R.layout.common_list_item, list));
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

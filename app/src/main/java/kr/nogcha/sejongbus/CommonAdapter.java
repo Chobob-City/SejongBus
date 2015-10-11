@@ -56,7 +56,7 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         viewHolder.textView1.setText(item.text1);
         viewHolder.textView2.setText(item.text2);
         if (item.isBusHere) {
-            viewHolder.imageView2.setImageResource(R.drawable.l_bus_beside);
+            viewHolder.imageView2.setImageResource(R.drawable.bus_beside);
         } else {
             viewHolder.imageView2.setImageResource(0);
         }

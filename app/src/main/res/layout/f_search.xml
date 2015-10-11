@@ -1,38 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whitegray"
-    android:orientation="vertical"
-    tools:context="kr.nogcha.sejongbus.ExploreActivity2">
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/mainblue"
-        android:minHeight="?attr/actionBarSize" />
+    tools:context="kr.nogcha.sejongbus.SearchFragment">
 
     <RelativeLayout
         android:id="@+id/mainsearchbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainblue"
+        android:elevation="8dp"
         android:padding="8dp">
 
         <EditText
             android:id="@+id/edit_text"
+            style="@style/edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:background="@drawable/d_rounded_white"
-            android:hint="도착지를 검색하세요."
+            android:hint="노선번호 및 정류소를 입력하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"
-            android:singleLine="true"
             android:textColor="#000000"
-            android:textColorHint="#4d000000">
+            android:textColorHint="#4d000000"
+            android:textSize="16sp">
 
             <requestFocus />
         </EditText>
@@ -53,7 +45,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/mainsearchbar">
 
         <ListView
             android:id="@+id/list_view"
@@ -72,4 +65,4 @@
 
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

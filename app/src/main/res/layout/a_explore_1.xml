@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bggray"
+    android:background="@color/whitegray"
     android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.ExploreActivity1">
 
@@ -26,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/d_rounded_white"
             android:hint="출발지를 검색하세요."
             android:imeOptions="actionSearch"
             android:inputType="text"

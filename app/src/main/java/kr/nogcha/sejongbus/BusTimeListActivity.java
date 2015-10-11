@@ -36,7 +36,7 @@ public class BusTimeListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.a_bus_timetable);
+        setContentView(R.layout.a_bus_time_list);
 
         SejongBisClient bisClient = new SejongBisClient(this);
         if (!bisClient.isNetworkConnected()) return;
@@ -62,7 +62,7 @@ public class BusTimeListActivity extends ActionBarActivity {
         }
 
         GridView gridView = (GridView) findViewById(R.id.grid_view);
-        gridView.setAdapter(new ArrayAdapter<>(this, R.layout.s_common_list_item, list));
+        gridView.setAdapter(new ArrayAdapter<>(this, R.layout.simple_list_item, list));
     }
 
     private String formatTime(String time) {
