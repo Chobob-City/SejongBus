@@ -66,11 +66,13 @@ public class BusTimeListActivity extends ActionBarActivity {
     }
 
     private String formatTime(String time) {
-        if (!time.equals("-")) {
-            if (time.length() == 3) time = "0" + time;
-            return new StringBuilder(time).insert(time.length() - 2, ":").toString();
-        } else {
-            return time;
+        switch (time.length()) {
+            case 3:
+                time = "0" + time;
+            case 4:
+                return new StringBuilder(time).insert(time.length() - 2, ":").toString();
+            default:
+                return "-";
         }
     }
 }

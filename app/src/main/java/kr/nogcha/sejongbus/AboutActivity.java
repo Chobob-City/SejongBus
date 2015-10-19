@@ -32,7 +32,7 @@ public class AboutActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
 
         TextView textView = (TextView) findViewById(R.id.text_view);
-        textView.setText(Html.fromHtml("<p>세종버스 v2.0<br>Copyright (C) 2015 Chobob City</p>"
+        textView.setText(Html.fromHtml("<p>세종버스 v1.2<br>Copyright (C) 2015 Chobob City</p>"
                 + "<p>Licensed under the Apache License, Version 2.0 (the \"License\"); "
                 + "you may not use this file except in compliance with the License. "
                 + "You may obtain a copy of the License at</p>"
