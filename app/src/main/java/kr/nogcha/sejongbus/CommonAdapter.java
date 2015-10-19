@@ -58,7 +58,7 @@ public class CommonAdapter extends ArrayAdapter<CommonListItem> {
         if (item.isBusHere) {
             viewHolder.imageView2.setImageResource(R.drawable.bus_beside);
         } else {
-            viewHolder.imageView2.setImageResource(0);
+            viewHolder.imageView2.setImageDrawable(null);
         }
 
         return convertView;
