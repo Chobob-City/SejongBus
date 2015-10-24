@@ -70,7 +70,7 @@ public class BusTimeListActivity extends ActionBarActivity {
             case 3:
                 time = "0" + time;
             case 4:
-                return new StringBuilder(time).insert(time.length() - 2, ":").toString();
+                return time.substring(0, 2) + ":" + time.substring(2, 4);
             default:
                 return "-";
         }
