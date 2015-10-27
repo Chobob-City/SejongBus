@@ -69,7 +69,7 @@ public class BusRouteDetailActivity extends ActionBarActivity {
             for (int i = 0; i < mJSONArray.length() - 1; i++) {
                 CommonListItem item = new CommonListItem();
                 json = mJSONArray.getJSONObject(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.busstop;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mList.add(item);

@@ -51,7 +51,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+public class Main_SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         LocationListener {
     private GoogleMap mMap = null;
     private List<JSONObject> mJSONList = new ArrayList<>();
@@ -184,7 +184,7 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
             for (int i = 0; i < mJSONList.size(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONList.get(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.busstop;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mMap.addMarker(new MarkerOptions()

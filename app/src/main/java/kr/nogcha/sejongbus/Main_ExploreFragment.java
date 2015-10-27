@@ -16,9 +16,9 @@
 
 package kr.nogcha.sejongbus;
 
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,11 +27,19 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-public class ExploreFragment extends Fragment {
+public class Main_ExploreFragment extends Fragment {
     private static int sStBusStop = 0;
     private static int sEdBusStop = 0;
     private static EditText sEditText1;
     private static EditText sEditText2;
+
+    public static Main_ExploreFragment newInstance(int a) {
+        Main_ExploreFragment fragment = new Main_ExploreFragment();
+        Bundle args = new Bundle();
+        args.putInt("num", a);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     public static void setStBusStop(int stBusStop, String text) {
         sStBusStop = stBusStop;

@@ -1,25 +1,9 @@
-/*
- * Copyright (C) 2015 Chobob City
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package kr.nogcha.sejongbus;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,13 +23,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
-public class SearchFragment extends Fragment {
+/**
+ * Created by FullOfOrange on 2015. 10. 27..
+ */
+public class Main_BusRouteSearchFragment extends Fragment{
     private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
     private EditText mEditText;
     private ListView mListView;
     private JSONArray mJSONArray;
+
+    public static Main_BusRouteSearchFragment newInstance(int a) {
+        Main_BusRouteSearchFragment fragment = new Main_BusRouteSearchFragment();
+        Bundle args = new Bundle();
+        args.putInt("num", a);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,19 +108,19 @@ public class SearchFragment extends Fragment {
 
                 switch (json.getInt("route_type")) {
                     case 30:
-                        item.resId = R.drawable.town;
+                        item.resId = R.drawable.bus_town;
                         break;
                     case 43:
-                        item.resId = R.drawable.sejongbus;
+                        item.resId = R.drawable.bus_sejong;
                         break;
                     case 50:
-                        item.resId = R.drawable.daejeonbus;
+                        item.resId = R.drawable.bus_daejeon;
                         break;
                     case 51:
-                        item.resId = R.drawable.cheongbus;
+                        item.resId = R.drawable.bus_cheongju;
                         break;
                     default:
-                        item.resId = R.drawable.general;
+                        item.resId = R.drawable.bus_general;
                 }
 
                 item.text1 = json.getString("route_name");
@@ -161,7 +156,7 @@ public class SearchFragment extends Fragment {
             for (int i = 0; i < mJSONArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 JSONObject json = mJSONArray.getJSONObject(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.busstop;
                 item.text1 = json.getString("stop_name");
                 item.text2 = json.getString("service_id");
                 mList.add(item);

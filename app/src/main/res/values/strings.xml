@@ -7,4 +7,7 @@
     <string name="action_explore">경로탐색</string>
     <string name="action_surround_stop">주변정류장</string>
 
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

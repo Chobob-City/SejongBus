@@ -91,7 +91,7 @@ public class ExploreActivity1 extends ActionBarActivity {
                 for (int i = 0; i < mJSONArray.length(); i++) {
                     CommonListItem item = new CommonListItem();
                     JSONObject json = mJSONArray.getJSONObject(i);
-                    item.resId = R.drawable.busstopicon;
+                    item.resId = R.drawable.busstop;
                     item.text1 = json.getString("stop_name");
                     item.text2 = json.getString("service_id");
                     mList.add(item);
@@ -106,7 +106,7 @@ public class ExploreActivity1 extends ActionBarActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     try {
                         JSONObject json = mJSONArray.getJSONObject(position);
-                        ExploreFragment.setStBusStop(json.getInt("stop_id"),
+                        Main_ExploreFragment.setStBusStop(json.getInt("stop_id"),
                                 json.getString("stop_name") + " [" + json.getString("service_id")
                                         + "]");
                     } catch (JSONException e) {

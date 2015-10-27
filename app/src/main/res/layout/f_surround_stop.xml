@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitegray"
+    android:background="@color/bggray"
     android:orientation="vertical"
-    tools:context="kr.nogcha.sejongbus.SurroundStopFragment">
+    tools:context="kr.nogcha.sejongbus.Main_SurroundStopFragment">
 
     <com.google.android.gms.maps.MapView
         android:id="@+id/map_view"

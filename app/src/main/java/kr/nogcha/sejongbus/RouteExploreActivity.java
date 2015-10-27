@@ -58,7 +58,7 @@ public class RouteExploreActivity extends ActionBarActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 CommonListItem item = new CommonListItem();
                 json = jsonArray.getJSONObject(i);
-                item.resId = R.drawable.busstopicon;
+                item.resId = R.drawable.busstop;
 
                 int xtype = json.getInt("xtype");
                 if (xtype == 1) {
