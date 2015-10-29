@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitegray"
+    android:background="@color/bggray"
     android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.BusStopRouteActivity">
 
@@ -27,7 +27,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:background="@drawable/d_rounded_white"
             android:orientation="vertical">
 
             <TextView

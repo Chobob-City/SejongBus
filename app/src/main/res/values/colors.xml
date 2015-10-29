@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="accent_material_dark">#eeeeee</color>
+    <color name="brightblue">#125fe1</color>
+    <color name="mainblue">#0c419a</color>
+    <color name="dmainblue">#082d6f</color>
+    <color name="realwhite">#ffffff</color>
+    <color name="white">#eeeeee</color>
+    <color name="dwhite">#dcdcdc</color>
+    <color name="ddwhite">#9e9e9e</color>
+    <color name="bggray">#b2b2b2</color>
+    <color name="gray">#5e5e5e</color>
+    <color name="dgray">#414141</color>
+    <color name="ddgray">#252525</color>
+    <color name="dddgray">#191919</color>
+    <color name="black">#000000</color>
+    <color name="clear">#00000000</color>
+</resources>

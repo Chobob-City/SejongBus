@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitegray"
+    android:background="@color/bggray"
     android:orientation="vertical"
     tools:context="kr.nogcha.sejongbus.BusRouteDetailActivity">
 
@@ -40,7 +40,6 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             android:layout_weight="1"
-            android:background="@drawable/d_rounded_white"
             android:orientation="vertical"
             android:padding="8dp">
 

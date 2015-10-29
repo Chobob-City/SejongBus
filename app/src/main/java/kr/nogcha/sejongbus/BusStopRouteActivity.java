@@ -64,19 +64,19 @@ public class BusStopRouteActivity extends ActionBarActivity {
 
                 switch (json.getInt("route_type")) {
                     case 30:
-                        item.resId = R.drawable.town;
+                        item.resId = R.drawable.bus_town;
                         break;
                     case 43:
-                        item.resId = R.drawable.sejongbus;
+                        item.resId = R.drawable.bus_sejong;
                         break;
                     case 50:
-                        item.resId = R.drawable.daejeonbus;
+                        item.resId = R.drawable.bus_daejeon;
                         break;
                     case 51:
-                        item.resId = R.drawable.cheongbus;
+                        item.resId = R.drawable.bus_cheongju;
                         break;
                     default:
-                        item.resId = R.drawable.general;
+                        item.resId = R.drawable.bus_general;
                 }
 
                 item.text1 = json.getString("route_name");

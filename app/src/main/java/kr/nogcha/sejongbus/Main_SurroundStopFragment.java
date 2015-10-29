@@ -17,10 +17,10 @@
 package kr.nogcha.sejongbus;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +51,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
+public class Main_SurroundStopFragment extends Fragment implements GoogleApiClient.ConnectionCallbacks,
         LocationListener {
     private GoogleMap mMap = null;
     private List<JSONObject> mJSONList = new ArrayList<>();
@@ -61,6 +61,13 @@ public class SurroundStopFragment extends Fragment implements GoogleApiClient.Co
     private MapView mMapView;
     private ListView mListView;
 
+    public static Main_SurroundStopFragment newInstance(int num) {
+        Main_SurroundStopFragment f = new Main_SurroundStopFragment();
+        Bundle args = new Bundle();
+        args.putInt("num", num);
+        f.setArguments(args);
+        return f;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

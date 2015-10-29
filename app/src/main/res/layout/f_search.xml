@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whitegray"
-    tools:context="kr.nogcha.sejongbus.SearchFragment">
+    android:background="@color/bggray"
+    tools:context="kr.nogcha.sejongbus.Main_BusNumSearchFragment">
 
     <RelativeLayout
         android:id="@+id/mainsearchbar"
@@ -16,7 +16,6 @@
 
         <EditText
             android:id="@+id/edit_text"
-            style="@style/edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="노선번호 및 정류소를 입력하세요."
@@ -25,8 +24,6 @@
             android:textColor="#000000"
             android:textColorHint="#4d000000"
             android:textSize="16sp">
-
-            <requestFocus />
         </EditText>
 
         <ImageButton

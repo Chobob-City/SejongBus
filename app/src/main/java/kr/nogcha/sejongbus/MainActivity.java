@@ -16,26 +16,31 @@
 
 package kr.nogcha.sejongbus;
 
-import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.RelativeLayout;
 
-public class MainActivity extends ActionBarActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static MainActivity sInstance;
-    private FragmentManager mFragmentManager;
-    private DrawerLayout mDrawerLayout;
-    private ActionBarDrawerToggle mDrawerToggle;
+    private TabLayout tablayout;
+    private Toolbar toolbar;
+    private ViewPager viewPager;
 
     public static void hideSoftInput() {
         final InputMethodManager inputMethodManager =
@@ -49,40 +54,76 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
         setContentView(R.layout.a_main);
 
         sInstance = this;
-        mFragmentManager = getFragmentManager();
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.app_name,
-                R.string.app_name);
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager.setAdapter(
+                new MainActivityTabAdapter(getSupportFragmentManager(), this));
+        viewPager.setOffscreenPageLimit(5);
 
-        RelativeLayout drawer = (RelativeLayout) findViewById(R.id.drawer);
-        RelativeLayout button1 = (RelativeLayout) drawer.findViewById(R.id.button_1);
-        button1.setOnClickListener(this);
-        RelativeLayout button2 = (RelativeLayout) drawer.findViewById(R.id.button_2);
-        button2.setOnClickListener(this);
-        RelativeLayout button3 = (RelativeLayout) drawer.findViewById(R.id.button_3);
-        button3.setOnClickListener(this);
-
-        mFragmentManager.beginTransaction().add(R.id.frame_layout, new SearchFragment()).commit();
-
+        tablayout = (TabLayout) findViewById(R.id.tablayout);
+        tablayout.setupWithViewPager(viewPager);
     }
-
     @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        mDrawerToggle.syncState();
+    public void onClick(View view) {
+        switch (view.getId()) {
+        }
     }
+    public class MainActivityTabAdapter extends FragmentPagerAdapter{
+        final int PAGE_COUNT = 5;
+        private int[] imageResId = {R.drawable.main_tab_btn_drawable_white_1,
+                                    R.drawable.main_tab_btn_drawable_white_2,
+                                    R.drawable.main_tab_btn_drawable_white_3,
+                                    R.drawable.main_tab_btn_drawable_white_4,
+                                    R.drawable.main_tab_btn_drawable_white_5};
+        private Context context;
 
+        public MainActivityTabAdapter(FragmentManager fm, Context context) {
+            super(fm);
+            this.context = context;
+        }
+        @Override
+        public int getCount() {
+            return PAGE_COUNT;
+        }
+        @Override
+        public Fragment getItem(int position) {
+            if(position==0){
+                return Main_FavoriteFragment.newInstance(position);
+            }
+            else if(position==1){
+                return Main_BusNumSearchFragment.newInstance(position);
+            }
+            else if(position==2){
+                return Main_BusStopSearchFragment.newInstance(position);
+            }
+            else if(position==3){
+                return Main_ExploreFragment.newInstance(position);
+            }
+            else if(position==4){
+                return Main_SurroundStopFragment.newInstance(position);
+            }
+            else{
+                return null;
+            }
+        }
+        @Override
+        public CharSequence getPageTitle(int position) {
+            Drawable image = ContextCompat.getDrawable(context, imageResId[position]);
+            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
+            SpannableString sb = new SpannableString(" ");
+            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
+            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            return sb;
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_about) {
@@ -90,30 +131,5 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.button_1:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, new SearchFragment()).commit();
-                break;
-            case R.id.button_2:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, new ExploreFragment()).commit();
-                break;
-            case R.id.button_3:
-                mFragmentManager.beginTransaction()
-                        .replace(R.id.frame_layout, new SurroundStopFragment()).commit();
-                break;
-        }
-        mDrawerLayout.closeDrawers();
     }
 }
