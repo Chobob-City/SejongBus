@@ -18,40 +18,50 @@ package kr.nogcha.sejongbus;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private static MainActivity sInstance;
     private TabLayout tablayout;
     private Toolbar toolbar;
     private ViewPager viewPager;
+    public FloatingActionButton floatingBtn;
+    public EditText editText;
+    public String getbusString;
+    Main_BusNumSearchFragment busNumSearchFragment;
+    Main_BusStopSearchFragment busStopSearchFragment;
+    Main_FavoriteFragment favoriteFragment;
+    Main_ExploreFragment exploreFragment;
+    Bundle busStringBundle;
 
     public static void hideSoftInput() {
-        final InputMethodManager inputMethodManager =
-                (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
-        inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+        final InputMethodManager imm = (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+    }
+    public static void showSoftInput() {
+        final InputMethodManager imm = (InputMethodManager) sInstance.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.SHOW_FORCED);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.a_main);
+
+        busStringBundle = new Bundle();
 
         sInstance = this;
 
@@ -61,23 +71,75 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(
                 new MainActivityTabAdapter(getSupportFragmentManager(), this));
-        viewPager.setOffscreenPageLimit(5);
+        viewPager.setOffscreenPageLimit(1);
 
         tablayout = (TabLayout) findViewById(R.id.tablayout);
         tablayout.setupWithViewPager(viewPager);
+
+        floatingBtn = (FloatingActionButton) findViewById(R.id.floatingbtn);
+        floatingBtn.setOnClickListener(this);
+        floatingBtn.hide();
+        viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0 || position == 3) {
+                    floatingBtn.hide();
+                    if(editText.getVisibility()==View.VISIBLE){
+                        editText.setVisibility(View.GONE);
+                        hideSoftInput();
+                    }
+                } else {
+                    floatingBtn.show();
+                    if(editText.getVisibility()==View.VISIBLE){
+                        editText.setVisibility(View.GONE);
+                    }
+                }
+
+            }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+        editText = (EditText) findViewById(R.id.edit_text);
+        if(editText.getVisibility()==View.VISIBLE){
+            busStringBundle.putBoolean("edittextBoolean", true);//true 일때 visible
+        }
+        else{
+            busStringBundle.putBoolean("edittextBoolean", false);
+        }
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.floatingbtn:
+                if(editText.getVisibility()==View.GONE) {
+                    editText.setVisibility(View.VISIBLE);
+                    editText.requestFocus();
+                    showSoftInput();
+                }
+                else{
+                    editText.setVisibility(View.GONE);
+                }
+                if (viewPager.getCurrentItem() == 1) {
+                    editText.setHint("버스노선을 입력하세요.");
+                    busStringBundle.putString("busNum", editText.getText().toString());
+                    busNumSearchFragment.setArguments(busStringBundle);
+                } else if (viewPager.getCurrentItem() == 2) {
+                    editText.setHint("정류장이름 또는 번호을 입력하세요.");
+                    busStringBundle.putString("busStop", editText.getText().toString());
+                    busStopSearchFragment.setArguments(busStringBundle);
+                }
+                break;
         }
     }
     public class MainActivityTabAdapter extends FragmentPagerAdapter{
-        final int PAGE_COUNT = 5;
-        private int[] imageResId = {R.drawable.main_tab_btn_drawable_white_1,
-                                    R.drawable.main_tab_btn_drawable_white_2,
-                                    R.drawable.main_tab_btn_drawable_white_3,
-                                    R.drawable.main_tab_btn_drawable_white_4,
-                                    R.drawable.main_tab_btn_drawable_white_5};
+        final int PAGE_COUNT = 4;
+        private String[] tabTitles = {"즐겨찾기","노선","정류장","경로탐색"};
         private Context context;
 
         public MainActivityTabAdapter(FragmentManager fm, Context context) {
@@ -91,19 +153,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public Fragment getItem(int position) {
             if(position==0){
-                return Main_FavoriteFragment.newInstance(position);
+                return favoriteFragment.newInstance(position);
             }
             else if(position==1){
-                return Main_BusNumSearchFragment.newInstance(position);
+                return busNumSearchFragment.newInstance(position);
             }
             else if(position==2){
-                return Main_BusStopSearchFragment.newInstance(position);
+                return busStopSearchFragment.newInstance(position);
             }
             else if(position==3){
-                return Main_ExploreFragment.newInstance(position);
-            }
-            else if(position==4){
-                return Main_SurroundStopFragment.newInstance(position);
+                return exploreFragment.newInstance(position);
             }
             else{
                 return null;
@@ -111,12 +170,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         @Override
         public CharSequence getPageTitle(int position) {
-            Drawable image = ContextCompat.getDrawable(context, imageResId[position]);
-            image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
-            SpannableString sb = new SpannableString(" ");
-            ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-            sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            return sb;
+            // Generate title based on item position
+            return tabTitles[position];
         }
     }
     @Override

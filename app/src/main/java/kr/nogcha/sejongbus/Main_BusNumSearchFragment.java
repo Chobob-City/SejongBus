@@ -68,18 +68,10 @@ public class Main_BusNumSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_search, container, false);
 
-        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search();
-                    return true;
-                }
-                return false;
-            }
-        });
-
+        Bundle busString = getArguments();
+        if(busString.getBoolean("edittextBoolean")==true) {
+            search(busString.getString("busNum"));
+        }
         ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,13 +92,7 @@ public class Main_BusNumSearchFragment extends Fragment {
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
             if (mBisClient.isNetworkConnected()) {
-                if (Pattern.matches("^\\d{5}$", query)) {
-                    searchBusStop(query);
-                } else if (Pattern.matches("^[0-9-]+$", query)) {
-                    searchBusRoute(query);
-                } else {
-                    searchBusStop(query);
-                }
+                searchBusRoute(query);
             }
         }
     }
@@ -153,39 +139,6 @@ public class Main_BusNumSearchFragment extends Fragment {
                 try {
                     extras.putInt("route_id",
                             mJSONArray.getJSONObject(position).getInt("route_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void searchBusStop(String busStop) {
-        try {
-            mList.clear();
-            mJSONArray = mBisClient.searchBusStop(busStop, true).getJSONArray("busStopList");
-            for (int i = 0; i < mJSONArray.length(); i++) {
-                CommonListItem item = new CommonListItem();
-                JSONObject json = mJSONArray.getJSONObject(i);
-                item.resId = R.drawable.busstopicon;
-                item.text1 = json.getString("stop_name");
-                item.text2 = json.getString("service_id");
-                mList.add(item);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mAdapter.notifyDataSetChanged();
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), BusStopRouteActivity.class);
-                Bundle extras = new Bundle();
-                try {
-                    extras.putInt("stop_id", mJSONArray.getJSONObject(position).getInt("stop_id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

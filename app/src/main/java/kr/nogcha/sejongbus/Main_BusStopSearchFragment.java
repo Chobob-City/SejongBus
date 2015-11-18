@@ -20,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -30,7 +31,6 @@ public class Main_BusStopSearchFragment extends Fragment {
     private List<CommonListItem> mList = new ArrayList<>();
     private SejongBisClient mBisClient;
     private CommonAdapter mAdapter;
-    private EditText mEditText;
     private ListView mListView;
     private JSONArray mJSONArray;
 
@@ -55,26 +55,10 @@ public class Main_BusStopSearchFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.f_search, container, false);
 
-        mEditText = (EditText) rootView.findViewById(R.id.edit_text);
-        mEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                    search();
-                    return true;
-                }
-                return false;
-            }
-        });
-
-        ImageButton imageButton = (ImageButton) rootView.findViewById(R.id.image_button);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                search();
-            }
-        });
-
+        Bundle busString = getArguments();
+        if(busString.getBoolean("edittextBoolean")==true) {
+            search(busString.getString("busStop"));
+        }
         mListView = (ListView) rootView.findViewById(R.id.list_view);
         mListView.setEmptyView(rootView.findViewById(R.id.text_view));
         mListView.setAdapter(mAdapter);
@@ -82,73 +66,15 @@ public class Main_BusStopSearchFragment extends Fragment {
         return rootView;
     }
 
-    private void search() {
-        String query = mEditText.getText().toString();
+    private void search(String busStop) {
+        String query = busStop;
         if (!query.equals("")) {
             MainActivity.hideSoftInput();
             if (mBisClient.isNetworkConnected()) {
-                if (Pattern.matches("^\\d{5}$", query)) {
-                    searchBusStop(query);
-                } else if (Pattern.matches("^[0-9-]+$", query)) {
-                    searchBusRoute(query);
-                } else {
-                    searchBusStop(query);
-                }
+                searchBusStop(query);
             }
         }
     }
-
-    private void searchBusRoute(String busRoute) {
-        try {
-            mList.clear();
-            mJSONArray = mBisClient.searchBusRoute(busRoute, true).getJSONArray("busRouteList");
-            for (int i = 0; i < mJSONArray.length(); i++) {
-                CommonListItem item = new CommonListItem();
-                JSONObject json = mJSONArray.getJSONObject(i);
-
-                switch (json.getInt("route_type")) {
-                    case 30:
-                        item.resId = R.drawable.bus_town;
-                        break;
-                    case 43:
-                        item.resId = R.drawable.bus_sejong;
-                        break;
-                    case 50:
-                        item.resId = R.drawable.bus_daejeon;
-                        break;
-                    case 51:
-                        item.resId = R.drawable.bus_cheongju;
-                        break;
-                    default:
-                        item.resId = R.drawable.bus_general;
-                }
-
-                item.text1 = json.getString("route_name");
-                item.text2 = json.getString("st_stop_name") + "~" + json.getString("ed_stop_name");
-                mList.add(item);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        mAdapter.notifyDataSetChanged();
-
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), BusRouteDetailActivity.class);
-                Bundle extras = new Bundle();
-                try {
-                    extras.putInt("route_id",
-                            mJSONArray.getJSONObject(position).getInt("route_id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });
-    }
-
     private void searchBusStop(String busStop) {
         try {
             mList.clear();

@@ -9,16 +9,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/mainblue"
-        android:minHeight="?attr/actionBarSize" />
+        android:minHeight="?attr/actionBarSize"
+        android:titleTextColor="@color/white">
+        <EditText
+            android:id="@+id/edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
+    </android.support.v7.widget.Toolbar>
     <android.support.design.widget.TabLayout
         android:id="@+id/tablayout"
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/mainblue"/>
+        android:background="@color/mainblue" />
     <android.support.v4.view.ViewPager
         android:id="@+id/viewpager"
         android:layout_below="@id/tablayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/floatingbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/mainblue"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="32dp"
+        android:clickable="true"/>
 </RelativeLayout>
